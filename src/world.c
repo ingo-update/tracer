@@ -19,10 +19,11 @@ static struct list *_cons(void *car, struct list *cdr)
   struct list *c;
   c = (struct list *) malloc(sizeof(struct list));
   
-  if (NULL==c) {
-    fprintf(stderr,"_cons(): Could not allocate mamory\n");
-    return NULL;
-  }
+  if (NULL == c)
+    {
+      fprintf(stderr,"_cons(): Could not allocate mamory\n");
+      return NULL;
+    }
   
   c->car = car;
   c->cdr = cdr;
@@ -30,11 +31,12 @@ static struct list *_cons(void *car, struct list *cdr)
   return(c);
 }
 
-world world_create() {
+world world_create()
+{
+  world w;
+  w = (world) malloc(sizeof(struct world_t));
 
-  world w = (world) malloc(sizeof(struct world_t));
-
-  if (NULL==w) {
+  if (NULL == w) {
     fprintf(stderr,"world_create(): Could not allocate memory\n");
     return NULL;
   }
@@ -151,7 +153,6 @@ color world_look(world w, ray r, unsigned int depth, shading_mode s)
 
       if (Shading == s)
 	{
-
 	  /* This is wrong! */
 	  if (0 > hitdata_get_diffuse(hit))
 	    {

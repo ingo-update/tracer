@@ -49,6 +49,7 @@ $(OBJFILES):
 	@$(ECHO) Compiling $(notdir $<)
 	@$(ECHO) '$(OBJ_CMD)' > $@.cmdline
 	@$(OBJ_CMD) 2> $@.log
+	@[ -s $@.log ] || $(RM) $@.log
 
 TARGET_CMD = $(LD) -o $@ $(LDFLAGS) $^ $(LDLIBS)
 $(addprefix $(BUILDDIR)/,$(TARGET)):
@@ -56,6 +57,7 @@ $(addprefix $(BUILDDIR)/,$(TARGET)):
 	@$(ECHO) Linking $(notdir $@)
 	@$(ECHO) '$(TARGET_CMD)' > $@.cmdline
 	@$(TARGET_CMD) 2> $@.log
+	@[ -s $@.log ] || $(RM) $@.log
 
 clean:
 	@$(RM) $(BUILDDIR) $(TARGET)
@@ -78,6 +80,7 @@ $(TESTOBJS):
 	@$(ECHO) Compiling $(notdir $<)
 	@$(ECHO) '$(TESTOBJ_CMD)' > $@.cmdline
 	@$(TESTOBJ_CMD) 2> $@.log
+	@[ -s $@.log ] || $(RM) $@.log
 
 $(TEST)/test_bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TEST)/test_bitmap.o
 	@$(LD) -o $@ $(LDFLAGS) $^
@@ -88,6 +91,7 @@ $(GENSRC)/lexer.c:
 	@$(ECHO) Generating $(notdir $@)
 	@$(ECHO) '$(LEX_CMD)' > $@.cmdline
 	@$(LEX_CMD) 2> $@.log
+	@[ -s $@.log ] || $(RM) $@.log
 
 YACC_CMD = $(YACC) -d -o $(GENSRC)/parser.c $<
 $(GENSRC)/parser.c $(GENSRC)/parser.h:
@@ -95,6 +99,7 @@ $(GENSRC)/parser.c $(GENSRC)/parser.h:
 	@$(ECHO) Generating parser.h, parser.c
 	@$(ECHO) '$(YACC_CMD)' > $@.cmdline
 	@$(YACC_CMD) 2> $@.log
+	@[ -s $@.log ] || $(RM) $@.log
 
 ## Dependencies
 $(addprefix $(BUILDDIR)/,$(TARGET)): $(OBJFILES)
