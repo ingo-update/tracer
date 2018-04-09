@@ -40,21 +40,21 @@ OBJFILES = $(sort \
 TESTOBJS = $(patsubst $(TOPDIR)/test/%.c,$(TEST)/%.o,$(wildcard $(TOPDIR)/test/*.c))
 
 default: $(TARGET)
-$(TARGET): $(BUILDDIR)/$(TARGET)
-	@$(CP) $< $@
+$(TARGET): $(addprefix $(BUILDDIR)/,$(TARGET))
+	@$(CP) $^ $(TOPDIR)
 
 OBJ_CMD = $(CC) -I$(SRC) $(CFLAGS) $(OPT_CFLAGS) $(DBG_CFLAGS) $(CFLAGS_$(notdir $<)) $< -o $@
 $(OBJFILES):
 	@$(MKDIR) $(dir $@)
 	@$(ECHO) Compiling $(notdir $<)
-	@$(ECHO) "$(OBJ_CMD)" > $@.cmdline
+	@$(ECHO) '$(OBJ_CMD)' > $@.cmdline
 	@$(OBJ_CMD) 2> $@.log
 
 TARGET_CMD = $(LD) -o $@ $(LDFLAGS) $^ $(LDLIBS)
-$(BUILDDIR)/$(TARGET): $(OBJFILES)
+$(addprefix $(BUILDDIR)/,$(TARGET)):
 	@$(MKDIR) $(dir $@)
 	@$(ECHO) Linking $(notdir $@)
-	@$(ECHO) $(TARGET_CMD) > $@.cmdline
+	@$(ECHO) '$(TARGET_CMD)' > $@.cmdline
 	@$(TARGET_CMD) 2> $@.log
 
 clean:
@@ -72,14 +72,11 @@ test_trace: $(TARGET) test_bitmap
 	@./$(TARGET) -x512 -y512 -w1 -r10 -o build/test/a.ppm -i examples/test.pov
 	@$(XV) build/test/a.ppm &
 
-debug:
-	@$(ECHO) $(TESTOBJ)
-
 TESTOBJ_CMD = $(CC) -I$(SRC) $(CFLAGS) $(OPT_CFLAGS) $(DBG_CFLAGS) $(CFLAGS_$(notdir $<)) $< -o $@
 $(TESTOBJS): 
 	@$(MKDIR) $(dir $@)
 	@$(ECHO) Compiling $(notdir $<)
-	@$(ECHO) "$(TESTOBJ_CMD)" > $@.cmdline
+	@$(ECHO) '$(TESTOBJ_CMD)' > $@.cmdline
 	@$(TESTOBJ_CMD) 2> $@.log
 
 $(TEST)/test_bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TEST)/test_bitmap.o
@@ -89,17 +86,19 @@ LEX_CMD = $(LEX) -t $< > $@
 $(GENSRC)/lexer.c:
 	@$(MKDIR) $(dir $@)
 	@$(ECHO) Generating $(notdir $@)
-	@$(ECHO) "$(LEX_CMD)" > $@.cmdline
+	@$(ECHO) '$(LEX_CMD)' > $@.cmdline
 	@$(LEX_CMD) 2> $@.log
 
 YACC_CMD = $(YACC) -d -o $(GENSRC)/parser.c $<
 $(GENSRC)/parser.c $(GENSRC)/parser.h:
 	@$(MKDIR) $(dir $@)
 	@$(ECHO) Generating parser.h, parser.c
-	@$(ECHO) "$(YACC_CMD)" > $@.cmdline
+	@$(ECHO) '$(YACC_CMD)' > $@.cmdline
 	@$(YACC_CMD) 2> $@.log
 
 ## Dependencies
+$(addprefix $(BUILDDIR)/,$(TARGET)): $(OBJFILES)
+
 $(GENSRC)/lexer.c: $(SRC)/lexer.l
 $(GENSRC)/parser.c: $(SRC)/parser.y
 $(GENSRC)/parser.h: $(SRC)/parser.y
