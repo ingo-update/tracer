@@ -145,19 +145,19 @@ hitdata pgram_hitdata(pgram o, ray r) {
       rn = vector_sp(pn, -1);
     }
   
-  q = vector_diff(ri, c0); // 31
-  b2 = vector_dp(b, b);
-  qa = vector_dp(q, a);
-  ab = vector_dp(a, b);
-  qb = vector_dp(q, b);
-  a2 = vector_dp(a, a);
-
   if (Color == surface_get_mode(o->surf))
     {
       col = surface_get_color(o->surf);
     }
   else
     {
+      q = vector_diff(ri, c0); // 31
+      b2 = vector_dp(b, b);
+      qa = vector_dp(q, a);
+      ab = vector_dp(a, b);
+      qb = vector_dp(q, b);
+      a2 = vector_dp(a, a);
+
       bmp = surface_get_texture_map(o->surf);
       
       u = (b2 * qa - ab * qb) / (a2 * b2 - ab * ab); // 32

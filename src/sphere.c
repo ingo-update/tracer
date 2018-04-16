@@ -19,15 +19,15 @@ sphere sphere_create(vector pole, vector equator, vector loc, real rad, surface 
       fprintf(stderr, "sphere_create(): Illegal surface modifier\n");
       exit(EXIT_FAILURE);
     }
-  
+
   new = (sphere) malloc(sizeof(struct sphere_t));
-  
+
   if (NULL == new)
     {
       fprintf(stderr, "sphere_create(): Could not allocate sphere\n");
       exit(EXIT_FAILURE);
     }
-  
+
   new->pole = pole;
   new->equator = equator;
   new->location = loc;
@@ -59,7 +59,7 @@ real sphere_hit_distance(sphere o, ray r)
   origin = ray_get_origin(r);
 
   oc = vector_diff(location, origin); // 16
-  l_2oc = vector_dp(oc, oc); // 17 
+  l_2oc = vector_dp(oc, oc); // 17
 
   if (l_2oc < radius * radius)
     {
@@ -67,19 +67,19 @@ real sphere_hit_distance(sphere o, ray r)
     }
 
   t_ca = vector_dp(oc, ray_get_direction(r)); // 18
-  
+
   if (0 > t_ca && 0 == side) // Looking away from sphere
     {
       return NO_HIT;
     }
-  
+
   t_2hc = (radius * radius) - l_2oc + (t_ca * t_ca); // 19
-  
+
   if (0 > t_2hc) // looking past sphere
     {
       return NO_HIT;
     }
-  
+
   // t is the distance
   if (0 == side) // 20
     {
@@ -89,7 +89,7 @@ real sphere_hit_distance(sphere o, ray r)
     {
       t = t_ca + sqrt(t_2hc);
     }
-  
+
   return t;
 }
 
@@ -102,8 +102,8 @@ hitdata sphere_hitdata(sphere o, ray r)
   hitdata data;
   vector ri, rn;
   color col;
-  
-  unsigned int x_in_map, y_in_map; 
+
+  unsigned int x_in_map, y_in_map;
   real fi, v, u, theta;
   vector sp, se;
   bitmap bmp;
@@ -114,7 +114,7 @@ hitdata sphere_hitdata(sphere o, ray r)
   origin = ray_get_origin(r);
 
   oc = vector_diff(location,origin); // 16
-  l_2oc = vector_dp(oc,oc); // 17 
+  l_2oc = vector_dp(oc,oc); // 17
 
   if (l_2oc < radius * radius)
     {
@@ -123,7 +123,7 @@ hitdata sphere_hitdata(sphere o, ray r)
 
   t_ca = vector_dp(oc,ray_get_direction(r)); // 18
   t_2hc = (radius * radius) - l_2oc + (t_ca*t_ca); // 19
-    
+
   if (0 == side) // 20
     {
       t = t_ca - sqrt(t_2hc);
@@ -132,13 +132,13 @@ hitdata sphere_hitdata(sphere o, ray r)
     {
       t = t_ca + sqrt(t_2hc);
     }
-  
+
   ri = vector_sum(origin, vector_sp(ray_get_direction(r), t));
 
   if (0 == side)
     {
       rn = vector_sp(vector_diff(ri, location), (1 / radius));
-    } 
+    }
   else
     {
       rn = vector_sp(vector_diff(ri, location), (-1 / radius));
@@ -152,12 +152,12 @@ hitdata sphere_hitdata(sphere o, ray r)
     {
       // sphere with texturemap
       sp = o->pole;
-      se = o->equator; 
+      se = o->equator;
       bmp = surface_get_texture_map(o->surf);
-      
+
       fi = acos(-vector_dp(rn, sp)); // 34
       v = fi / M_PI;		// 35
-      
+
       if (0.0 == v || 1.0 == v) // On a pole TODO: Can this happen?
 	{
 	  u = 0.0;
@@ -173,14 +173,14 @@ hitdata sphere_hitdata(sphere o, ray r)
 	    {
 	      u= 1.0-theta;
 	    }
-	  
-	  // - 1 because of zeroindexed bitmaps     
-	  x_in_map = (bitmap_width(bmp) - 1)*u; 
+
+	  // - 1 because of zeroindexed bitmaps
+	  x_in_map = (bitmap_width(bmp) - 1)*u;
 	  y_in_map = (bitmap_height(bmp) - 1)*v;
 	  col = bitmap_get_pixel(bmp, x_in_map, y_in_map);
       }
     }
-  
+
   data = hitdata_create(rn,
 			vector_sum(origin, vector_sp(ray_get_direction(r), t)),
 			col,
