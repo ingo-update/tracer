@@ -12,12 +12,12 @@ static unsigned int _get_ascii_value(FILE *infile)
   int found;
   unsigned int a;
   char c;
-  
+
   found = 0;
   while (!found)
     {
       c = fgetc(infile);
-      
+
       if ('#' == c)
 	{
 	  while ('\n' != c)
@@ -25,13 +25,13 @@ static unsigned int _get_ascii_value(FILE *infile)
 	      c = fgetc(infile);
 	    }
 	}
-      
+
       if (c >= '0' && c <= '9')
 	{
 	  found = 1;
 	}
     }
-      
+
   a = 0;
   while ('0' <= c && '9' >= c)
     {
@@ -40,7 +40,7 @@ static unsigned int _get_ascii_value(FILE *infile)
     }
 
   ungetc(c,infile);
-  
+
   return a;
 }
 
@@ -48,29 +48,29 @@ static unsigned int _get_ascii_value(FILE *infile)
 bitmap bitmap_create(unsigned int w, unsigned int h)
 {
   bitmap bmp;
-  
+
   if ((1 > w) || (1 > h))
     {
       fprintf(stderr, "bitmap_create(): Illegal bitmap size (%d x %d)\n", w, h);
       return NULL;
     }
-  
+
   bmp = malloc(sizeof(struct bitmap_t));
   if (NULL == bmp) {
     fprintf(stderr, "bitmap_create(): Could not allocate bitmap struct.\n");
     return NULL;
   }
-  
+
   bmp->pixels = malloc(w * h * sizeof(color));
   if (NULL == bmp->pixels)
     {
       fprintf(stderr, "bitmap_create(): Could not allocate pixels.\n");
       return NULL;
     }
-  
+
   bmp->width = w;
   bmp->height = h;
-  
+
   return bmp;
 }
 
@@ -81,7 +81,7 @@ void bitmap_destroy(bitmap bmp)
     {
       fprintf(stderr, "bitmap_destroy(): Bad bitmap.\n");
     }
-  
+
   free(bmp->pixels);
   free(bmp);
 }
@@ -114,7 +114,7 @@ color bitmap_get_pixel(bitmap bmp, unsigned int x, unsigned int y)
   if (!INSIDE(bmp, x, y))
     {
       fprintf(stderr, "bitmap_get_pixel(): Pixel (%dx%d) outside bitmap (%dx%d).\n", x, y, bmp->width, bmp->height);
-      return color_create_rgb(0,0,0);
+      exit(EXIT_FAILURE);
     }
   return (bmp->pixels)[(y * bmp->width) + x];
 }
@@ -129,7 +129,8 @@ void bitmap_put_pixel(bitmap bmp, unsigned int x, unsigned int y, color c)
   else
     {
       fprintf(stderr, "bitmap_put_pixel(): Pixel (%dx%d) outside bitmap (%dx%d).\n",
-	      x, y, bmp->width, bmp->height);  
+	      x, y, bmp->width, bmp->height);
+      exit(EXIT_FAILURE);
     }
 }
 
@@ -149,7 +150,7 @@ void bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename)
       outfile = fopen(filename,"w");
       if (NULL == outfile)
 	{
-	  fprintf(stderr,"bitmap_write_ppm(): Could not open file %s\n", filename);
+	  fprintf(stderr,"bitmap_write_ppm(): Could not open file '%s'\n", filename);
 	  exit(EXIT_FAILURE);
 	}
     }
@@ -164,10 +165,10 @@ void bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename)
       cookie = "P6";
       format = "%c%c%c";
     }
-  
+
   // Header
   fprintf(outfile, "%s\n", cookie);
-  fprintf(outfile, "#Cool file\n");
+  fprintf(outfile, "#Cool file\n"); // TODO?
   fprintf(outfile, "%d %d %d\n",bmp->width, bmp->height, DEPTH);
 
   // Pixel data
@@ -189,8 +190,8 @@ bitmap bitmap_read_ppm(char *filename)
   ppmtype ptype;
   unsigned int width, height, depth;
   unsigned int r,g,b,x,y;
-  int c,d;
-  
+  unsigned char c,d;
+
   if (NULL == filename)
     {
       infile = stdin;
@@ -200,14 +201,14 @@ bitmap bitmap_read_ppm(char *filename)
       infile = fopen(filename,"r");
       if (NULL == infile)
 	{
-	  fprintf(stderr,"bitmap_read_ppm(): Could not open file %s\n", filename);
+	  fprintf(stderr,"bitmap_read_ppm(): Could not open file '%s'\n", filename);
 	  return NULL;
 	}
     }
 
   c = fgetc(infile);
   d = fgetc(infile);
-  
+
   if (c == 'P')
     {
       if (d == '3')
@@ -220,13 +221,13 @@ bitmap bitmap_read_ppm(char *filename)
 	}
       else
 	{
-	  fprintf(stderr,"bitmap_read_ppm(): Unsupported ppm type 'P%c'.\n", d);
-	  return NULL; 
+	  fprintf(stderr,"bitmap_read_ppm(): Unsupported ppm type 'P%c'\n", d);
+	  return NULL;
 	}
     }
   else
     {
-      fprintf(stderr,"bitmap_read_ppm(): File '%s' is not PPM (%c%c).\n", filename, c, d);
+      fprintf(stderr,"bitmap_read_ppm(): File '%s' is not PPM (%c%c)\n", filename, c, d);
       return NULL;
     }
 
@@ -236,12 +237,12 @@ bitmap bitmap_read_ppm(char *filename)
 
   if (DEPTH != depth)
     {
-      fprintf(stderr,"bitmap_read_ppm(): Unsupported depth %d.\n", depth);
+      fprintf(stderr,"bitmap_read_ppm(): Unsupported depth %d\n", depth);
       return NULL;
     }
-    
+
   bmp = bitmap_create(width, height);
-  
+
   if (Ascii == ptype)
     {
       for (y = 0 ; y < height ; ++y)
@@ -251,10 +252,10 @@ bitmap bitmap_read_ppm(char *filename)
 	      r = _get_ascii_value(infile);
 	      g = _get_ascii_value(infile);
 	      b = _get_ascii_value(infile);
-		
+
 	      if (feof(infile))
 		{
-		  fprintf(stderr,"bitmap_read_ppm: Unexpected EOF.\n");
+		  fprintf(stderr,"bitmap_read_ppm: Unexpected EOF after %d pixels\n", (y * width + x));
 		  bitmap_destroy(bmp);
 		  return NULL;
 		}
@@ -266,7 +267,7 @@ bitmap bitmap_read_ppm(char *filename)
     {
       // Remove single byte before starting
       c = fgetc(infile);
-      
+
       for (y = 0 ; y < height ; ++y)
 	{
 	  for (x = 0 ; x < width ; ++x)
@@ -277,7 +278,7 @@ bitmap bitmap_read_ppm(char *filename)
 
 	      if (feof(infile))
 		{
-		  fprintf(stderr,"bitmap_read_ppm: Unexpected EOF.\n");
+		  fprintf(stderr,"bitmap_read_ppm: Unexpected EOF after %d pixels\n", (y * width + x));
 		  bitmap_destroy(bmp);
 		  return NULL;
 		}
@@ -285,6 +286,6 @@ bitmap bitmap_read_ppm(char *filename)
 	    }
 	}
     }
-  
+
   return bmp;
 }

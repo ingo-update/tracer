@@ -9,7 +9,7 @@ void create_files()
 {
   bitmap bm;
   int x,y;
-  
+
   bm = bitmap_create(256,256);
 
   for (y = 0 ; y < 256 ; ++y)
@@ -34,11 +34,17 @@ int test_errors()
       ++fail;
       fprintf(stderr,"FAIL: Could create size 0 bitmap\n");
     }
-  
+
   if (NULL != bitmap_read_ppm("nonexisting.ppm"))
     {
       ++fail;
       fprintf(stderr,"FAIL: Could read nonexisting bitmap\n");
+    }
+
+  if (NULL != bitmap_read_ppm("../../Makefile"))
+    {
+      ++fail;
+      fprintf(stderr,"FAIL: Could read Makefile as ppm\n");
     }
 
   return fail;
@@ -50,12 +56,12 @@ int compare_files()
   int fail;
   int x, y;
   color ca, cb;
-  
+
   fail = 0;
-  
+
   bma = bitmap_read_ppm("test_asc.ppm");
   bmb = bitmap_read_ppm("test_bin.ppm");
-  
+
   if (bitmap_width(bma) != bitmap_width(bmb))
     {
       ++fail;
@@ -67,16 +73,16 @@ int compare_files()
       ++fail;
       fprintf(stderr,"FAIL: Bitmaps differ in height, %d != %d\n", bitmap_height(bma), bitmap_height(bmb));
     }
-  
+
   for (y = 0 ; y < bitmap_height(bma) ; ++y)
     {
       for (x = 0 ; x < bitmap_width(bma) ; ++x)
 	{
 	  ca = bitmap_get_pixel(bma, x, y);
 	  cb = bitmap_get_pixel(bmb, x, y);
-	  
+
 	  if (0 == color_compare(ca, cb))
-	    {	     
+	    {
 	      fprintf(stderr, "  Ascii  color at %d,%d is (%d %d %d)\n", x, y, color_get_red(ca), color_get_green(ca), color_get_blue(ca));
 	      fprintf(stderr, "  Binary color at %d,%d is (%d %d %d)\n", x, y, color_get_red(cb), color_get_green(cb), color_get_blue(cb));
 	      fprintf(stderr, "FAIL: Different colors at %d, %d\n", x, y);
@@ -102,12 +108,12 @@ int main()
     {
       fail += test_errors();
     }
-  
+
   if (0 == fail)
     {
       fail += compare_files();
     }
-  
+
   if (0 == fail)
     {
       fprintf(stderr, "SUCCESS\n");
