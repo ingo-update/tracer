@@ -12,9 +12,12 @@ struct triangle_t {
   vector a_leg;
   vector another_leg;
   surface surf;
+  int pgram; /* true if this is a parallelogram */
 };
 
 triangle triangle_create(vector c0, vector a, vector b, surface surf);
+triangle pgram_create(vector c0, vector a, vector b, surface surf);
+
 vector triangle_get_corner0(triangle obj);
 vector triangle_get_a_leg(triangle obj);
 vector triangle_get_another_leg(triangle obj);

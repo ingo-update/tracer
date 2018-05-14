@@ -26,7 +26,6 @@
   sphere         sphere;
   triangle       triangle;
   plane          plane;
-  pgram          pgram;
   light          light;
   camera         camera;
   struct sph_opt sphere_opt;
@@ -82,42 +81,41 @@ scene:  item
 
 item:	sphere { world_add_object(the_world, object_create_sphere($1));}
 |       triangle { world_add_object(the_world, object_create_triangle($1));}
-|       background {world_put_background(the_world, $1);}    
-|       background_map {world_put_background_map_name(the_world, $1);}    
+|       background {world_put_background(the_world, $1);}
+|       background_map {world_put_background_map_name(the_world, $1);}
 |       plane { world_add_object(the_world, object_create_plane($1));}
-|       pgram { world_add_object(the_world, object_create_pgram($1));}
 |       camera { the_camera = $1;}
 |       light { world_add_light(the_world, $1);}
 ;
 
-light:	KEY_LIGHT LBRACE vector RBRACE 
+light:	KEY_LIGHT LBRACE vector RBRACE
 { $$ = light_create($3, color_create_rgb(255,255,255));}
 |	KEY_LIGHT LBRACE vector color RBRACE
 { $$ = light_create($3, $4);}
 ;
 
-vector: LANGLE number COMMA number COMMA number RANGLE 
+vector: LANGLE number COMMA number COMMA number RANGLE
 { $$ = vector_create($2, $4, $6);}
 ;
 
-plane:  KEY_PLANE LBRACE vector COMMA number object_mods RBRACE 
+plane:  KEY_PLANE LBRACE vector COMMA number object_mods RBRACE
 { $$ = plane_create($3, vector_sp(vector_norm($3), $5), $6);}
 ;
 
 /* This is not POVray syntax, but is an easier way to specify a plane. */
 
-plane:  KEY_PLANEPNT LBRACE vector COMMA vector object_mods RBRACE 
+plane:  KEY_PLANEPNT LBRACE vector COMMA vector object_mods RBRACE
 { $$ = plane_create($3, $5, $6);}
 ;
 
-sphere:	KEY_SPHERE LBRACE vector COMMA number sphere_opt object_mods RBRACE 
-{ $$ = sphere_create(sph_opt_get_pole($6), 
+sphere:	KEY_SPHERE LBRACE vector COMMA number sphere_opt object_mods RBRACE
+{ $$ = sphere_create(sph_opt_get_pole($6),
 		     sph_opt_get_equator ($6), $3, $5, $7);}
 ;
 
 sphere_opt: /* Empty */
 { $$ = sph_opt_create(vector_create(0,1,0),vector_create(1,0,0));}
-|       KEY_POLE vector KEY_EQUATOR vector 
+|       KEY_POLE vector KEY_EQUATOR vector
 { $$ = sph_opt_create($2, $4);}
 ;
 
@@ -129,9 +127,9 @@ KEY_TRIANGLE LBRACE vector COMMA vector COMMA vector object_mods RBRACE
 /* Again, this is not POVray, but provides an alternative way of
    specifying a triangle. */
 
-triangle: 
+triangle:
 KEY_TRIANGLEPNT LBRACE vector COMMA vector COMMA vector object_mods
-RBRACE 
+RBRACE
 { $$ = triangle_create($3, $5, $7, $8);}
 
 ;
@@ -139,37 +137,37 @@ RBRACE
 /* New Feature! Parallellograms use same syntax as triangle */
 
 
-pgram:
+triangle:
 KEY_PGRAM LBRACE vector COMMA vector COMMA vector object_mods RBRACE
 { $$ = pgram_create($3, vector_diff($5, $3), vector_diff($7, $3), $8); }
 ;
 
 
-pgram: 
+triangle:
 KEY_PGRAMPNT LBRACE vector COMMA vector COMMA vector object_mods
-RBRACE 
+RBRACE
 { $$ = pgram_create($3, $5, $7, $8);}
 
 ;
-	
+
 object_mods: opt_pigment opt_finish
 { $$ = surface_create($1,$2);}
 ;
 
 opt_pigment: /* Empty */
 { $$ = _pigment_create_color(color_create_rgb(127,127,127));}
-|       pigment 
+|       pigment
 { $$ = $1;}
 ;
 
 pigment:
-KEY_PIGMENT LBRACE color RBRACE 
+KEY_PIGMENT LBRACE color RBRACE
 { $$ = _pigment_create_color($3);}
-|       KEY_PIGMENT LBRACE image RBRACE 
+|       KEY_PIGMENT LBRACE image RBRACE
 { $$ = _pigment_create_texturemap($3);}
 ;
 
-image:	KEY_IMAGE LBRACE KEY_PPM STRING RBRACE 
+image:	KEY_IMAGE LBRACE KEY_PPM STRING RBRACE
 { $$ = $4;}
 ;
 
@@ -189,7 +187,7 @@ opt_diffuse: /* Empty */
 ;
 
 diffuse:
-KEY_DIFFUSE number 
+KEY_DIFFUSE number
 { $$ = $2;}
 ;
 
@@ -199,7 +197,7 @@ opt_reflection: /* Empty */
 ;
 
 reflection:
-KEY_REFLECTION number 
+KEY_REFLECTION number
 { $$ = $2;}
 ;
 
@@ -212,17 +210,17 @@ color:  KEY_COLOR KEY_RED number KEY_GREEN number KEY_BLUE number
 ;
 
 camera:	KEY_CAMERA LBRACE KEY_LOCATION vector KEY_SKY vector KEY_LOOK vector
-RBRACE 
+RBRACE
 { $$ = camera_create($4, $6, $8); }
 ;
 
 background:
-KEY_BACKGROUND LBRACE color RBRACE 
+KEY_BACKGROUND LBRACE color RBRACE
 { $$ = $3; }
 ;
 
 background_map:
-KEY_BACKGROUND LBRACE STRING RBRACE 
+KEY_BACKGROUND LBRACE STRING RBRACE
 { $$ = $3; }
 ;
 

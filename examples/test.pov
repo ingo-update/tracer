@@ -14,7 +14,7 @@ sphere {<0,-300,0>, 100 pigment {color rgb <1,1,0>} finish {reflection 0.2}}
 
 // Really large and shiny cyan sphere behind the others
 sphere {<0,0,700>, 500
-        pigment {color rgb <0,1,1>} 
+        pigment {color rgb <0,1,1>}
         finish {reflection 0.5}
         }
 
@@ -30,7 +30,7 @@ triangle {<-500,500,400>, <500,500,0>, <-500,-500,0>
           finish {reflection 0.5}
           }
 
-// Let's have a tilted background plane 
+// Let's have a tilted background plane
 plane_point {<1,0,1>, <0,0,5000> pigment {color rgb <1,0.7,0.7>}
 	finish {reflection 0.5}}
 

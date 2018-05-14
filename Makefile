@@ -107,7 +107,7 @@ test_trace: $(TARGET) test_bitmap
 	@./$(TARGET) -x512 -y512 -w1 -r10 -o build/test/a.ppm -i examples/test.pov
 	@$(XV) build/test/a.ppm &
 
-$(TESTOBJS): 
+$(TESTOBJS):
 	@$(MKDIR) $(dir $@)
 	@$(ECHO) Compiling $(notdir $<)
 	@$(ECHO) '$(COMPILE_CMD)' > $@.cmdline
@@ -123,15 +123,14 @@ $(TEST)/test_bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TEST)/test_bitmap.o
 $(addprefix $(BUILDDIR)/,$(TARGET)): $(OBJFILES)
 
 ## The first dependency for object files must be their source file
-$(OBJDIR)/bitmap.o: $(SRC)/bitmap.c $(SRC)/bitmap.h $(SRC)/color.h 
+$(OBJDIR)/bitmap.o: $(SRC)/bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
 $(OBJDIR)/camera.o: $(SRC)/camera.c $(SRC)/camera.h $(SRC)/vector.h
 $(OBJDIR)/color.o: $(SRC)/color.c $(SRC)/color.h $(SRC)/real.h
 $(OBJDIR)/hitdata.o: $(SRC)/hitdata.c $(SRC)/hitdata.h $(SRC)/color.h $(SRC)/vector.h $(SRC)/surface.h $(SRC)/real.h
 $(OBJDIR)/light.o: $(SRC)/light.c $(SRC)/light.h $(SRC)/color.h $(SRC)/vector.h
 $(OBJDIR)/main.o: $(SRC)/main.c $(SRC)/options.h $(SRC)/world.h $(SRC)/camera.h
-$(OBJDIR)/object.o: $(SRC)/object.c $(SRC)/object.h $(SRC)/real.h $(SRC)/sphere.h $(SRC)/plane.h $(SRC)/triangle.h $(SRC)/pgram.h
+$(OBJDIR)/object.o: $(SRC)/object.c $(SRC)/object.h $(SRC)/real.h $(SRC)/sphere.h $(SRC)/plane.h $(SRC)/triangle.h
 $(OBJDIR)/options.o: $(SRC)/options.c $(SRC)/options.h $(SRC)/real.h
-$(OBJDIR)/pgram.o: $(SRC)/pgram.c $(SRC)/pgram.h $(SRC)/world.h $(SRC)/real.h $(SRC)/ray.h $(SRC)/hitdata.h $(SRC)/surface.h
 $(OBJDIR)/plane.o: $(SRC)/plane.c $(SRC)/plane.h $(SRC)/world.h $(SRC)/real.h $(SRC)/color.h $(SRC)/surface.h
 $(OBJDIR)/ray.o: $(SRC)/ray.c $(SRC)/ray.h $(SRC)/real.h $(SRC)/vector.h
 $(OBJDIR)/sphere.o: $(SRC)/sphere.c $(SRC)/sphere.h $(SRC)/real.h $(SRC)/vector.h $(SRC)/surface.h $(SRC)/ray.h $(SRC)/hitdata.h
@@ -149,4 +148,3 @@ $(TEST)/test_bitmap.o: $(TOPDIR)/test/test_bitmap.c $(SRC)/bitmap.h $(SRC)/color
 $(GENSRC)/lexer.c: $(SRC)/lexer.l
 $(GENSRC)/parser.c: $(SRC)/parser.y
 $(GENSRC)/parser.h: $(SRC)/parser.y
-

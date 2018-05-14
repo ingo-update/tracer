@@ -8,7 +8,6 @@
 #include "sphere.h"
 #include "triangle.h"
 #include "plane.h"
-#include "pgram.h"
 #include "camera.h"
 
 #include "parser.h"
