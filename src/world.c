@@ -9,6 +9,7 @@
 #include "light.h"
 #include "options.h"
 #include "real.h"
+#include "defaults.h"
 #include "world.h"
 
 // TODO: Move to real.h
@@ -18,16 +19,16 @@ static struct list *_cons(void *car, struct list *cdr)
 {
   struct list *c;
   c = (struct list *) malloc(sizeof(struct list));
-  
+
   if (NULL == c)
     {
       fprintf(stderr,"_cons(): Could not allocate mamory\n");
       return NULL;
     }
-  
+
   c->car = car;
   c->cdr = cdr;
-  
+
   return(c);
 }
 
@@ -41,11 +42,10 @@ world world_create()
     return NULL;
   }
 
-  // TODO: Move default color to some .h file
-  w->bg_color = color_create_rgb(0,0,0);
+  w->bg_color = DEF_BG_COLOR;
   w->objects = NULL;
   w->bg_map_name= NULL;
-  
+
   return(w);
 }
 
@@ -59,7 +59,7 @@ void world_add_light(world w, light l)
   w->lights = _cons(l, (w->lights));
 }
 
-color world_get_background(world w) 
+color world_get_background(world w)
 {
    return w->bg_color;
 }
@@ -85,7 +85,7 @@ static color _illumination(world w, hitdata hit)
   real c_light_dist, c_light_angle, c_obj_dist;
 
   point = vector_sum(hitdata_get_hit_point(hit), vector_sp(hitdata_get_normal(hit), OFFSET));
-  
+
   acc_light_color = color_create_rgb(0,0,0);
   lights = w->lights;
   while (NULL != lights)
@@ -94,9 +94,9 @@ static color _illumination(world w, hitdata hit)
       c_light_dir = light_direction(c_light, point);
       c_light_dist = vector_length(c_light_dir);
       c_light_dir = vector_norm(c_light_dir);
-      
+
       ray_to_c_light = ray_create(point, c_light_dir);
-      
+
       c_obj_dist = NO_HIT;
       objs = w->objects;
       while (NULL != objs && c_obj_dist > c_light_dist)
@@ -105,7 +105,7 @@ static color _illumination(world w, hitdata hit)
 	  c_obj_dist = object_hit_distance(c_obj, ray_to_c_light);
 	  objs = objs->cdr;
 	}
-      
+
       if (c_obj_dist >= c_light_dist)
 	{
 	  c_light_angle = fabs(vector_dp(hitdata_get_normal(hit),c_light_dir));
@@ -114,7 +114,7 @@ static color _illumination(world w, hitdata hit)
 	}
       lights = lights->cdr;
     }
-  
+
   return acc_light_color;
 }
 
@@ -126,12 +126,12 @@ color world_look(world w, ray r, unsigned int depth, shading_mode s)
   vector norm, dir, ref_dir, ref_loc;
   color light_color;
   hitdata hit;
-  
+
   objs = w->objects;
 
   closest_dist = NO_HIT;
   closest_obj = objs->car;
-    
+
   while (NULL != objs)
     {
       dist = object_hit_distance(objs->car, r);
@@ -142,7 +142,7 @@ color world_look(world w, ray r, unsigned int depth, shading_mode s)
 	}
       objs = objs-> cdr;
     }
-  
+
   if (NO_HIT == closest_dist)
     {
       return world_get_background(w);
@@ -158,19 +158,19 @@ color world_look(world w, ray r, unsigned int depth, shading_mode s)
 	    {
 	      return color_create_rgb(0, 0, 0);
 	    }
-	  
+
 	  light_color = _illumination(w, hit);
 	  if (0 < depth && 0 < hitdata_get_reflection(hit))
 	    {
 	      dir = ray_get_direction(r);
 	      norm = hitdata_get_normal(hit);
-    
+
 	      ref_dir = vector_sum(dir, vector_sp(vector_sp(norm, vector_dp(norm, dir)), -2));
 	      ref_loc = vector_sum(hitdata_get_hit_point(hit), vector_sp(norm, OFFSET));
 
 	      light_color = color_add(light_color, color_scale(world_look(w, ray_create(ref_loc, ref_dir), depth-1, s), hitdata_get_reflection(hit)));
 	    }
-	  
+
 	  return color_multiply(hitdata_get_color(hit), color_scale(light_color, hitdata_get_diffuse(hit)));
 	}
       else

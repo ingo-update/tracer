@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "real.h"
+#include "defaults.h"
 #include "options.h"
 
 void _options_print_usage(char *exe)
@@ -18,6 +19,7 @@ void _options_print_usage(char *exe)
   fputs("  -d  INTEGER  Reflection depth (default = 5)\n", stderr);
   fputs("  -i  STRING   Name of input file, default is to read from stdin\n", stderr);
   fputs("  -o  STRING   Name of output image file, default is to send data to stdout\n", stderr);
+  fputs("  -c  STRING   Comment in produced image file\n", stderr);
   fputs("  -q           \'Quick mode\', no reflection or shading\n", stderr);
   fputs("  -?           Show this help text and exit\n", stderr);
   fputs("\n", stderr);
@@ -33,9 +35,8 @@ options options_get_options(int argc, char **argv)
   opt->out_file_name = NULL;
   opt->in_file_name = NULL;
 
-  // TODO: Move default to some .h file  
-  opt->reflection_depth = 5;
-  opt->zoom = 1;
+  opt->reflection_depth = DEF_REFLECTION_DEPTH;
+  opt->zoom = DEF_ZOOM;
 
   dim_f = 0;
   for (i = 1 ; i < argc; ++i)
@@ -45,7 +46,7 @@ options options_get_options(int argc, char **argv)
 	  fprintf(stderr, "Illegal option \'%s\'\n", argv[i]);
 	}
       else
-	{ 
+	{
 	  switch(argv[i][1])
 	    {
 	    case 'i':
@@ -54,28 +55,31 @@ options options_get_options(int argc, char **argv)
 	    case 'o':
 	      opt->out_file_name = ('\0' != argv[i][2]) ? &argv[i][2] : argv[++i];
 	      break;
+	    case 'c':
+	      opt->comment = ('\0' != argv[i][2]) ? &argv[i][2] : argv[++i];
+	      break;
 	    case 'x':
 	      dim_f |= 1;
 	      opt->pict_pix_width = ('\0' != argv[i][2]) ? atoi(&argv[i][2]) : atoi(argv[++i]);
-	      break; 
+	      break;
 	    case 'y':
 	      dim_f |= 2;
 	      opt->pict_pix_height = ('\0' != argv[i][2]) ? atoi(&argv[i][2]) : atoi(argv[++i]);
-	      break; 
+	      break;
 	    case 'w':
 	      dim_f |= 4;
 	      opt->pict_real_width = ('\0' != argv[i][2]) ? atof(&argv[i][2]) : atof(argv[++i]);
-	      break; 
+	      break;
 	    case 'h':
 	      dim_f |= 8;
 	      opt->pict_real_height = ('\0' != argv[i][2]) ? atof(&argv[i][2]) : atof(argv[++i]);
 	      break;
 	    case 'z':
 	      opt->zoom = ('\0' != argv[i][2]) ? atoi(&argv[i][2]) : atoi(argv[++i]);
-	      break; 
+	      break;
 	    case 'r':
 	      opt->reflection_depth = ('\0' != argv[i][2]) ? atoi(&argv[i][2]) : atoi(argv[++i]);
-	      break; 
+	      break;
 	    case 'q':
 	      opt->reflection_depth = 0;
 	      opt->shading = NoShading;
@@ -172,6 +176,11 @@ char *options_get_in_file_name(options opt)
 char *options_get_out_file_name(options opt)
 {
    return (opt->out_file_name);
+}
+
+char *options_get_comment(options opt)
+{
+   return (opt->comment);
 }
 
 shading_mode options_get_shading(options opt)
