@@ -101,7 +101,7 @@ sweep: clean
 test: test_bitmap test_trace
 
 test_bitmap: $(TEST)/test_bitmap
-	@$(CD) $(dir $<) && $<
+	@$(CD) $(dir $<) && $< 2> $@.log
 
 test_trace: $(TARGET) test_bitmap
 	@./$(TARGET) -x512 -y512 -w1 -r10 -o build/test/a.ppm -i examples/test.pov
