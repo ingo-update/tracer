@@ -7,7 +7,7 @@
 #ifndef _HITDATA_H_
 #define _HITDATA_H_
 
-#define NO_HIT real_max
+#define NO_HIT REAL_MAX
 
 typedef struct hitdata_t hitdata;
 

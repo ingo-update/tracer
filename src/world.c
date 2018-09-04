@@ -12,9 +12,6 @@
 #include "defaults.h"
 #include "world.h"
 
-// TODO: Move to real.h
-#define OFFSET 0.00001 /* Compensation for inaccurate arithmetics. */
-
 static struct list *_cons(void *car, struct list *cdr)
 {
   struct list *c;
