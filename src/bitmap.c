@@ -134,7 +134,7 @@ void bitmap_put_pixel(bitmap bmp, unsigned int x, unsigned int y, color c)
     }
 }
 
-void bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename)
+void bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment)
 {
   FILE *outfile;
   char *cookie, *format;
@@ -168,7 +168,7 @@ void bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename)
 
   // Header
   fprintf(outfile, "%s\n", cookie);
-  fprintf(outfile, "#Cool file\n"); // TODO?
+  fprintf(outfile, "#%s\n", comment);
   fprintf(outfile, "%d %d %d\n",bmp->width, bmp->height, DEPTH);
 
   // Pixel data

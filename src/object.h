@@ -2,7 +2,6 @@
 #include "sphere.h"
 #include "plane.h"
 #include "triangle.h"
-#include "pgram.h"
 
 #include "ray.h"
 #include "hitdata.h"
@@ -15,14 +14,13 @@ typedef enum {Sphere, Plane, Triangle, Pgram} object_type;
 typedef struct object_t *object;
 struct object_t
 {
-  union {sphere sp; plane pl; triangle tr; pgram pg;} obj;
+  union {sphere sp; plane pl; triangle tr;} obj;
   object_type type;
 };
 
 object object_create_sphere(sphere o);
 object object_create_triangle(triangle o);
 object object_create_plane(plane o);
-object object_create_pgram(pgram o);
 
 real object_hit_distance(object o, ray r);
 hitdata object_hitdata(object o, ray r);

@@ -3,8 +3,6 @@
 
 #include "bitmap.h"
 
-char *program_name = "";
-
 void create_files()
 {
   bitmap bm;
@@ -20,8 +18,8 @@ void create_files()
 	}
     }
 
-  bitmap_write_ppm(bm, Ascii, "test_asc.ppm");
-  bitmap_write_ppm(bm, Binary, "test_bin.ppm");
+  bitmap_write_ppm(bm, Ascii, "test_asc.ppm", "ASCII test file");
+  bitmap_write_ppm(bm, Binary, "test_bin.ppm", "Binary test file");
 }
 
 int test_errors()
@@ -91,8 +89,8 @@ int compare_files()
 	}
     }
 
-  bitmap_write_ppm(bma, Binary, "test_asc2bin.ppm");
-  bitmap_write_ppm(bmb, Ascii, "test_bin2asc.ppm");
+  bitmap_write_ppm(bma, Binary, "test_asc2bin.ppm", "ASCII to Binary test file");
+  bitmap_write_ppm(bmb, Ascii, "test_bin2asc.ppm", "Binary to ASCII test file");
 
   return fail;
 }

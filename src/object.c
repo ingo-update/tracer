@@ -6,7 +6,6 @@
 #include "sphere.h"
 #include "plane.h"
 #include "triangle.h"
-#include "pgram.h"
 
 #include "hitdata.h"
 
@@ -58,17 +57,6 @@ object object_create_plane(plane o) {
   return(b);
 }
 
-object object_create_pgram(pgram o) {
-
-  object b;
-
-  b = _new_object();
-  b->obj.pg = o;
-  b->type = Pgram;
-
-  return(b);
-}
-
 real object_hit_distance(object o, ray r)
 {
   object_type t;
@@ -80,13 +68,11 @@ real object_hit_distance(object o, ray r)
       return sphere_hit_distance(o->obj.sp, r);
     case Plane:
       return plane_hit_distance(o->obj.pl, r);
-    case Pgram:
-      return pgram_hit_distance(o->obj.pg, r);
     case Triangle:
       return triangle_hit_distance(o->obj.tr, r);
     default:
       return NO_HIT;
-    }    
+    }
 }
 
 hitdata object_hitdata(object o, ray r)
@@ -100,13 +86,10 @@ hitdata object_hitdata(object o, ray r)
       return sphere_hitdata(o->obj.sp, r);
     case Plane:
       return plane_hitdata(o->obj.pl, r);
-    case Pgram:
-      return pgram_hitdata(o->obj.pg, r);
     case Triangle:
       return triangle_hitdata(o->obj.tr, r);
     default:
       fprintf(stderr,"object_hitdata(): Unknown object type.\n");
       exit(EXIT_FAILURE);
-    }    
+    }
 }
-

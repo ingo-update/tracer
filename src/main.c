@@ -18,7 +18,7 @@ int main(int argc, char **argv)
   options opt;
   int res;
   bitmap bmp;
-  
+
   opt = options_get_options(argc, argv);
   if (NULL == opt)
     {
@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 	  exit(EXIT_FAILURE);
 	}
     }
-  
+
   the_world = world_create();
   res = yyparse();
   if (0 != res)
@@ -51,6 +51,6 @@ int main(int argc, char **argv)
       exit(EXIT_FAILURE);
     }
 
-  bitmap_write_ppm(bmp, Ascii, options_get_out_file_name(opt));
+  bitmap_write_ppm(bmp, Ascii, options_get_out_file_name(opt), options_get_comment(opt));
   return EXIT_SUCCESS;
 }

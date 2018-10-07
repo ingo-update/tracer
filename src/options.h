@@ -14,6 +14,7 @@ struct options_t
   int reflection_depth;
   char *in_file_name;
   char *out_file_name;
+  char *comment;
   shading_mode shading;
 };
 
@@ -29,8 +30,7 @@ real options_get_rx(options opt);
 real options_get_ry(options opt);
 char *options_get_in_file_name(options opt);
 char *options_get_out_file_name(options opt);
-
+char *options_get_comment(options opt);
 shading_mode options_get_shading(options opt);
 
 #endif /* _OPTIONS_H_ */
-
