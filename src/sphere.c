@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "world.h"
-#include "surface.h"
 #include "real.h"
 #include "vector.h"
 #include "ray.h"
+#include "surface.h"
 #include "hitdata.h"
 #include "sphere.h"
 

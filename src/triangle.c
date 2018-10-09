@@ -2,27 +2,26 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "world.h"
 #include "real.h"
 #include "ray.h"
 #include "hitdata.h"
 #include "surface.h"
 #include "triangle.h"
 
-triangle tri_create(vector c0, vector a, vector b, surface surf, int pgram)
+static triangle _tri_create(vector c0, vector a, vector b, surface surf, int pgram)
 {
   triangle new;
 
   if (NULL == surf)
     {
-      fprintf(stderr, "tri_create(): Illegal surface modifier\n");
+      fprintf(stderr, "_tri_create(): Illegal surface modifier\n");
       exit(EXIT_FAILURE);
     }
 
   new = (triangle) malloc(sizeof(struct triangle_t));
   if (NULL == new)
     {
-      fprintf(stderr,"tri_create(): Could not allocate triangle\n");
+      fprintf(stderr,"_tri_create(): Could not allocate triangle\n");
       exit(EXIT_FAILURE);
     }
 
@@ -37,12 +36,12 @@ triangle tri_create(vector c0, vector a, vector b, surface surf, int pgram)
 
 triangle triangle_create(vector c0, vector a, vector b, surface surf)
 {
-  return tri_create(c0, a, b, surf, 0);
+  return _tri_create(c0, a, b, surf, 0);
 }
 
 triangle pgram_create(vector c0, vector a, vector b, surface surf)
 {
-  return tri_create(c0, a, b, surf, 1);
+  return _tri_create(c0, a, b, surf, 1);
 }
 
 vector triangle_get_corner0(triangle obj)
