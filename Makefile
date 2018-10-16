@@ -98,7 +98,9 @@ sweep: clean
 	@$(RM) $(SRC)/*~ $(TEST)/*~ *~
 
 ## Test
-test: test_bitmap test_trace
+test: test_bitmap
+
+test_all: test test_trace
 
 test_bitmap: $(TEST)/test_bitmap
 	@$(CD) $(dir $<) && $< 2> $@.log

@@ -114,12 +114,12 @@ int main()
 
   if (0 == fail)
     {
-      fprintf(stderr, "SUCCESS\n");
+      fprintf(stdout, "SUCCESS\n");
       exit(EXIT_SUCCESS);
     }
   else
     {
-      fprintf(stderr, "FAILURE\n");
+      fprintf(stdout, "FAILURE\n");
       exit(EXIT_FAILURE);
     }
 }
