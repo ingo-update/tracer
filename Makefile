@@ -97,17 +97,22 @@ clean:
 sweep: clean
 	@$(RM) $(SRC)/*~ $(TEST)/*~ *~
 
-## Test
-test: test_bitmap
+## Tests
 
-test_all: test test_trace
+TESTPPM = $(TEST)/test_asc.ppm
+TESTTRACE = $(TEST)/trace.ppm
 
-test_bitmap: $(TEST)/test_bitmap
+$(TESTPPM): test-bitmap
+$(TESTTRACE): test
+
+test-bitmap: $(TEST)/test-bitmap
 	@$(CD) $(dir $<) && $< 2> $@.log
 
-test_trace: $(TARGET) test_bitmap
-	@./$(TARGET) -x512 -y512 -w1 -r10 -o build/test/a.ppm -i examples/test.pov
-	@$(XV) build/test/a.ppm &
+test-show: $(TESTTRACE)
+	@$(XV) $<
+
+test: $(TARGET) $(TESTPPM)
+	@./$(TARGET) -x512 -y512 -w1 -r10 -o $(TESTTRACE) -i examples/test.pov
 
 $(TESTOBJS):
 	@$(MKDIR) $(dir $@)
@@ -116,7 +121,7 @@ $(TESTOBJS):
 	@$(COMPILE_CMD) 2> $@.log
 	@[ -s $@.log ] || $(RM) $@.log
 
-$(TEST)/test_bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TEST)/test_bitmap.o
+$(TEST)/test-bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TEST)/test-bitmap.o
 	@$(LD) -o $@ $(LDFLAGS) $^
 
 ### Dependencies
@@ -145,7 +150,7 @@ $(OBJDIR)/world.o: $(SRC)/world.c $(SRC)/world.h $(SRC)/hitdata.h $(SRC)/color.h
 $(OBJDIR)/lexer.o: $(GENSRC)/lexer.c $(GENSRC)/parser.h
 $(OBJDIR)/parser.o: $(GENSRC)/parser.c
 
-$(TEST)/test_bitmap.o: $(TOPDIR)/test/test_bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
+$(TEST)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
 
 $(GENSRC)/lexer.c: $(SRC)/lexer.l
 $(GENSRC)/parser.c: $(SRC)/parser.y
