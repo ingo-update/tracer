@@ -2,13 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "hitdata.h"
-#include "color.h"
-#include "ray.h"
-#include "object.h"
-#include "light.h"
-#include "options.h"
-#include "real.h"
 #include "defaults.h"
 #include "world.h"
 

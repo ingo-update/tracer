@@ -1,15 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "color.h"
-#include "real.h"
-#include "bitmap.h"
 #include "surface.h"
 
 surface surface_create(struct pigment pig, struct finish fin)
 {
   surface s;
-  
+
   if (1 < fin.reflection)
     {
       fprintf(stderr, "surface_create(): Reflection value %f is greater than 1 (100%%)\n", fin.reflection);
@@ -29,10 +26,10 @@ surface surface_create(struct pigment pig, struct finish fin)
       fprintf(stderr, "surface_create(): Could not allocate memory.\n");
       return NULL;
     }
-  
+
   s->reflection = fin.reflection;
   s->diffuse = fin.diffuse;
-  
+
   if (Color == pig.type)
     {
       s->mode = Color;
@@ -50,7 +47,7 @@ surface surface_create(struct pigment pig, struct finish fin)
 	  return NULL;
 	}
     }
-  
+
   return s;
 }
 
@@ -65,18 +62,18 @@ color surface_get_color(surface s)
     fprintf(stderr, "surface_get_color(): Surface does not have mode Color.\n");
     exit(EXIT_FAILURE);
   }
-  
+
   return s->col;
 }
 
 
 bitmap surface_get_texture_map(surface s)
-{ 
+{
   if (TextureMap != s->mode) {
     fprintf(stderr, "surface_get_texture_map(): Surface does not have mode TextureMap.\n");
     exit(EXIT_FAILURE);
   }
-  
+
   return s->texture;
 }
 
@@ -103,19 +100,19 @@ struct pigment _pigment_create_color(color c)
 struct pigment _pigment_create_texturemap(char *name)
 {
   struct pigment p;
-  
+
   p.type = TextureMap;
   p.texture_name = name;
-  
+
   return p;
 }
 
 struct finish _finish_create(real ref, real dif)
 {
   struct finish f;
-  
+
   f.reflection = ref;
   f.diffuse = dif;
-  
+
   return f;
 }

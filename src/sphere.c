@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "real.h"
-#include "vector.h"
-#include "ray.h"
-#include "surface.h"
-#include "hitdata.h"
 #include "sphere.h"
 
 sphere sphere_create(vector pole, vector equator, vector loc, real rad, surface surf)

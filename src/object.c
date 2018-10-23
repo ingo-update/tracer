@@ -1,13 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "real.h"
 #include "object.h"
-#include "sphere.h"
-#include "plane.h"
-#include "triangle.h"
-
-#include "hitdata.h"
 
 object_type object_get_type(object o) {
   return(o->type);
@@ -89,7 +83,7 @@ hitdata object_hitdata(object o, ray r)
     case Triangle:
       return triangle_hitdata(o->obj.tr, r);
     default:
-      fprintf(stderr,"object_hitdata(): Unknown object type.\n");
+      fprintf(stderr,"object_hitdata(): Unknown object type %d.\n", t);
       exit(EXIT_FAILURE);
     }
 }

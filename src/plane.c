@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "real.h"
-#include "surface.h"
-#include "hitdata.h"
-#include "ray.h"
 #include "plane.h"
 
 plane plane_create(vector norm, vector point, surface surf)

@@ -1,7 +1,5 @@
 #include <stdlib.h>
-#include <stdio.h>
-#include "vector.h"
-#include "color.h"
+
 #include "light.h"
 
 light light_create(vector loc, color col) {
@@ -12,7 +10,7 @@ light light_create(vector loc, color col) {
     fprintf(stderr,"light_create(): Kunde inte allokera objekt\n");
     exit(-1);
   }
- 
+
   new->location = loc;
   new->col = col;
 
@@ -34,4 +32,3 @@ vector light_direction(light l, vector point)
 {
   return(vector_diff((l->location),point));
 }
-

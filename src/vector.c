@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "real.h"
 #include "vector.h"
 
 vector vector_create(real x, real y, real z)
@@ -33,7 +32,7 @@ real vector_get_z (vector vec)
 vector vector_xp(vector vec, vector tor)
 {
   vector cross;
-  
+
   cross.x = vec.y * tor.z - vec.z * tor.y;
   cross.y = vec.z * tor.x - vec.x * tor.z;
   cross.z = vec.x * tor.y - vec.y * tor.x;

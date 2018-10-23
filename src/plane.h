@@ -1,5 +1,6 @@
 #include "vector.h"
 #include "surface.h"
+#include "hitdata.h"
 #include "ray.h"
 
 #ifndef _PLANE_H_

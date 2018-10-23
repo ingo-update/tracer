@@ -11,7 +11,8 @@
 
 typedef struct hitdata_t hitdata;
 
-struct	hitdata_t {
+struct	hitdata_t
+{
   vector normal, hit_point;
   color col;
   real reflection, diffuse, angle;

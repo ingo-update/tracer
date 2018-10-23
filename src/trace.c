@@ -1,12 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "bitmap.h"
-#include "real.h"
-#include "world.h"
-#include "ray.h"
-#include "camera.h"
-#include "options.h"
 #include "trace.h"
 
 bitmap trace(world w, camera cam, options opt)
@@ -18,7 +12,7 @@ bitmap trace(world w, camera cam, options opt)
   vector cam_pos, target_center, target_right, target_down, target_zz;
   vector target_x, target_y, ray_dir;
   ray r;
-  
+
   bmp = bitmap_create(options_get_pict_pix_width(opt), options_get_pict_pix_height(opt));
   if (NULL == bmp)
     {
@@ -27,7 +21,7 @@ bitmap trace(world w, camera cam, options opt)
     }
 
   cam_pos = camera_get_position(cam);
-  
+
   /* Set up target base vectors */
   target_center = vector_norm(vector_diff(camera_get_direction(cam), cam_pos));
   target_right = vector_norm(vector_xp(camera_get_up(cam), target_center));
@@ -36,7 +30,7 @@ bitmap trace(world w, camera cam, options opt)
   /* Top left corner of target (ZeroZero) */
   a = vector_sp(target_center, options_get_zoom(opt));
   b = vector_sp(target_right, options_get_pict_real_width(opt) / 2);
-  c = vector_sp(target_down, options_get_pict_real_height(opt) / 2); 
+  c = vector_sp(target_down, options_get_pict_real_height(opt) / 2);
   target_zz = vector_sum(cam_pos, vector_diff(vector_diff(a, b), c));
 
   rx = options_get_rx(opt);
@@ -54,6 +48,6 @@ bitmap trace(world w, camera cam, options opt)
 	  bitmap_put_pixel(bmp, x, y, world_look(w, r, options_get_reflection_depth(opt), options_get_shading(opt)));
 	}
     }
-  
+
   return bmp;
 }

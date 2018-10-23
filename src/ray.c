@@ -1,4 +1,3 @@
-#include "vector.h"
 #include "ray.h"
 
 ray ray_create(vector o, vector d)

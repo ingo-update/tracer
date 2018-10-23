@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "real.h"
+
 #include "color.h"
 
 color color_create_rgb(int r, int g, int b) {
@@ -30,7 +30,7 @@ color color_invert(color col) {
   c.r = 255-col.r;
   c.g = 255-col.g;
   c.b = 255-col.b;
- 
+
   return c;
 }
 */
@@ -41,7 +41,7 @@ color color_scale(color col, real s) {
   c.r = s * col.r;
   c.g = s * col.g;
   c.b = s * col.b;
- 
+
   return c;
 }
 

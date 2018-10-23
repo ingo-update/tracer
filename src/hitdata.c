@@ -1,9 +1,5 @@
 #include <math.h>
 
-#include "color.h"
-#include "vector.h"
-#include "surface.h"
-#include "real.h"
 #include "hitdata.h"
 
 hitdata hitdata_create(vector norm, vector point, color col, real reflection, real diffuse, real angle)

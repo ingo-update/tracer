@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "real.h"
-#include "ray.h"
-#include "hitdata.h"
-#include "surface.h"
 #include "triangle.h"
 
 static triangle _tri_create(vector c0, vector a, vector b, surface surf, int pgram)
