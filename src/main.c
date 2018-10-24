@@ -10,6 +10,7 @@
 extern int yyparse();
 extern FILE *yyin;
 
+/* These must be global for the parser to access them. */
 world the_world;
 camera the_camera;
 
