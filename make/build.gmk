@@ -20,7 +20,7 @@ TESTDIR = $(BUILDDIR)/test
 
 ### File lists
 
-SRCFILES = Makefile $(wildcard make/*.gmk $(SRC)/*.h $(SRC)/*.c)
+SRCFILES = $(TOPDIR)/Makefile $(wildcard $(TOPDIR)/make/*.gmk $(SRC)/*.h $(SRC)/*.c)
 OBJFILES = $(sort $(patsubst $(SRC)/%.c,$(OBJDIR)/%.o,$(wildcard $(SRC)/*.c)) $(EXTRA_OBJS))
 TESTOBJS = $(sort $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%.o,$(wildcard $(TOPDIR)/test/*.c)))
 ALL_TESTS = $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%,$(wildcard $(TOPDIR)/test/test-*.c))
