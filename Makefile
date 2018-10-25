@@ -10,42 +10,28 @@ include make/build.gmk
 CFLAGS_lexer.c = -I$(GENSRC) -Wno-unused-function
 LDLIBS = -lm -lfl
 
-## Tests
-
-TESTPPM = $(TESTDIR)/test_asc.ppm
 TESTTRACE = $(TESTDIR)/trace.ppm
-TESTOBJS = $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%.o,$(wildcard $(TOPDIR)/test/*.c))
+TESTPPM = $(TESTDIR)/test_asc.ppm
 
-$(TESTPPM): test-bitmap
-$(TESTTRACE): test
+$(TESTPPM): $(TESTDIR)/test-bitmap
 
-test-bitmap: $(TESTDIR)/test-bitmap
-	@$(CD) $(dir $<) && $< 2> $@.log
-
-test-show: $(TESTTRACE)
-	@$(XV) $<
-
-test: $(TARGET) $(TESTPPM)
+$(TESTTRACE): $(TARGET) $(TESTPPM)
+	@$(ECHO) Tracing $(notdir $(TESTTRACE))
 	@./$(TARGET) -x512 -y512 -w1 -r10 -o $(TESTTRACE) -i examples/test.pov
 
-$(TESTOBJS):
-	@$(MKDIR) $(dir $@)
-	@$(ECHO) Compiling $(notdir $<)
-	@$(ECHO) '$(COMPILE_CMD)' > $@.cmdline
-	@$(COMPILE_CMD) 2> $@.log
-	@[ -s $@.log ] || $(RM) $@.log
+test: $(TESTTRACE)
 
-$(TESTDIR)/test-bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-bitmap.o
-	@$(LD) -o $@ $(LDFLAGS) $^
-
+# Extra source files to print
 paper: $(SRC)/lexer.l $(SRC)/parser.y
 
 ### Dependencies
 
 ## Link dependencies are all object files for the executable
+
 $(addprefix $(BUILDDIR)/,$(TARGET)): $(OBJFILES)
 
 ## The first dependency for object files must be their source file
+
 $(OBJDIR)/bitmap.o: $(SRC)/bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
 $(OBJDIR)/camera.o: $(SRC)/camera.c $(SRC)/camera.h $(SRC)/vector.h
 $(OBJDIR)/color.o: $(SRC)/color.c $(SRC)/color.h $(SRC)/real.h
@@ -66,8 +52,10 @@ $(OBJDIR)/world.o: $(SRC)/world.c $(SRC)/world.h $(SRC)/hitdata.h $(SRC)/color.h
 $(OBJDIR)/lexer.o: $(GENSRC)/lexer.c $(GENSRC)/parser.h
 $(OBJDIR)/parser.o: $(GENSRC)/parser.c
 
-$(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
-
 $(GENSRC)/lexer.c: $(SRC)/lexer.l
 $(GENSRC)/parser.c: $(SRC)/parser.y
 $(GENSRC)/parser.h: $(SRC)/parser.y
+
+$(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
+
+$(TESTDIR)/test-bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-bitmap.o
