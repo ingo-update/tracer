@@ -1,111 +1,25 @@
 ### Makefile for tracer ###
 
-### Definitions
-
-## Common tools to be used
-CC = gcc -c
-LD = gcc
-RM = rm -rf
-ECHO = echo
-MKDIR = mkdir -p
-CP = cp
-LEX = flex
-YACC = bison
-CD = cd
-XV = gpicview
-
-## General flags and libs
-CFLAGS = -Wall -Werror
-LDFLAGS = -Wall -Werror
-LDLIBS = -lm -lfl
-
-## Flags for optimization and debugging
-OPT_CFLAGS = -O4
-DBG_CFLAGS = -g
-
-## Special compile flags for special source files
-CFLAGS_lexer.c = -I$(GENSRC) -Wno-unused-function
-
-## Build commands
-COMPILE_CMD = $(CC) -I$(SRC) $(CFLAGS) $(OPT_CFLAGS) $(DBG_CFLAGS) $(CFLAGS_$(notdir $<)) $< -o $@
-LINK_CMD = $(LD) -o $@ $(LDFLAGS) $^ $(LDLIBS)
-LEX_CMD = $(LEX) -t $< > $@
-YACC_CMD = $(YACC) -d -o $(GENSRC)/parser.c $<
-
-## Directories
-TOPDIR = $(shell pwd)
-SRC = $(TOPDIR)/src
-BUILDDIR = $(TOPDIR)/build
-OBJDIR = $(BUILDDIR)/objs
-GENSRC = $(BUILDDIR)/gensrc
-TEST = $(BUILDDIR)/test
-
-## Object files
-OBJFILES = $(sort \
-             $(patsubst $(SRC)/%.c,$(OBJDIR)/%.o,$(wildcard $(SRC)/*.c)) \
-             $(OBJDIR)/lexer.o $(OBJDIR)/parser.o \
-             )
-TESTOBJS = $(patsubst $(TOPDIR)/test/%.c,$(TEST)/%.o,$(wildcard $(TOPDIR)/test/*.c))
-
-## Default target(s)
 TARGET = tracer
+LEXER = $(GENSRC)/lexer.c
+PARSER = $(GENSRC)/parser.c
+EXTRA_OBJS = $(OBJDIR)/lexer.o $(OBJDIR)/parser.o
 
-### Rules
+include make/build.gmk
 
-default: $(TARGET)
-
-## Build the target and copy it to where it is expected
-$(TARGET): $(addprefix $(BUILDDIR)/,$(TARGET))
-	@$(CP) $^ $(TOPDIR)
-
-## Compile object files
-$(OBJFILES):
-	@$(MKDIR) $(dir $@)
-	@$(ECHO) Compiling $(notdir $<)
-	@$(ECHO) '$(COMPILE_CMD)' > $@.cmdline
-	@$(COMPILE_CMD) 2> $@.log
-	@[ -s $@.log ] || $(RM) $@.log
-
-## Link target(s)
-$(addprefix $(BUILDDIR)/,$(TARGET)):
-	@$(MKDIR) $(dir $@)
-	@$(ECHO) Linking $(notdir $@)
-	@$(ECHO) '$(LINK_CMD)' > $@.cmdline
-	@$(LINK_CMD) 2> $@.log
-	@[ -s $@.log ] || $(RM) $@.log
-
-## Generate lexer and parser
-$(GENSRC)/lexer.c:
-	@$(MKDIR) $(dir $@)
-	@$(ECHO) Generating $(notdir $@)
-	@$(ECHO) '$(LEX_CMD)' > $@.cmdline
-	@$(LEX_CMD) 2> $@.log
-	@[ -s $@.log ] || $(RM) $@.log
-
-$(GENSRC)/parser.c $(GENSRC)/parser.h:
-	@$(MKDIR) $(dir $@)
-	@$(ECHO) Generating parser.h, parser.c
-	@$(ECHO) '$(YACC_CMD)' > $@.cmdline
-	@$(YACC_CMD) 2> $@.log
-	@[ -s $@.log ] || $(RM) $@.log
-
-## Remove artifacts
-clean:
-	@$(RM) $(BUILDDIR) $(TARGET)
-
-## Also remove editor backup files
-sweep: clean
-	@$(RM) $(SRC)/*~ $(TEST)/*~ *~
+CFLAGS_lexer.c = -I$(GENSRC) -Wno-unused-function
+LDLIBS = -lm -lfl
 
 ## Tests
 
-TESTPPM = $(TEST)/test_asc.ppm
-TESTTRACE = $(TEST)/trace.ppm
+TESTPPM = $(TESTDIR)/test_asc.ppm
+TESTTRACE = $(TESTDIR)/trace.ppm
+TESTOBJS = $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%.o,$(wildcard $(TOPDIR)/test/*.c))
 
 $(TESTPPM): test-bitmap
 $(TESTTRACE): test
 
-test-bitmap: $(TEST)/test-bitmap
+test-bitmap: $(TESTDIR)/test-bitmap
 	@$(CD) $(dir $<) && $< 2> $@.log
 
 test-show: $(TESTTRACE)
@@ -121,8 +35,10 @@ $(TESTOBJS):
 	@$(COMPILE_CMD) 2> $@.log
 	@[ -s $@.log ] || $(RM) $@.log
 
-$(TEST)/test-bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TEST)/test-bitmap.o
+$(TESTDIR)/test-bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-bitmap.o
 	@$(LD) -o $@ $(LDFLAGS) $^
+
+paper: $(SRC)/lexer.l $(SRC)/parser.y
 
 ### Dependencies
 
@@ -150,7 +66,7 @@ $(OBJDIR)/world.o: $(SRC)/world.c $(SRC)/world.h $(SRC)/hitdata.h $(SRC)/color.h
 $(OBJDIR)/lexer.o: $(GENSRC)/lexer.c $(GENSRC)/parser.h
 $(OBJDIR)/parser.o: $(GENSRC)/parser.c
 
-$(TEST)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
+$(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
 
 $(GENSRC)/lexer.c: $(SRC)/lexer.l
 $(GENSRC)/parser.c: $(SRC)/parser.y
