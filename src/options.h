@@ -1,4 +1,5 @@
 #include "real.h"
+#include "bitmap.h"
 
 #ifndef _OPTIONS_H_
 #define _OPTIONS_H_
@@ -15,6 +16,7 @@ struct options_t
   char *in_file_name;
   char *out_file_name;
   char *comment;
+  ppmtype ppm_mode;
   shading_mode shading;
 };
 
@@ -32,5 +34,6 @@ char *options_get_in_file_name(options opt);
 char *options_get_out_file_name(options opt);
 char *options_get_comment(options opt);
 shading_mode options_get_shading(options opt);
+ppmtype options_get_ppm_mode(options opt);
 
 #endif /* _OPTIONS_H_ */

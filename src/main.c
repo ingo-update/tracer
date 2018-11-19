@@ -52,6 +52,6 @@ int main(int argc, char **argv)
       exit(EXIT_FAILURE);
     }
 
-  bitmap_write_ppm(bmp, Ascii, options_get_out_file_name(opt), options_get_comment(opt));
+  bitmap_write_ppm(bmp, options_get_ppm_mode(opt), options_get_out_file_name(opt), options_get_comment(opt));
   return EXIT_SUCCESS;
 }

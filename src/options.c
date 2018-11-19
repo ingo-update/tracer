@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "defaults.h"
+#include "bitmap.h"
 #include "options.h"
 
 void _options_print_usage(char *exe)
@@ -20,6 +22,7 @@ void _options_print_usage(char *exe)
   fputs("  -i  STRING   Name of input file, default is to read from stdin\n", stderr);
   fputs("  -o  STRING   Name of output image file, default is to send data to stdout\n", stderr);
   fputs("  -c  STRING   Comment in produced image file\n", stderr);
+  fputs("  -p  STRING   Output PPM mode (ascii or binary)\n", stderr);
   fputs("  -q           \'Quick mode\', no reflection or shading\n", stderr);
   fputs("  -?           Show this help text and exit\n", stderr);
   fputs("\n", stderr);
@@ -30,6 +33,7 @@ options options_get_options(int argc, char **argv)
 {
   int i, dim_f;
   options opt;
+  char *ppm_string;
 
   opt = malloc(sizeof(struct options_t));
   opt->out_file_name = NULL;
@@ -37,6 +41,7 @@ options options_get_options(int argc, char **argv)
 
   opt->reflection_depth = DEF_REFLECTION_DEPTH;
   opt->zoom = DEF_ZOOM;
+  opt->ppm_mode = DEF_PPM_MODE;
 
   dim_f = 0;
   for (i = 1 ; i < argc; ++i)
@@ -83,6 +88,21 @@ options options_get_options(int argc, char **argv)
 	    case 'q':
 	      opt->reflection_depth = 0;
 	      opt->shading = NoShading;
+	      break;
+	    case 'p':
+	      ppm_string = ('\0' != argv[i][2]) ? &argv[i][2] : argv[++i];
+	      if (0 == strncmp("bin", ppm_string, 3))
+		{
+		  opt->ppm_mode = Binary;
+		}
+	      else if (0 == strncmp("asc", ppm_string, 3))
+		{
+		  opt->ppm_mode = Ascii;
+		}
+	      else
+		{
+		  fprintf(stderr, "Ignoring unrecognized ppm mode '%s' (only 'binary' and 'ascii' allowed)\n", argv[i]);
+		}
 	      break;
 	    case '?':
 	      _options_print_usage(argv[0]);
@@ -186,4 +206,9 @@ char *options_get_comment(options opt)
 shading_mode options_get_shading(options opt)
 {
   return (opt->shading);
+}
+
+ppmtype options_get_ppm_mode(options opt)
+{
+  return (opt->ppm_mode);
 }
