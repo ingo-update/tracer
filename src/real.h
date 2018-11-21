@@ -1,3 +1,5 @@
+// TODO: Change to types.h and move some enums here
+
 #include <float.h>
 
 #ifndef _REAL_H_
