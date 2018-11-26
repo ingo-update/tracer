@@ -133,7 +133,7 @@ void bitmap_put_pixel(bitmap bmp, unsigned int x, unsigned int y, color c)
     }
 }
 
-void bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment)
+int bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment)
 {
   FILE *outfile;
   char *cookie, *format;
@@ -150,7 +150,7 @@ void bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment)
       if (NULL == outfile)
 	{
 	  fprintf(stderr,"bitmap_write_ppm(): Could not open file '%s'\n", filename);
-	  exit(EXIT_FAILURE);
+	  return -1;
 	}
     }
 
@@ -180,6 +180,8 @@ void bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment)
 	}
     }
   fclose(outfile);
+
+  return 0;
 }
 
 bitmap bitmap_read_ppm(char *filename)
