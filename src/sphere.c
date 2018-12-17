@@ -93,7 +93,6 @@ hitdata sphere_hitdata(sphere o, ray r)
   vector oc, location, origin;
   real l_2oc, t_ca, t_2hc, t, radius;
 
-  hitdata data;
   vector ri, rn;
   color col;
 
@@ -107,16 +106,16 @@ hitdata sphere_hitdata(sphere o, ray r)
   location = o->location;
   origin = ray_get_origin(r);
 
-  oc = vector_diff(location,origin); // 16
-  l_2oc = vector_dp(oc,oc); // 17
+  oc = vector_diff(location, origin); // 16
+  l_2oc = vector_dp(oc, oc); // 17
 
   if (l_2oc < radius * radius)
     {
       side = 1; // This means inside
     }
 
-  t_ca = vector_dp(oc,ray_get_direction(r)); // 18
-  t_2hc = (radius * radius) - l_2oc + (t_ca*t_ca); // 19
+  t_ca = vector_dp(oc, ray_get_direction(r)); // 18
+  t_2hc = (radius * radius) - l_2oc + (t_ca * t_ca); // 19
 
   if (0 == side) // 20
     {
@@ -144,7 +143,7 @@ hitdata sphere_hitdata(sphere o, ray r)
     }
   else
     {
-      // sphere with texturemap
+      // sphere with texture map
       sp = o->pole;
       se = o->equator;
       bmp = surface_get_texture_map(o->surf);
@@ -158,30 +157,30 @@ hitdata sphere_hitdata(sphere o, ray r)
 	}
       else
 	{
-	  theta = (acos(vector_dp(se, rn) / sin(fi)) / (2.0*M_PI));
-	  if (0.0 < vector_dp(vector_xp(se, sp),rn))
+	  theta = (acos(vector_dp(se, rn) / sin(fi)) / (2.0 * M_PI));
+	  if (0.0 < vector_dp(vector_xp(se, sp), rn))
 	    {
-	      u= theta;
+	      u = theta;
 	    }
 	  else
 	    {
-	      u= 1.0-theta;
+	      u = 1.0 - theta;
 	    }
 
 	  // - 1 because of zeroindexed bitmaps
-	  x_in_map = (bitmap_width(bmp) - 1)*u;
-	  y_in_map = (bitmap_height(bmp) - 1)*v;
+	  x_in_map = (bitmap_width(bmp) - 1) * u;
+	  y_in_map = (bitmap_height(bmp) - 1) * v;
 	  col = bitmap_get_pixel(bmp, x_in_map, y_in_map);
       }
     }
 
-  data = hitdata_create(rn,
+  return hitdata_create(rn,
 			vector_sum(origin, vector_sp(ray_get_direction(r), t)),
 			col,
 			surface_get_reflection(o->surf),
 			surface_get_diffuse(o->surf),
-			fabs(vector_dp(rn, ray_get_direction(r))));
-  return data;
+			fabs(vector_dp(rn, ray_get_direction(r)))
+			);
 }
 
 vector sph_opt_get_pole(struct sph_opt o)
