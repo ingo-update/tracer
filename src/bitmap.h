@@ -24,6 +24,6 @@ color bitmap_get_pixel(bitmap bmp, unsigned int x, unsigned int y);
 
 void bitmap_put_pixel(bitmap bmp, unsigned int x, unsigned int y, color col);
 
-void bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment);
+int bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment);
 
 #endif	/* _BITMAP_H_ */

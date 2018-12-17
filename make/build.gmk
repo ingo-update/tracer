@@ -79,7 +79,6 @@ $(addprefix $(BUILDDIR)/,$(TARGET)):
 	@$(LINK_CMD) 2> $@.log
 	@[ -s $@.log ] || $(RM) $@.log
 
-
 # Link and run unit tests
 $(ALL_TESTS):
 	@$(ECHO) Linking $(notdir $@)

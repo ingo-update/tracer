@@ -24,7 +24,8 @@ void create_files()
 
 int test_errors()
 {
-  int fail;
+  int fail, result;
+  bitmap bm;
 
   fail = 0;
   if (NULL != bitmap_create(0,0))
@@ -43,6 +44,14 @@ int test_errors()
     {
       ++fail;
       fprintf(stderr,"FAIL: Could read Makefile as ppm\n");
+    }
+
+  bm = bitmap_create(100,100);
+  result = bitmap_write_ppm(bm, Binary, "/bad/path/to/file.ppm", "no comment");
+  if (0 == result)
+    {
+      ++fail;
+      fprintf(stderr,"FAIL: Could write bitmap to illegal path (%d)\n", result);
     }
 
   return fail;
