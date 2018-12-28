@@ -18,14 +18,14 @@ hitdata hitdata_create(vector norm, vector point, color col, real reflection, re
 
 hitdata hitdata_create_miss(color c)
 {
-  hitdata 	h;
+  hitdata h;
 
-  h.normal = vector_create(1,1,1);
-  h.hit_point = vector_create(NO_HIT,0,0);
+  h.normal = vector_create(1, 1, 1);
+  h.hit_point = vector_create(NO_HIT, 0, 0);
   h.col = c;
   h.reflection = 0;
   h.diffuse = 1;
-  h.angle = M_PI/2;
+  h.angle = M_PI / 2;
 
   return h;
 }
@@ -63,10 +63,4 @@ real hitdata_get_diffuse (hitdata h)
 real hitdata_get_angle(hitdata h)
 {
    return h.angle;
-}
-
-// TODO: Check this...
-hitdata hitdata_put_color(hitdata h, color col) {
-  h.col = col;
-  return h;
 }
