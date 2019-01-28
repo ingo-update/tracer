@@ -154,7 +154,7 @@ object_mods: opt_pigment opt_finish
 { $$ = surface_create($1,$2);}
 ;
 
-opt_pigment: /* Empty */
+opt_pigment: /* Empty TODO: Move default to defaults.h */
 { $$ = _pigment_create_color(color_create_rgb(127,127,127));}
 |       pigment
 { $$ = $1;}
@@ -231,6 +231,6 @@ number: NUMBER
 %%
 
 int yyerror(char *s) {
-  fprintf(stderr, "yyparse(): Syntax error on line %d\n", linecount);
+  fprintf(stderr, "yyparse(): Syntax error at '%s' on line %d\n", s, linecount);
   return 1;
 }

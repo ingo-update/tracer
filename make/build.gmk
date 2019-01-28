@@ -27,7 +27,7 @@ ALL_TESTS = $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%,$(wildcard $(TOPDIR)/test
 
 ### Generic build commands for use in rules
 
-COMPILE_CMD = $(CC) -I$(SRC) $(CFLAGS) $(OPT_CFLAGS) $(DBG_CFLAGS) $(CFLAGS_$(notdir $<)) $< -o $@
+COMPILE_CMD = $(CC) -I$(SRC) -I$(GENSRC) $(CFLAGS) $(OPT_CFLAGS) $(DBG_CFLAGS) $(CFLAGS_$(notdir $<)) $< -o $@
 LINK_CMD = $(LD) -o $@ $(LDFLAGS) $^ $(LDLIBS)
 LEX_CMD = $(LEX) -t $< > $@
 YACC_CMD = $(YACC) -d -o $(PARSER) $<
@@ -79,10 +79,10 @@ $(addprefix $(BUILDDIR)/,$(TARGET)):
 	@$(LINK_CMD) 2> $@.log
 	@[ -s $@.log ] || $(RM) $@.log
 
-# Link and run unit tests
+# Link and run unit tests TODO: Create .log and .cmdline files for the LD command.
 $(ALL_TESTS):
 	@$(ECHO) Linking $(notdir $@)
-	@$(LD) -o $@ $(LDFLAGS_$@) $^
+	@$(LD) -o $@ $(LDFLAGS_$(notdir $@)) $^ $(LDLIBS_$(notdir $@))
 	@$(ECHO) Running $(notdir $@)
 	@$(CD) $(dir $@) && $@ 2> $@.log
 

@@ -7,8 +7,9 @@ EXTRA_OBJS = $(OBJDIR)/lexer.o $(OBJDIR)/parser.o
 
 include make/build.gmk
 
-CFLAGS_lexer.c = -I$(GENSRC) -Wno-unused-function
+CFLAGS_lexer.c = -Wno-unused-function
 LDLIBS = -lm -lfl
+LDLIBS_test-parser = -lm -lfl
 
 TESTTRACE = $(TESTDIR)/trace.ppm
 TESTPPM = $(TESTDIR)/test_asc.ppm
@@ -60,5 +61,7 @@ $(GENSRC)/parser.c: $(SRC)/parser.y
 $(GENSRC)/parser.h: $(SRC)/parser.y
 
 $(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
+$(TESTDIR)/test-parser.o: $(TOPDIR)/test/test-parser.c $(GENSRC)/parser.h
 
 $(TESTDIR)/test-bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-bitmap.o
+$(TESTDIR)/test-parser: $(filter-out %/main.o,$(OBJFILES)) $(TESTDIR)/test-parser.o
