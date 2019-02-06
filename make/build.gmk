@@ -1,7 +1,7 @@
 ### Generic Makefile for C projects ###
 
 ifdef SPEC
-  include SPEC
+  include $(SPEC)
 else
   include make/spec.gmk
 endif
@@ -23,7 +23,7 @@ TESTDIR = $(BUILDDIR)/test
 SRCFILES = $(TOPDIR)/Makefile $(wildcard $(TOPDIR)/make/*.gmk $(SRC)/*.h $(SRC)/*.c)
 OBJFILES = $(sort $(patsubst $(SRC)/%.c,$(OBJDIR)/%.o,$(wildcard $(SRC)/*.c)) $(EXTRA_OBJS))
 TESTOBJS = $(sort $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%.o,$(wildcard $(TOPDIR)/test/*.c)))
-ALL_TESTS = $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%,$(wildcard $(TOPDIR)/test/test-*.c))
+ALL_TESTS = $(sort $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%,$(wildcard $(TOPDIR)/test/test-*.c)))
 
 ### Generic build commands for use in rules
 
