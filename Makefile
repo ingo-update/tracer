@@ -6,6 +6,7 @@ PARSER = $(GENSRC)/parser.c
 EXTRA_OBJS = $(OBJDIR)/lexer.o $(OBJDIR)/parser.o
 
 include make/build.gmk
+include make/test.gmk
 
 CFLAGS_lexer.c = -Wno-unused-function
 LDLIBS = -lm -lfl

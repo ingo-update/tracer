@@ -16,14 +16,11 @@ BUILDDIR = $(TOPDIR)/build
 TOOLSDIR = $(BUILDDIR)/tools
 GENSRC = $(BUILDDIR)/gensrc
 OBJDIR = $(BUILDDIR)/objs
-TESTDIR = $(BUILDDIR)/test
 
 ### File lists
 
 SRCFILES = $(TOPDIR)/Makefile $(wildcard $(TOPDIR)/make/*.gmk $(SRC)/*.h $(SRC)/*.c)
 OBJFILES = $(sort $(patsubst $(SRC)/%.c,$(OBJDIR)/%.o,$(wildcard $(SRC)/*.c)) $(EXTRA_OBJS))
-TESTOBJS = $(sort $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%.o,$(wildcard $(TOPDIR)/test/*.c)))
-ALL_TESTS = $(sort $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%,$(wildcard $(TOPDIR)/test/test-*.c)))
 
 ### Generic build commands for use in rules
 
@@ -64,7 +61,7 @@ $(PARSER) $(PARSER_H):
 ## Compilation and linking
 
 # Compile C source into object files
-$(OBJFILES) $(TESTOBJS):
+$(OBJFILES):
 	@$(MKDIR) $(dir $@)
 	@$(ECHO) Compiling $(notdir $<)
 	@$(ECHO) '$(COMPILE_CMD)' > $@.cmdline
@@ -78,15 +75,6 @@ $(addprefix $(BUILDDIR)/,$(TARGET)):
 	@$(ECHO) '$(LINK_CMD)' > $@.cmdline
 	@$(LINK_CMD) 2> $@.log
 	@[ -s $@.log ] || $(RM) $@.log
-
-# Link and run unit tests TODO: Create .log and .cmdline files for the LD command.
-$(ALL_TESTS):
-	@$(ECHO) Linking $(notdir $@)
-	@$(LD) -o $@ $(LDFLAGS_$(notdir $@)) $^ $(LDLIBS_$(notdir $@))
-	@$(ECHO) Running $(notdir $@)
-	@$(CD) $(dir $@) && $@ 2> $@.log
-
-test: $(ALL_TESTS)
 
 ## Housekeeping
 
