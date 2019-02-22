@@ -65,4 +65,4 @@ $(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/co
 $(TESTDIR)/test-parser.o: $(TOPDIR)/test/test-parser.c $(GENSRC)/parser.h
 
 $(TESTDIR)/test-bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-bitmap.o
-$(TESTDIR)/test-parser: $(filter-out %/main.o,$(OBJFILES)) $(TESTDIR)/test-parser.o
+$(TESTDIR)/test-parser: $(filter-out %/main.o %/trace.o,$(OBJFILES)) $(TESTDIR)/test-parser.o
