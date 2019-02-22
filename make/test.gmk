@@ -10,8 +10,10 @@ $(TESTOBJS):
 	@$(MKDIR) $(dir $@)
 	@$(ECHO) Compiling test $(notdir $<)
 	@$(ECHO) '$(TEST_COMPILE_CMD)' > $@.cmdline
-	@$(TEST_COMPILE_CMD) 2> $@.log
+	@-$(TEST_COMPILE_CMD) 2> $@.log
 	@[ -s $@.log ] || $(RM) $@.log
+	@$(CAT) 2> /dev/null $@.log || true
+	@[ ! -e $@.log ]
 
 # Link and run unit tests TODO: Create .log and .cmdline files for the LD command.
 $(ALL_TESTS):

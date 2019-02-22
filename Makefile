@@ -21,10 +21,10 @@ $(TESTTRACE): $(TARGET) $(TESTPPM)
 	@$(ECHO) Tracing $(notdir $(TESTTRACE))
 	@./$(TARGET) -x512 -y512 -w1 -r10 -o $(TESTTRACE) -i examples/test.pov
 
-test-show: $(TESTTRACE)
-	$(XV) $(TESTTRACE)
-
 test: $(TESTTRACE)
+
+test-show: test
+	$(XV) $(TESTTRACE)
 
 # Extra source files to print
 paper: $(SRC)/lexer.l $(SRC)/parser.y
