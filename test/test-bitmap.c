@@ -18,8 +18,8 @@ void create_files()
 	}
     }
 
-  bitmap_write_ppm(bm, Ascii, "test_asc.ppm", "ASCII test file");
-  bitmap_write_ppm(bm, Binary, "test_bin.ppm", "Binary test file");
+  bitmap_write_ppm(bm, Ascii, "build/test/test_asc.ppm", "ASCII test file");
+  bitmap_write_ppm(bm, Binary, "build/test/test_bin.ppm", "Binary test file");
 }
 
 int test_errors()
@@ -40,7 +40,7 @@ int test_errors()
       fprintf(stderr,"FAIL: Could read nonexisting bitmap\n");
     }
 
-  if (NULL != bitmap_read_ppm("../../Makefile"))
+  if (NULL != bitmap_read_ppm("Makefile"))
     {
       ++fail;
       fprintf(stderr,"FAIL: Could read Makefile as ppm\n");
@@ -98,8 +98,8 @@ int compare_files()
 	}
     }
 
-  bitmap_write_ppm(bma, Binary, "test_asc2bin.ppm", "ASCII to Binary test file");
-  bitmap_write_ppm(bmb, Ascii, "test_bin2asc.ppm", "Binary to ASCII test file");
+  bitmap_write_ppm(bma, Binary, "build/test/test_asc2bin.ppm", "ASCII to Binary test file");
+  bitmap_write_ppm(bmb, Ascii, "build/test/test_bin2asc.ppm", "Binary to ASCII test file");
 
   return fail;
 }
