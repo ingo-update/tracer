@@ -3,6 +3,11 @@
 
 #include "bitmap.h"
 
+#define ASC_FILENAME "build/test/test_asc.ppm"
+#define BIN_FILENAME "build/test/test_bin.ppm"
+#define ASC2BIN_FILENAME "build/test/test_asc2bin.ppm"
+#define BIN2ASC_FILENAME "build/test/test_bin2asc.ppm"
+
 void create_files()
 {
   bitmap bm;
@@ -18,8 +23,8 @@ void create_files()
 	}
     }
 
-  bitmap_write_ppm(bm, Ascii, "build/test/test_asc.ppm", "ASCII test file");
-  bitmap_write_ppm(bm, Binary, "build/test/test_bin.ppm", "Binary test file");
+  bitmap_write_ppm(bm, Ascii, ASC_FILENAME, "ASCII test file");
+  bitmap_write_ppm(bm, Binary, BIN_FILENAME, "Binary test file");
 }
 
 int test_errors()
@@ -66,8 +71,8 @@ int compare_files()
 
   fail = 0;
 
-  bma = bitmap_read_ppm("build/test/test_asc.ppm");
-  bmb = bitmap_read_ppm("build/test/test_bin.ppm");
+  bma = bitmap_read_ppm(ASC_FILENAME);
+  bmb = bitmap_read_ppm(BIN_FILENAME);
 
   if (bitmap_width(bma) != bitmap_width(bmb))
     {
@@ -98,8 +103,8 @@ int compare_files()
 	}
     }
 
-  bitmap_write_ppm(bma, Binary, "build/test/test_asc2bin.ppm", "ASCII to Binary test file");
-  bitmap_write_ppm(bmb, Ascii, "build/test/test_bin2asc.ppm", "Binary to ASCII test file");
+  bitmap_write_ppm(bma, Binary, ASC2BIN_FILENAME, "ASCII to Binary test file");
+  bitmap_write_ppm(bmb, Ascii, BIN2ASC_FILENAME, "Binary to ASCII test file");
 
   return fail;
 }
