@@ -36,8 +36,7 @@ vector vector_norm(vector vec);
 
 real vector_dp(vector vec, vector tor);
 real vector_length(vector vec);
-// int vector_compare(vector vec, vector tor);
+int vector_compare(vector vec, vector tor);
 void vector_print(FILE *os, vector vec);
 
 #endif /* _VECTOR_H_ */
-

@@ -88,6 +88,11 @@ real vector_length(vector vec)
   return sqrt(vector_dp(vec, vec));
 }
 
+int vector_compare(vector vec, vector tor)
+{
+  return (vec.x == tor.x) && (vec.y == tor.y) && (vec.z == tor.z);
+}
+
 void vector_print(FILE *os, vector vec)
 {
   fprintf(os, "(%f, %f, %f)", vec.x, vec.y, vec.z);

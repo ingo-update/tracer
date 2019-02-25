@@ -17,7 +17,7 @@ TESTPPM = $(TESTDIR)/test_asc.ppm
 
 $(TESTPPM): $(TESTDIR)/test-bitmap
 
-$(TESTTRACE): $(TARGET) $(TESTPPM)
+$(TESTTRACE): $(TARGET) $(TESTPPM) examples/test.pov
 	@$(ECHO) Tracing $(notdir $(TESTTRACE))
 	@./$(TARGET) -x512 -y512 -w1 -r10 -o $(TESTTRACE) -i examples/test.pov
 
