@@ -66,8 +66,8 @@ int compare_files()
 
   fail = 0;
 
-  bma = bitmap_read_ppm("test_asc.ppm");
-  bmb = bitmap_read_ppm("test_bin.ppm");
+  bma = bitmap_read_ppm("build/test/test_asc.ppm");
+  bmb = bitmap_read_ppm("build/test/test_bin.ppm");
 
   if (bitmap_width(bma) != bitmap_width(bmb))
     {
