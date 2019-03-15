@@ -67,7 +67,6 @@ void world_put_background_map_name(world w, char *map_name)
 static color _illumination(world w, hitdata hit)
 {
   struct list *objs, *lights;
-  object c_obj;
   light c_light;
   color c_light_color, acc_light_color;
   vector point, c_light_dir;
@@ -76,9 +75,9 @@ static color _illumination(world w, hitdata hit)
 
   point = vector_sum(hitdata_get_hit_point(hit), vector_sp(hitdata_get_normal(hit), OFFSET));
 
+  /* Accumulate light from all light sources */
   acc_light_color = color_create_rgb(0,0,0);
-  lights = w->lights;
-  while (NULL != lights)
+  for (lights = w->lights ; lights ; lights = lights->cdr)
     {
       c_light = lights->car;
       c_light_dir = light_direction(c_light, point);
@@ -87,22 +86,20 @@ static color _illumination(world w, hitdata hit)
 
       ray_to_c_light = ray_create(point, c_light_dir);
 
+      /* Find any object blocking the light */
       c_obj_dist = NO_HIT;
-      objs = w->objects;
-      while (NULL != objs && c_obj_dist > c_light_dist)
+      for (objs = w->objects ; objs && c_obj_dist > c_light_dist ; objs = objs->cdr)
 	{
-	  c_obj = objs->car;
-	  c_obj_dist = object_hit_distance(c_obj, ray_to_c_light);
-	  objs = objs->cdr;
+	  c_obj_dist = object_hit_distance(objs->car, ray_to_c_light);
 	}
 
-      if (c_obj_dist >= c_light_dist)
+      /* Add this light if no blocking object was found */
+      if (!objs)
 	{
 	  c_light_angle = fabs(vector_dp(hitdata_get_normal(hit),c_light_dir));
 	  c_light_color = color_scale(light_get_color(c_light), c_light_angle);
 	  acc_light_color = color_add(acc_light_color, c_light_color);
 	}
-      lights = lights->cdr;
     }
 
   return acc_light_color;
@@ -114,15 +111,14 @@ color world_look(world w, ray r, unsigned int depth, shading_mode s)
   object closest_obj;
   real dist, closest_dist;
   vector norm, dir, ref_dir, ref_loc;
-  color light_color;
+  color diffuse_color;
   hitdata hit;
 
-  objs = w->objects;
-
+  closest_obj = NULL;
   closest_dist = NO_HIT;
-  closest_obj = objs->car;
 
-  while (NULL != objs)
+  /* Find closest object in ray */
+  for (objs = w->objects ; objs ; objs = objs-> cdr)
     {
       dist = object_hit_distance(objs->car, r);
       if (NO_HIT != dist && dist < closest_dist)
@@ -130,42 +126,29 @@ color world_look(world w, ray r, unsigned int depth, shading_mode s)
 	  closest_dist = dist;
 	  closest_obj = objs->car;
 	}
-      objs = objs-> cdr;
     }
 
-  if (NO_HIT == closest_dist)
-    {
-      return world_get_background(w);
-    }
+  /* Return background if no object was hit by the ray */
+  if (!closest_obj) return world_get_background(w);
+
+  /* Calculate the hit */
+  hit = object_hitdata(closest_obj, r);
+
+  /* Quick mode? */
+  if (Shading != s) return color_scale(hitdata_get_color(hit), hitdata_get_angle(hit));
+
+  /* Diffuse */
+  diffuse_color = color_multiply(color_scale(_illumination(w, hit),hitdata_get_diffuse(hit)), hitdata_get_color(hit));
+
+  /* Reflection (recursive) */
+  if (0 == depth || 0 == hitdata_get_reflection(hit)) return diffuse_color;
   else
     {
-      hit = object_hitdata(closest_obj, r);
+      dir = ray_get_direction(r);
+      norm = hitdata_get_normal(hit);
+      ref_dir = vector_sum(dir, vector_sp(vector_sp(norm, vector_dp(norm, dir)), -2));
+      ref_loc = vector_sum(hitdata_get_hit_point(hit), vector_sp(norm, OFFSET));
 
-      if (Shading == s)
-	{
-	  /* This is wrong! */
-	  if (0 > hitdata_get_diffuse(hit))
-	    {
-	      return color_create_rgb(0, 0, 0);
-	    }
-
-	  light_color = _illumination(w, hit);
-	  if (0 < depth && 0 < hitdata_get_reflection(hit))
-	    {
-	      dir = ray_get_direction(r);
-	      norm = hitdata_get_normal(hit);
-
-	      ref_dir = vector_sum(dir, vector_sp(vector_sp(norm, vector_dp(norm, dir)), -2));
-	      ref_loc = vector_sum(hitdata_get_hit_point(hit), vector_sp(norm, OFFSET));
-
-	      light_color = color_add(light_color, color_scale(world_look(w, ray_create(ref_loc, ref_dir), depth-1, s), hitdata_get_reflection(hit)));
-	    }
-
-	  return color_multiply(hitdata_get_color(hit), color_scale(light_color, hitdata_get_diffuse(hit)));
-	}
-      else
-	{
-	  return color_scale(hitdata_get_color(hit), hitdata_get_angle(hit));
-	}
+      return color_add(diffuse_color, color_scale(world_look(w, ray_create(ref_loc, ref_dir), depth-1, s), hitdata_get_reflection(hit)));
     }
 }
