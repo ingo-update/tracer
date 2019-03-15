@@ -77,10 +77,10 @@ int test_world()
   for (lst = the_world->objects ; lst ; lst = lst->cdr) ++no;
   for (lst = the_world->lights ; lst ; lst = lst->cdr) ++nl;
 
-  if (10 != no)
+  if (11 != no)
     {
       ++fail;
-      fprintf(stderr, "Failure: found %d objects, should be 10.\n", no);
+      fprintf(stderr, "Failure: found %d objects, should be 11.\n", no);
     }
 
   if (2 != nl)

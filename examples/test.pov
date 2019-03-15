@@ -18,6 +18,12 @@ triangle {<-500,-500,400>, <-500,500,0>, <500,-500,0>
           finish {reflection 0.5}
           }
 
+// Texturemapped sphere
+sphere {<0,0,700>, 500
+        pigment {image_map {ppm "build/test/checkers.ppm"}}
+        finish {reflection 0.3}
+        }
+
 // Let's have a tilted background plane
 plane_point {<0,1,1>, <0,0,5000> pigment {color rgb <1,0.7,0.7>}
 	finish {reflection 0.5}}

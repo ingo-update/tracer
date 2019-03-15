@@ -7,11 +7,13 @@
 #define BIN_FILENAME "build/test/test_bin.ppm"
 #define ASC2BIN_FILENAME "build/test/test_asc2bin.ppm"
 #define BIN2ASC_FILENAME "build/test/test_bin2asc.ppm"
+#define CHECKERS_FILENAME "build/test/checkers.ppm"
 
 void create_files()
 {
   bitmap bm;
-  int x,y;
+  int x, y;
+  color c1, c2, c;
 
   bm = bitmap_create(256,256);
 
@@ -25,6 +27,25 @@ void create_files()
 
   bitmap_write_ppm(bm, Ascii, ASC_FILENAME, "ASCII test file");
   bitmap_write_ppm(bm, Binary, BIN_FILENAME, "Binary test file");
+
+  bitmap_destroy(bm);
+
+  c1 = color_create_rgb(255, 255, 255);
+  c2 = color_create_rgb(255, 0, 0);
+
+  bm = bitmap_create(128, 64);
+
+  for (y = 0 ; y < 64 ; ++y)
+    {
+      for (x = 0 ; x < 128 ; ++x)
+	{
+	  if (y & 4) c = x & 4 ? c1 : c2;
+	  else c = x & 4 ? c2 : c1;
+	  bitmap_put_pixel(bm, x, y, c);
+	}
+    }
+
+  bitmap_write_ppm(bm, Binary, CHECKERS_FILENAME, "Checkers");
 }
 
 int test_errors()

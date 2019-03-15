@@ -13,11 +13,8 @@ LDLIBS = -lm -lfl
 LDLIBS_test-parser = -lm -lfl
 
 TESTTRACE = $(TESTDIR)/trace.ppm
-TESTPPM = $(TESTDIR)/test_asc.ppm
 
-$(TESTPPM): $(TESTDIR)/test-bitmap
-
-$(TESTTRACE): $(TARGET) $(TESTPPM) examples/test.pov
+$(TESTTRACE): $(TARGET) examples/test.pov
 	@$(ECHO) Tracing $(notdir $(TESTTRACE))
 	@./$(TARGET) -x512 -y512 -w1 -r10 -o $(TESTTRACE) -i examples/test.pov
 
