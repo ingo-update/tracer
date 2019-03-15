@@ -60,7 +60,8 @@ surface triangle_get_surface(triangle obj)
   return obj->surf;
 }
 
-real triangle_hit_distance(triangle o, ray r) {
+real triangle_hit_distance(triangle o, ray r)
+{
   vector a, b, c0, q, rd, r0, pn, ri;
   real d, u, v, vd, v0, t;
   real a2, b2, ab, qa, qb;
@@ -116,7 +117,8 @@ real triangle_hit_distance(triangle o, ray r) {
   return t;
 }
 
-hitdata triangle_hitdata(triangle o, ray r) {
+hitdata triangle_hitdata(triangle o, ray r)
+{
   vector a, b, c0, q, rd, r0, pn, rn, ri;
   real 	d, u, v, vd, v0, t;
   real 	a2, b2, ab, qa, qb;
@@ -142,19 +144,9 @@ hitdata triangle_hitdata(triangle o, ray r) {
   t = v0 / vd;
   ri = vector_sum(r0, vector_sp(rd, t));
 
-  if (0 > vd)
-    {
-      rn = pn;
-    }
-  else
-    {
-      rn = vector_sp(pn, -1);
-    }
+  rn = (0 > vd) ? pn : vector_sp(pn, -1);
 
-  if (Color == surface_get_mode(o->surf))
-    {
-      col = surface_get_color(o->surf);
-    }
+  if (Color == surface_get_mode(o->surf)) col = surface_get_color(o->surf);
   else
     {
       bmp = surface_get_texture_map(o->surf);

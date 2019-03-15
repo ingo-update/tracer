@@ -19,7 +19,7 @@ static struct list *_cons(void *car, struct list *cdr)
   c->car = car;
   c->cdr = cdr;
 
-  return(c);
+  return c;
 }
 
 world world_create()
@@ -36,7 +36,7 @@ world world_create()
   w->objects = NULL;
   w->bg_map_name= NULL;
 
-  return(w);
+  return w;
 }
 
 void world_add_object(world w, object o)
