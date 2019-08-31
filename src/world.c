@@ -88,7 +88,7 @@ static color _illumination(world w, hitdata hit)
 
       /* Find any object blocking the light */
       c_obj_dist = NO_HIT;
-      for (objs = w->objects ; objs && c_obj_dist > c_light_dist ; objs = objs->cdr)
+      for (objs = w->objects ; (objs && c_obj_dist > c_light_dist) ; objs = objs->cdr)
 	{
 	  c_obj_dist = object_hit_distance(objs->car, ray_to_c_light);
 	}
@@ -118,7 +118,7 @@ color world_look(world w, ray r, unsigned int depth, shading_mode s)
   closest_dist = NO_HIT;
 
   /* Find closest object in ray */
-  for (objs = w->objects ; objs ; objs = objs-> cdr)
+  for (objs = w->objects ; objs ; objs = objs->cdr)
     {
       dist = object_hit_distance(objs->car, r);
       if (NO_HIT != dist && dist < closest_dist)
@@ -148,7 +148,7 @@ color world_look(world w, ray r, unsigned int depth, shading_mode s)
       norm = hitdata_get_normal(hit);
       ref_dir = vector_sum(dir, vector_sp(vector_sp(norm, vector_dp(norm, dir)), -2));
       ref_loc = vector_sum(hitdata_get_hit_point(hit), vector_sp(norm, OFFSET));
-
-      return color_add(diffuse_color, color_scale(world_look(w, ray_create(ref_loc, ref_dir), depth-1, s), hitdata_get_reflection(hit)));
     }
+
+  return color_add(diffuse_color, color_scale(world_look(w, ray_create(ref_loc, ref_dir), depth-1, s), hitdata_get_reflection(hit)));
 }
