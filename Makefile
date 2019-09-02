@@ -55,11 +55,12 @@ $(OBJDIR)/lexer.o: $(GENSRC)/lexer.c $(GENSRC)/parser.h
 $(OBJDIR)/parser.o: $(GENSRC)/parser.c
 
 $(GENSRC)/lexer.c: $(SRC)/lexer.l
-$(GENSRC)/parser.c: $(SRC)/parser.y
-$(GENSRC)/parser.h: $(SRC)/parser.y
+$(GENSRC)/parser.c $(GENSRC)/parser.h: $(SRC)/parser.y
 
 $(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
 $(TESTDIR)/test-parser.o: $(TOPDIR)/test/test-parser.c $(GENSRC)/parser.h
+$(TESTDIR)/test-color.o: $(TOPDIR)/test/test-color.c $(SRC)/color.h
 
 $(TESTDIR)/test-bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-bitmap.o
 $(TESTDIR)/test-parser: $(filter-out %/main.o %/trace.o,$(OBJFILES)) $(TESTDIR)/test-parser.o
+$(TESTDIR)/test-color: $(OBJDIR)/color.o $(TESTDIR)/test-color.o

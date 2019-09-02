@@ -5,8 +5,9 @@
 
 typedef struct color color;
 
-struct color {
-  unsigned char r,g,b;
+struct color
+{
+  unsigned char r, g, b;
 };
 
 color color_create_rgb(int r, int g, int b);
@@ -20,6 +21,6 @@ int color_get_green (color col);
 int color_get_blue (color col);
 
 int color_compare(color a, color b);
-void color_print(color col);
+void color_print(FILE *os, color col);
 
 #endif /* _COLOR_H_ */

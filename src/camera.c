@@ -3,16 +3,17 @@
 
 #include "camera.h"
 
-camera camera_create(vector position, vector up, vector direction) {
-
+camera camera_create(vector position, vector up, vector direction)
+{
   camera c;
 
   c = (camera) malloc(sizeof(struct camera_t));
 
-  if (NULL==c) {
-    fprintf(stderr,"camera_create(): Could not allocate memory\n");
-    return NULL;
-  }
+  if (NULL==c)
+    {
+      fprintf(stderr,"camera_create(): Could not allocate memory\n");
+      return NULL;
+    }
 
   c->position = position;
   c->up = up;

@@ -2,18 +2,25 @@
 
 #include "color.h"
 
-color color_create_rgb(int r, int g, int b) {
+color color_create_rgb(int r, int g, int b)
+{
   color c;
 
-  c.r = r;
-  c.g = g;
-  c.b = b;
+  if (r == (r & 0xff) && g == (g & 0xff) && b == (b & 0xff))
+    {
+      c.r = r; c.g = g; c.b = b;
+    }
+  else
+    {
+      fprintf(stderr, "color_create_rgb(): Illegal RGB values: r = (0x%x), g = (0x%x), b = (0x%x)\n", r, g, b);
+      c.r = 0xff; c.g = 0x0; c.b = 0xff;
+    }
 
   return c;
 }
 
-
-color color_add(color c1, color c2) {
+color color_add(color c1, color c2)
+{
   color c;
 
   c.r = (c1.r + c2.r); if (c.r > 255) c.r = 255;
@@ -24,7 +31,8 @@ color color_add(color c1, color c2) {
 }
 
 /*
-color color_invert(color col) {
+color color_invert(color col)
+{
   color c;
 
   c.r = 255-col.r;
@@ -35,7 +43,8 @@ color color_invert(color col) {
 }
 */
 
-color color_scale(color col, real s) {
+color color_scale(color col, real s)
+{
   color c;
 
   c.r = s * col.r;
@@ -45,7 +54,8 @@ color color_scale(color col, real s) {
   return c;
 }
 
-color color_multiply(color a, color b) {
+color color_multiply(color a, color b)
+{
   color c;
 
   c.r = 255 * ((real) a.r / (real) 255) * ((real) b.r / (real) 255);
@@ -56,24 +66,29 @@ color color_multiply(color a, color b) {
 }
 
 
-int color_get_red (color col) {
-
+int color_get_red (color col)
+{
   return col.r;
 }
 
 
-int color_get_green (color col) {
-
+int color_get_green (color col)
+{
   return col.g;
 }
 
 
-int color_get_blue (color col) {
-
+int color_get_blue (color col)
+{
   return col.b;
 }
 
 int color_compare(color a, color b)
 {
   return (a.r == b.r) && (a.g == b.g) && (a.b == b.b);
+}
+
+void color_print(FILE *os, color col)
+{
+  fprintf(os, "0x%02x%02x%02x", col.r, col.g, col.b);
 }

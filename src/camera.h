@@ -4,7 +4,8 @@
 #define _CAMERA_H_
 
 typedef struct camera_t* camera;
-struct camera_t {
+struct camera_t
+{
   vector position;
   vector direction;
   vector up;
