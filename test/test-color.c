@@ -6,7 +6,7 @@
 int test_datatype()
 {
   int fail;
-  color c1;
+  color c1, c2;
 
   fail = 0;
 
@@ -20,6 +20,23 @@ int test_datatype()
   fprintf(stderr, "  Color ");
   color_print(stderr, c1);
   fprintf(stderr, " created.\n");
+
+  c2 = color_create_rgb(0x17, 0x42, 0xbf);
+  if (color_get_red(c2) != 0x17)
+    {
+      fprintf(stderr, "FAIL: color_get_red() returned %x, should be %x\n", color_get_red(c2), 0x17);
+      ++fail;
+    }
+  if (color_get_green(c2) != 0x42)
+    {
+      fprintf(stderr, "FAIL: color_get_green() returned %x, should be %x\n", color_get_green(c2), 0x42);
+      ++fail;
+    }
+  if (color_get_blue(c2) != 0xbf)
+    {
+      fprintf(stderr, "FAIL: color_get_blue() returned %x, should be %x\n", color_get_blue(c2), 0xbf);
+      ++fail;
+    }
 
   return fail;
 }
