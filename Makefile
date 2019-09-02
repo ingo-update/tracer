@@ -11,6 +11,7 @@ include make/test.gmk
 CFLAGS_lexer.c = -Wno-unused-function
 LDLIBS = -lm -lfl
 LDLIBS_test-parser = -lm -lfl
+LDLIBS_test-vector = -lm
 
 TESTTRACE = $(TESTDIR)/trace.ppm
 
@@ -59,8 +60,10 @@ $(GENSRC)/parser.c $(GENSRC)/parser.h: $(SRC)/parser.y
 
 $(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
 $(TESTDIR)/test-parser.o: $(TOPDIR)/test/test-parser.c $(GENSRC)/parser.h
+$(TESTDIR)/test-vector.o: $(TOPDIR)/test/test-vector.c
 $(TESTDIR)/test-color.o: $(TOPDIR)/test/test-color.c $(SRC)/color.h
 
 $(TESTDIR)/test-bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-bitmap.o
 $(TESTDIR)/test-parser: $(filter-out %/main.o %/trace.o,$(OBJFILES)) $(TESTDIR)/test-parser.o
+$(TESTDIR)/test-vector: $(OBJDIR)/vector.o $(TESTDIR)/test-vector.o
 $(TESTDIR)/test-color: $(OBJDIR)/color.o $(TESTDIR)/test-color.o
