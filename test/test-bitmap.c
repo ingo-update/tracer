@@ -154,7 +154,7 @@ int main()
     }
   else
     {
-      fprintf(stdout, "FAILURE\n");
+      fprintf(stdout, "FAILURE; %d tests failed.\n", fail);
       exit(EXIT_FAILURE);
     }
 }
