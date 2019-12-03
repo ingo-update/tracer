@@ -31,6 +31,7 @@ int test_arithmetic()
   vector a, b, c;
   real d;
 
+  fail = 0;
   a = vector_create(42, 0, -17);
   b = vector_create(2, 2, 2);
 
@@ -144,7 +145,7 @@ int main()
     }
   else
     {
-      fprintf(stdout, "FAILURE\n");
+      fprintf(stdout, "FAILURE; %d tests failed.\n", fail);
       exit(EXIT_FAILURE);
     }
 }
