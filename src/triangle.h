@@ -2,12 +2,14 @@
 #include "surface.h"
 #include "ray.h"
 #include "hitdata.h"
+#include "object_type.h"
 
 #ifndef _TRIANGLE_H_
 #define _TRIANGLE_H_
 
 typedef struct triangle_t* triangle;
 struct triangle_t {
+  object_type type;
   vector corner0;
   vector a_leg;
   vector another_leg;

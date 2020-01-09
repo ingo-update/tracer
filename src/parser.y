@@ -79,11 +79,11 @@ scene:  item
 |       item scene
 ;
 
-item:	sphere { world_add_object(the_world, object_create_sphere($1));}
-|       triangle { world_add_object(the_world, object_create_triangle($1));}
+item:	sphere { world_add_object(the_world, (object) $1);}
+|       triangle { world_add_object(the_world, (object) $1);}
+|       plane { world_add_object(the_world, (object) $1);}
 |       background {world_put_background(the_world, $1);}
 |       background_map {world_put_background_map_name(the_world, $1);}
-|       plane { world_add_object(the_world, object_create_plane($1));}
 |       camera { the_camera = $1;}
 |       light { world_add_light(the_world, $1);}
 ;

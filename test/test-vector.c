@@ -72,7 +72,6 @@ int test_arithmetic()
     }
 
   c = vector_norm(a);
-  // if ((vector_get_x(c) != 0.926947) || (vector_get_y(c) != 0) || (vector_get_z(c) != -0.375193))
   if ((vector_get_x(c) - 0.926947 > OFFSET) ||
       (vector_get_y(c) - 0 > OFFSET) ||
       (vector_get_z(c) + 0.375193 > OFFSET)

@@ -21,6 +21,7 @@ static triangle _tri_create(vector c0, vector a, vector b, surface surf, int pgr
       exit(EXIT_FAILURE);
     }
 
+  new->type = Triangle;
   new->corner0 = c0;
   new->a_leg = a;
   new->another_leg = b;

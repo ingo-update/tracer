@@ -3,52 +3,9 @@
 
 #include "object.h"
 
-object_type object_get_type(object o) {
-  return(o->type);
-}
-
-static object _new_object() {
-
-  object new = malloc(sizeof(struct object_t));
-
-  if (NULL == new) {
-    fprintf(stderr,"_new_object(): Could not allocate object.\n");
-  }
-
-  return(new);
-}
-
-object object_create_sphere(sphere o) {
-
-  object b;
-
-  b = _new_object();
-  b->obj.sp = o;
-  b->type = Sphere;
-
-  return(b);
-}
-
-object object_create_triangle(triangle t) {
-
-  object b;
-
-  b = _new_object();
-  b->obj.tr = t;
-  b->type = Triangle;
-
-  return(b);
-}
-
-object object_create_plane(plane o) {
-
-  object b;
-
-  b = _new_object();
-  b->obj.pl = o;
-  b->type = Plane;
-
-  return(b);
+object_type object_get_type(object o)
+{
+  return o->type;
 }
 
 real object_hit_distance(object o, ray r)
@@ -59,13 +16,14 @@ real object_hit_distance(object o, ray r)
   switch (t)
     {
     case Sphere:
-      return sphere_hit_distance(o->obj.sp, r);
+      return sphere_hit_distance((sphere) o, r);
     case Plane:
-      return plane_hit_distance(o->obj.pl, r);
+      return plane_hit_distance((plane) o, r);
     case Triangle:
-      return triangle_hit_distance(o->obj.tr, r);
+      return triangle_hit_distance((triangle) o, r);
     default:
-      return NO_HIT;
+      fprintf(stderr,"object_hit_distance(): Unknown object type %d.\n", t);
+      exit(EXIT_FAILURE);
     }
 }
 
@@ -77,11 +35,11 @@ hitdata object_hitdata(object o, ray r)
   switch (t)
     {
     case Sphere:
-      return sphere_hitdata(o->obj.sp, r);
+      return sphere_hitdata((sphere) o, r);
     case Plane:
-      return plane_hitdata(o->obj.pl, r);
+      return plane_hitdata((plane) o, r);
     case Triangle:
-      return triangle_hitdata(o->obj.tr, r);
+      return triangle_hitdata((triangle) o, r);
     default:
       fprintf(stderr,"object_hitdata(): Unknown object type %d.\n", t);
       exit(EXIT_FAILURE);

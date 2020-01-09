@@ -2,12 +2,14 @@
 #include "surface.h"
 #include "hitdata.h"
 #include "ray.h"
+#include "object_type.h"
 
 #ifndef _PLANE_H_
 #define _PLANE_H_
 
 typedef struct plane_t* plane;
 struct plane_t {
+  object_type type;
   vector normal;
   vector point;
   surface surf;

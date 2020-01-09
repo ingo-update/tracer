@@ -20,6 +20,7 @@ plane plane_create(vector norm, vector point, surface surf)
     exit(EXIT_FAILURE);
   }
 
+  new->type = Plane;
   new->normal = vector_norm(norm);
   new->point = point;
   new->surf = surf;

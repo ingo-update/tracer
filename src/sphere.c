@@ -22,6 +22,7 @@ sphere sphere_create(vector pole, vector equator, vector loc, real rad, surface 
       exit(EXIT_FAILURE);
     }
 
+  new->type = Sphere;
   new->pole = pole;
   new->equator = equator;
   new->location = loc;
