@@ -5,8 +5,14 @@ LEXER = $(GENSRC)/lexer.c
 PARSER = $(GENSRC)/parser.c
 EXTRA_OBJS = $(OBJDIR)/lexer.o $(OBJDIR)/parser.o
 
-include make/build.gmk
-include make/test.gmk
+ifndef MAKEDIR
+  MAKEDIR = ../make
+endif
+
+SPEC = $(MAKEDIR)/spec.gmk
+
+include $(MAKEDIR)/build.gmk
+include $(MAKEDIR)/test.gmk
 
 CFLAGS_lexer.c = -Wno-unused-function
 LDLIBS = -lm -lfl
