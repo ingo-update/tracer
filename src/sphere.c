@@ -44,26 +44,9 @@ struct sph_opt sph_opt_create(vector pole, vector equator)
 
 real sphere_hit_distance(sphere o, ray r)
 {
-  int inside;
-  vector oc, location, origin;
-  real l_2oc, t_ca, t_2hc, radius;
-
-  radius = o->radius;
-  location = o->location;
-  origin = ray_get_origin(r);
-
-  oc = vector_diff(location, origin); // 16
-  l_2oc = vector_dp(oc, oc); // 17
-
-  inside = (l_2oc < radius * radius) ? 1 : 0;
-
-  t_ca = vector_dp(oc, ray_get_direction(r)); // 18
-  if (!inside && 0 > t_ca) return NO_HIT; // looking away from sphere
-
-  t_2hc = (radius * radius) - l_2oc + (t_ca * t_ca); // 19
-  if (0 > t_2hc) return NO_HIT; // looking past sphere
-
-  return inside ? t_ca + sqrt(t_2hc) : t_ca - sqrt(t_2hc); // 20
+  hitdata h;
+  h = sphere_hitdata(o, r);
+  return h.distance;
 }
 
 hitdata sphere_hitdata(sphere o, ray r)
@@ -80,6 +63,8 @@ hitdata sphere_hitdata(sphere o, ray r)
   vector sp, se;
   bitmap bmp;
 
+  hitdata data;
+
   radius = o->radius;
   location = o->location;
   origin = ray_get_origin(r);
@@ -90,9 +75,23 @@ hitdata sphere_hitdata(sphere o, ray r)
   inside = (l_2oc < radius * radius) ? 1 : 0;
 
   t_ca = vector_dp(oc, ray_get_direction(r)); // 18
-  t_2hc = (radius * radius) - l_2oc + (t_ca * t_ca); // 19
+  if (!inside && 0 > t_ca)
+    {
+      // looking away from sphere
+      data.distance = NO_HIT;
+      return data;
+    }
 
-  t = inside ? t_ca + sqrt(t_2hc) : t_ca - sqrt(t_2hc); // 20
+  t_2hc = (radius * radius) - l_2oc + (t_ca * t_ca); // 19
+  if (0 > t_2hc)
+    {
+      // looking past sphere
+      data.distance = NO_HIT;
+      return data;
+    }
+
+  t = inside ? t_ca + sqrt(t_2hc) : t_ca - sqrt(t_2hc); // 2
+  data.distance = t;
 
   ri = vector_sum(origin, vector_sp(ray_get_direction(r), t));
   rn = vector_sp(vector_diff(ri, location), (inside ? -1 : 1) / radius);
@@ -108,7 +107,7 @@ hitdata sphere_hitdata(sphere o, ray r)
       fi = acos(-vector_dp(rn, sp)); // 34
       v = fi / M_PI; // 35
 
-      /* Find longitude, 0.0 = E 1.0 = W */
+      /* Find longitude, 0.0 = E, 1.0 = W */
       if (0.0 == v || 1.0 == v)  u = 0.0; // On a pole TODO: Can this happen?
       else
 	{
@@ -122,14 +121,14 @@ hitdata sphere_hitdata(sphere o, ray r)
 	}
     }
 
-  return hitdata_create(rn,
-			vector_sum(origin, vector_sp(ray_get_direction(r), t)),
-			col,
-			0.0, /* not used */
-			surface_get_reflection(o->surf),
-			surface_get_diffuse(o->surf),
-			fabs(vector_dp(rn, ray_get_direction(r)))
-			);
+  data.normal = rn;
+  data.hit_point = vector_sum(origin, vector_sp(ray_get_direction(r), t));
+  data.col = col;
+  data.reflection = surface_get_reflection(o->surf);
+  data.diffuse = surface_get_diffuse(o->surf);
+  data.angle = fabs(vector_dp(rn, ray_get_direction(r)));
+
+  return data;
 }
 
 vector sph_opt_get_pole(struct sph_opt o)
