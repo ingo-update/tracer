@@ -125,6 +125,7 @@ hitdata sphere_hitdata(sphere o, ray r)
   return hitdata_create(rn,
 			vector_sum(origin, vector_sp(ray_get_direction(r), t)),
 			col,
+			0.0, /* not used */
 			surface_get_reflection(o->surf),
 			surface_get_diffuse(o->surf),
 			fabs(vector_dp(rn, ray_get_direction(r)))

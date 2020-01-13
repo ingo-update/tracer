@@ -171,6 +171,7 @@ hitdata triangle_hitdata(triangle o, ray r)
   data = hitdata_create(rn,
 			vector_sum(r0,vector_sp(rd,t)),
 			col,
+			t,
 			surface_get_reflection(o->surf),
 			surface_get_diffuse(o->surf),
 			fabs(vector_dp(rn, rd)));

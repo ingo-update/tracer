@@ -30,32 +30,9 @@ plane plane_create(vector norm, vector point, surface surf)
 
 real plane_hit_distance(plane o, ray r)
 {
-  vector c0, rd, r0, pn;
-  real d, vd, v0, t;
-
-  rd = ray_get_direction(r);
-  r0 = ray_get_origin(r);
-
-  c0 = o->point;
-  pn = o->normal;
-
-  d = vector_dp(c0, pn); // 23
-  vd = vector_dp(pn, rd); // 24
-
-  if (0 == vd) // ray is parallel
-    {
-      return NO_HIT;
-    }
-
-  v0 = d - vector_dp(pn, r0); // 25
-  t = v0 / vd; // 26
-
-  if (0 > t) // ray is away from plane
-    {
-      return NO_HIT;
-    }
-
-  return t;
+  hitdata h;
+  h = plane_hitdata(o, r);
+  return h.distance;
 }
 
 hitdata plane_hitdata(plane o, ray r)
@@ -70,26 +47,34 @@ hitdata plane_hitdata(plane o, ray r)
   c0 = o->point;
   pn = o->normal;
 
-  d = vector_dp(c0, pn); // 23
   vd = vector_dp(pn, rd); // 24
 
+  if (0 == vd) // ray is parallel to plane
+    {
+      data.distance = NO_HIT;
+      return data;
+    }
+
+  d = vector_dp(c0, pn); // 23
   v0 = d - vector_dp(pn, r0); // 25
   t = v0 / vd; // 26
 
-  if (0 < vd)
+  if (0 > t) // ray is away from plane
     {
-      rn = vector_sp(pn,-1);
-    }
-  else
-    {
-      rn = pn;
+      data.distance = NO_HIT;
+      return data;
     }
 
-  data = hitdata_create(rn,
-			vector_sum(r0,vector_sp(rd, t)),
-			surface_get_color(o->surf),
-			surface_get_reflection(o->surf),
-			surface_get_diffuse(o->surf),
-			fabs(vector_dp(rn, rd)));
+  // Hit point normal.
+  rn = (0 < vd) ? vector_sp(pn, -1) : pn;
+
+  data.normal = rn;
+  data.hit_point = vector_sum(r0,vector_sp(rd, t));
+  data.col = surface_get_color(o->surf);
+  data.distance = t;
+  data.reflection = surface_get_reflection(o->surf);
+  data.diffuse = surface_get_diffuse(o->surf);
+  data.angle = fabs(vector_dp(rn, rd));
+
   return data;
 }
