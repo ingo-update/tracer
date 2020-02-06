@@ -14,7 +14,7 @@ SPEC = $(MAKEDIR)/spec.gmk
 include $(MAKEDIR)/build.gmk
 include $(MAKEDIR)/test.gmk
 
-CFLAGS_lexer.c = -Wno-unused-function
+CFLAGS_lexer.o = -Wno-unused-function
 LDLIBS = -lm -lfl
 LDLIBS_test-parser = -lm -lfl
 LDLIBS_test-vector = -lm
