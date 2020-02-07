@@ -8,7 +8,7 @@ plane plane_create(vector norm, vector point, surface surf)
 {
   plane new;
 
-  if (NULL == surf)
+  if (NULL == surf) // TODO: Can this really happen?
     {
       fprintf(stderr, "plane_create(): Illegal surface modifier\n");
       exit(EXIT_FAILURE);
@@ -68,6 +68,7 @@ hitdata plane_hitdata(plane o, ray r)
   // Hit point normal.
   rn = (0 < vd) ? vector_sp(pn, -1) : pn;
 
+  // TODO: Do this with hitpoint_create instead?
   data.normal = rn;
   data.hit_point = vector_sum(r0,vector_sp(rd, t));
   data.col = surface_get_color(o->surf);

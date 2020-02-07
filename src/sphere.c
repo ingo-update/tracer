@@ -91,7 +91,6 @@ hitdata sphere_hitdata(sphere o, ray r)
     }
 
   t = inside ? t_ca + sqrt(t_2hc) : t_ca - sqrt(t_2hc); // 2
-  data.distance = t;
 
   ri = vector_sum(origin, vector_sp(ray_get_direction(r), t));
   rn = vector_sp(vector_diff(ri, location), (inside ? -1 : 1) / radius);
@@ -121,8 +120,10 @@ hitdata sphere_hitdata(sphere o, ray r)
 	}
     }
 
+  // TDOD: Do this with hitdata_create() instead?
   data.normal = rn;
   data.hit_point = vector_sum(origin, vector_sp(ray_get_direction(r), t));
+  data.distance = t;
   data.col = col;
   data.reflection = surface_get_reflection(o->surf);
   data.diffuse = surface_get_diffuse(o->surf);

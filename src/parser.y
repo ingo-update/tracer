@@ -128,26 +128,21 @@ KEY_TRIANGLE LBRACE vector COMMA vector COMMA vector object_mods RBRACE
    specifying a triangle. */
 
 triangle:
-KEY_TRIANGLEPNT LBRACE vector COMMA vector COMMA vector object_mods
-RBRACE
+KEY_TRIANGLEPNT LBRACE vector COMMA vector COMMA vector object_mods RBRACE
 { $$ = triangle_create($3, $5, $7, $8);}
-
 ;
 
 /* New Feature! Parallellograms use same syntax as triangle */
-
 
 triangle:
 KEY_PGRAM LBRACE vector COMMA vector COMMA vector object_mods RBRACE
 { $$ = pgram_create($3, vector_diff($5, $3), vector_diff($7, $3), $8); }
 ;
 
-
 triangle:
 KEY_PGRAMPNT LBRACE vector COMMA vector COMMA vector object_mods
 RBRACE
 { $$ = pgram_create($3, $5, $7, $8);}
-
 ;
 
 object_mods: opt_pigment opt_finish

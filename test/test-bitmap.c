@@ -147,6 +147,7 @@ int main()
       fail += compare_files();
     }
 
+  fprintf(stdout, "test_bitmap: ");
   if (0 == fail)
     {
       fprintf(stdout, "SUCCESS\n");
