@@ -28,14 +28,16 @@ plane plane_create(vector norm, vector point, surface surf)
   return new;
 }
 
+/*
 real plane_hit_distance(plane o, ray r)
 {
   hitdata h;
   h = plane_hitdata(o, r);
   return h.distance;
 }
+*/
 
-hitdata plane_hitdata(plane o, ray r)
+hitdata plane_hitdata(plane o, ray r, tracing_mode m)
 {
   vector c0, rd, r0, pn, rn;
   real d, vd, v0, t;
@@ -65,13 +67,15 @@ hitdata plane_hitdata(plane o, ray r)
       return data;
     }
 
+  data.distance = t;
+  if (Distance == m) return data;
+
   // Hit point normal.
   rn = (0 < vd) ? vector_sp(pn, -1) : pn;
 
   data.normal = rn;
   data.hit_point = vector_sum(r0,vector_sp(rd, t));
   data.col = surface_get_color(o->surf);
-  data.distance = t;
   data.reflection = surface_get_reflection(o->surf);
   data.diffuse = surface_get_diffuse(o->surf);
   data.angle = fabs(vector_dp(rn, rd));

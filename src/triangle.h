@@ -25,7 +25,6 @@ vector triangle_get_a_leg(triangle obj);
 vector triangle_get_another_leg(triangle obj);
 surface triangle_get_surface(triangle obj);
 
-real triangle_hit_distance(triangle o, ray r);
-hitdata triangle_hitdata(triangle o, ray r);
+hitdata triangle_hitdata(triangle o, ray r, tracing_mode m);
 
 #endif /* _TRIANGLE_H_ */

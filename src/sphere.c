@@ -42,14 +42,7 @@ struct sph_opt sph_opt_create(vector pole, vector equator)
   return o;
 }
 
-real sphere_hit_distance(sphere o, ray r)
-{
-  hitdata h;
-  h = sphere_hitdata(o, r);
-  return h.distance;
-}
-
-hitdata sphere_hitdata(sphere o, ray r)
+hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
 {
   int inside;
   vector oc, location, origin;
@@ -92,6 +85,8 @@ hitdata sphere_hitdata(sphere o, ray r)
 
   t = inside ? t_ca + sqrt(t_2hc) : t_ca - sqrt(t_2hc); // 2
   data.distance = t;
+
+  if (Distance == m) return data;
 
   ri = vector_sum(origin, vector_sp(ray_get_direction(r), t));
   rn = vector_sp(vector_diff(ri, location), (inside ? -1 : 1) / radius);

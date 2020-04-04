@@ -36,8 +36,7 @@ vector sphere_get_location(sphere obj);
 real sphere_get_radius(sphere obj);
 surface sphere_get_surface(sphere o);
 
-real sphere_hit_distance(sphere o, ray r);
-hitdata sphere_hitdata(sphere o, ray r);
+hitdata sphere_hitdata(sphere o, ray r, tracing_mode m);
 
 vector sph_opt_get_pole(struct sph_opt o);
 vector sph_opt_get_equator(struct sph_opt o);

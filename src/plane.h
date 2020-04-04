@@ -22,7 +22,6 @@ vector plane_get_normal(plane obj);
 vector plane_get_point(plane obj);
 surface plane_get_surface(plane obj);
 
-real plane_hit_distance(plane o, ray r);
-hitdata plane_hitdata(plane o, ray r);
+hitdata plane_hitdata(plane o, ray r, tracing_mode m);
 
 #endif /* _PLANE_H_ */
