@@ -28,14 +28,10 @@ plane plane_create(vector norm, vector point, surface surf)
   return new;
 }
 
-/*
-real plane_hit_distance(plane o, ray r)
+surface plane_get_surface(plane obj)
 {
-  hitdata h;
-  h = plane_hitdata(o, r);
-  return h.distance;
+  return obj->surf;
 }
-*/
 
 hitdata plane_hitdata(plane o, ray r, tracing_mode m)
 {
