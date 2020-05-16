@@ -42,6 +42,11 @@ struct sph_opt sph_opt_create(vector pole, vector equator)
   return o;
 }
 
+surface sphere_get_surface(sphere o)
+{
+  return o->surf;
+}
+
 hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
 {
   int inside;
