@@ -101,18 +101,25 @@ int test_image_maps()
 
   fail = 0;
 
-  /* Check that the first sphere is solid color */
-  surf = sphere_get_surface((sphere) the_world->objects->car);
-  if (Color == surface_get_mode(surf))
+  /* Check that the first object in the list is a plane */
+  if (Plane != ((object) the_world->objects->car)->type)
     {
       ++fail;
-      fprintf(stderr, "Failure: First sphere surface mode is %d, should be %d.\n", surface_get_mode(surf), TextureMap);
+      fprintf(stderr, "Failure: the first object is of type %d, should be %d\n", ((object) the_world->objects->car)->type, Plane);
+    }
+
+  /* Check that the plane is solid color */
+  surf = plane_get_surface((plane) the_world->objects->car);
+  if (Color != surface_get_mode(surf))
+    {
+      ++fail;
+      fprintf(stderr, "Failure: Plane surface mode is %d, should be %d.\n", surface_get_mode(surf), Color);
     }
 
   if (NULL != surf->texture)
     {
       ++fail;
-      fprintf(stderr, "Failure: First sphere has image map loaded.\n");
+      fprintf(stderr, "Failure: plane has image map loaded.\n");
     }
 
   /* Find the image for the triangle */
