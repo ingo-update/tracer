@@ -7,15 +7,15 @@ surface surface_create(struct pigment pig, struct finish fin)
 {
   surface s;
 
-  if (1 < fin.reflection)
+  if (1 < fin.reflection || 0 > fin.reflection)
     {
-      fprintf(stderr, "surface_create(): Reflection value %f is greater than 1 (100%%)\n", fin.reflection);
+      fprintf(stderr, "surface_create(): Illegal reflection value %f, should be between 0 and 1.\n", fin.reflection);
       return NULL;
     }
 
-  if (1 < fin.diffuse)
+  if (1 < fin.diffuse || 0 > fin.diffuse)
     {
-      fprintf(stderr, "surface_create(): Diffuse value %f is greater than 1 (100%%)\n", fin.diffuse);
+      fprintf(stderr, "surface_create(): Illegal diffuse value %f, should be between 0 and 1.\n", fin.diffuse);
       return NULL;
     }
 
@@ -60,7 +60,7 @@ color surface_get_color(surface s)
 {
   if (Color != s->mode) {
     fprintf(stderr, "surface_get_color(): Surface does not have mode Color.\n");
-    exit(EXIT_FAILURE);
+    return DEF_BG_COLOR;
   }
 
   return s->col;
@@ -71,7 +71,7 @@ bitmap surface_get_texture_map(surface s)
 {
   if (TextureMap != s->mode) {
     fprintf(stderr, "surface_get_texture_map(): Surface does not have mode TextureMap.\n");
-    exit(EXIT_FAILURE);
+    return NULL;
   }
 
   return s->texture;

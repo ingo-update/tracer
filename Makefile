@@ -68,8 +68,12 @@ $(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/co
 $(TESTDIR)/test-parser.o: $(TOPDIR)/test/test-parser.c $(GENSRC)/parser.h
 $(TESTDIR)/test-vector.o: $(TOPDIR)/test/test-vector.c
 $(TESTDIR)/test-color.o: $(TOPDIR)/test/test-color.c $(SRC)/color.h
+$(TESTDIR)/test-surface.o: $(TOPDIR)/test/test-surface.c $(SRC)/surface.h $(SRC)/defaults.h
+
+## Test executables
 
 $(TESTDIR)/test-bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-bitmap.o
 $(TESTDIR)/test-parser: $(filter-out %/main.o %/trace.o,$(OBJFILES)) $(TESTDIR)/test-parser.o
 $(TESTDIR)/test-vector: $(OBJDIR)/vector.o $(TESTDIR)/test-vector.o
 $(TESTDIR)/test-color: $(OBJDIR)/color.o $(TESTDIR)/test-color.o
+$(TESTDIR)/test-surface: $(OBJDIR)/surface.o $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-surface.o
