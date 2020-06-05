@@ -70,7 +70,8 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
   oc = vector_diff(location, origin); // 16
   l_2oc = vector_dp(oc, oc); // 17
 
-  inside = (l_2oc < radius * radius) ? 1 : 0;
+  // Are we inside the sphere?
+  inside = (l_2oc < radius * radius);
 
   t_ca = vector_dp(oc, ray_get_direction(r)); // 18
   if (!inside && 0 > t_ca)
@@ -89,6 +90,7 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
     }
 
   t = inside ? t_ca + sqrt(t_2hc) : t_ca - sqrt(t_2hc); // 2
+  data.distance = t;
 
   if (Distance == m) return data;
 
@@ -107,7 +109,7 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
       v = fi / M_PI; // 35
 
       /* Find longitude, 0.0 = E, 1.0 = W */
-      if (0.0 == v || 1.0 == v)  u = 0.0; // On a pole TODO: Can this happen?
+      if (0.0 == v || 1.0 == v)  u = 0.0;
       else
 	{
 	  theta = (acos(vector_dp(se, rn) / sin(fi)) / (2.0 * M_PI));
@@ -120,10 +122,8 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
 	}
     }
 
-  // TDOD: Do this with hitdata_create() instead?
   data.normal = rn;
   data.hit_point = vector_sum(origin, vector_sp(ray_get_direction(r), t));
-  data.distance = t;
   data.col = col;
   data.reflection = surface_get_reflection(o->surf);
   data.diffuse = surface_get_diffuse(o->surf);

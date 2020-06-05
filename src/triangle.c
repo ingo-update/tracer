@@ -110,6 +110,9 @@ hitdata triangle_hitdata(triangle o, ray r, tracing_mode m)
   v = (qb - u * ab) / b2; // 33
   if (0 >= v || 1 <= v || (!(o->pgram) && (1 < (u+v)))) return data;
 
+  data.distance = t;
+  if (Distance == m) return data;
+
   if (Color == surface_get_mode(o->surf)) col = surface_get_color(o->surf);
   else
     {
