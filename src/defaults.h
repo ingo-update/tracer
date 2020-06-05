@@ -5,6 +5,6 @@
 #define DEF_ZOOM 1
 #define DEF_PPM_MODE 3 /* 3 = binary, 6 = ascii */
 
-#define DEF_BG_COLOR color_create_rgb(0,0,0)
+#define DEF_BG_COLOR color_create_rgb(0x00, 0x00, 0x00)
 
 #endif /* _DEFAULTS_H_ */

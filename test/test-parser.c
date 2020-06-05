@@ -5,6 +5,7 @@
 #include "color.h"
 #include "world.h"
 #include "camera.h"
+#include "surface.h"
 
 #include "parser.h"
 
@@ -92,6 +93,54 @@ int test_world()
   return fail;
 }
 
+int test_image_maps()
+{
+  int fail;
+  surface surf;
+  struct list *lst;
+
+  fail = 0;
+
+  /* Check that the first object in the list is a plane */
+  if (Plane != ((object) the_world->objects->car)->type)
+    {
+      ++fail;
+      fprintf(stderr, "Failure: the first object is of type %d, should be %d\n", ((object) the_world->objects->car)->type, Plane);
+    }
+
+  /* Check that the plane is solid color */
+  surf = plane_get_surface((plane) the_world->objects->car);
+  if (Color != surface_get_mode(surf))
+    {
+      ++fail;
+      fprintf(stderr, "Failure: Plane surface mode is %d, should be %d.\n", surface_get_mode(surf), Color);
+    }
+
+  if (NULL != surf->texture)
+    {
+      ++fail;
+      fprintf(stderr, "Failure: plane has image map loaded.\n");
+    }
+
+  /* Find the image for the triangle */
+  for (lst = the_world->objects ; (((object) lst->car)->type != Triangle) ; lst = lst->cdr);
+  surf = triangle_get_surface((triangle) lst->car);
+
+  if (TextureMap != surface_get_mode(surf))
+    {
+      ++fail;
+      fprintf(stderr, "Failure: Triangle surface mode is %d, should be %d.\n", surface_get_mode(surf), TextureMap);
+    }
+
+  if (NULL == surf->texture)
+    {
+      ++fail;
+      fprintf(stderr, "Failure: Triangle image map was not loaded.\n");
+    }
+
+  return fail;
+}
+
 int main()
 {
   int fail;
@@ -99,9 +148,8 @@ int main()
   fail = 0;
 
   fail += test_parse();
-
   fail += test_world();
-
+  fail += test_image_maps();
 
   if (0 == fail)
     {
