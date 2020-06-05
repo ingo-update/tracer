@@ -67,12 +67,9 @@ hitdata triangle_hitdata(triangle o, ray r, tracing_mode m)
   real 	d, u, v, vd, v0, t;
   real 	a2, b2, ab, qa, qb;
 
-  hitdata data;
   bitmap bmp;
   unsigned int x_in_map, y_in_map;
   color col;
-
-  data.distance = NO_HIT;
 
   rd = ray_get_direction(r);
   r0 = ray_get_origin(r);
@@ -88,12 +85,12 @@ hitdata triangle_hitdata(triangle o, ray r, tracing_mode m)
   v0 = d - vector_dp(pn, r0);
 
   // Is ray paralell to triangle plane?
-  if (0 == vd) return data;
+  if (0 == vd) return HITDATA_MISS;
 
   t = v0 / vd;
 
   // Is ray away from triangle plane?
-  if (0 > t) return data;
+  if (0 > t) return HITDATA_MISS;
 
   ri = vector_sum(r0, vector_sp(rd, t));
   rn = (0 > vd) ? pn : vector_sp(pn, -1);
@@ -106,12 +103,11 @@ hitdata triangle_hitdata(triangle o, ray r, tracing_mode m)
   a2 = vector_dp(a, a);
 
   u = (b2 * qa - ab * qb) / (a2 * b2 - ab * ab); // 32
-  if (0 >= u || 1 <= u) return data;
+  if (0 >= u || 1 <= u) return HITDATA_MISS;
   v = (qb - u * ab) / b2; // 33
-  if (0 >= v || 1 <= v || (!(o->pgram) && (1 < (u+v)))) return data;
+  if (0 >= v || 1 <= v || (!(o->pgram) && (1 < (u+v)))) return HITDATA_MISS;
 
-  data.distance = t;
-  if (Distance == m) return data;
+  if (Distance == m) return hitdata_distance(t);
 
   if (Color == surface_get_mode(o->surf)) col = surface_get_color(o->surf);
   else
@@ -122,12 +118,12 @@ hitdata triangle_hitdata(triangle o, ray r, tracing_mode m)
       col = bitmap_get_pixel(bmp, x_in_map, y_in_map);
     }
 
-  data = hitdata_create(rn,
+  return hitdata_create(rn,
 			vector_sum(r0,vector_sp(rd,t)),
 			col,
 			t,
 			surface_get_reflection(o->surf),
 			surface_get_diffuse(o->surf),
-			fabs(vector_dp(rn, rd)));
-  return data;
+			fabs(vector_dp(rn, rd))
+			);
 }

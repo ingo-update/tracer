@@ -61,8 +61,6 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
   vector sp, se;
   bitmap bmp;
 
-  hitdata data;
-
   radius = o->radius;
   location = o->location;
   origin = ray_get_origin(r);
@@ -74,25 +72,18 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
   inside = (l_2oc < radius * radius);
 
   t_ca = vector_dp(oc, ray_get_direction(r)); // 18
-  if (!inside && 0 > t_ca)
-    {
-      // looking away from sphere
-      data.distance = NO_HIT;
-      return data;
-    }
+
+  // Looking away from sphere?
+  if (!inside && 0 > t_ca) return HITDATA_MISS;
 
   t_2hc = (radius * radius) - l_2oc + (t_ca * t_ca); // 19
-  if (0 > t_2hc)
-    {
-      // looking past sphere
-      data.distance = NO_HIT;
-      return data;
-    }
+
+  // Looking past sphere?
+  if (0 > t_2hc) return HITDATA_MISS;
 
   t = inside ? t_ca + sqrt(t_2hc) : t_ca - sqrt(t_2hc); // 2
-  data.distance = t;
 
-  if (Distance == m) return data;
+  if (Distance == m) return hitdata_distance(t);
 
   ri = vector_sum(origin, vector_sp(ray_get_direction(r), t));
   rn = vector_sp(vector_diff(ri, location), (inside ? -1 : 1) / radius);
@@ -122,14 +113,14 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
 	}
     }
 
-  data.normal = rn;
-  data.hit_point = vector_sum(origin, vector_sp(ray_get_direction(r), t));
-  data.col = col;
-  data.reflection = surface_get_reflection(o->surf);
-  data.diffuse = surface_get_diffuse(o->surf);
-  data.angle = fabs(vector_dp(rn, ray_get_direction(r)));
-
-  return data;
+  return hitdata_create(rn,
+			vector_sum(origin, vector_sp(ray_get_direction(r), t)),
+			col,
+			t,
+			surface_get_reflection(o->surf),
+			surface_get_diffuse(o->surf),
+			fabs(vector_dp(rn, ray_get_direction(r)))
+			);
 }
 
 vector sph_opt_get_pole(struct sph_opt o)

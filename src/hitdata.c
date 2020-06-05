@@ -2,6 +2,15 @@
 
 #include "hitdata.h"
 
+hitdata hitdata_distance(real distance)
+{
+  hitdata data;
+
+  data.distance = distance;
+
+  return data;
+}
+
 hitdata hitdata_create(vector norm, vector point, color col, real distance, real reflection, real diffuse, real angle)
 {
   hitdata h;

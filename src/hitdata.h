@@ -8,6 +8,7 @@
 #define _HITDATA_H_
 
 #define NO_HIT REAL_MAX
+#define HITDATA_MISS hitdata_distance(NO_HIT)
 
 typedef struct hitdata_t hitdata;
 
@@ -18,6 +19,7 @@ struct	hitdata_t
   real distance, reflection, diffuse, angle;
 };
 
+hitdata hitdata_distance(real distance);
 hitdata hitdata_create(vector norm, vector point, color col, real distance, real reflection, real diffuse, real angle);
 
 vector hitdata_get_normal(hitdata data);
