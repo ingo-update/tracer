@@ -54,13 +54,8 @@ int main(int argc, char **argv)
 
   res = bitmap_write_ppm(bmp, options_get_ppm_mode(opt), options_get_out_file_name(opt), options_get_comment(opt));
 
-  if (0 == res)
-    {
-      return EXIT_SUCCESS;
-    }
-  else
-    {
-      fprintf(stderr, "Failed to write bitmap\n");
-      return EXIT_FAILURE;
-    }
+  if (0 == res) return EXIT_SUCCESS;
+
+  fprintf(stderr, "Failed to write bitmap\n");
+  return EXIT_FAILURE;
 }

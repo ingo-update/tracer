@@ -45,12 +45,13 @@ int main()
 {
   int fail = 0;
 
-  if (!fail)
+  if (0 == fail)
     {
       fail += test_datatype();
     }
 
-    if (0 == fail)
+  fprintf(stdout, "test_color: ");
+  if (0 == fail)
     {
       fprintf(stdout, "SUCCESS\n");
       exit(EXIT_SUCCESS);

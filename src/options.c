@@ -142,6 +142,7 @@ options options_get_options(int argc, char **argv)
       break;
     default:
       _options_print_usage(argv[0]);
+      free(opt);
       return NULL;
     }
 

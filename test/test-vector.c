@@ -132,6 +132,7 @@ int main()
       fail += test_datatype();
     }
 
+  fprintf(stdout, "test_vector: ");
   if (0 == fail)
     {
       fail += test_arithmetic();

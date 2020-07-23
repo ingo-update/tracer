@@ -148,9 +148,13 @@ int main()
   fail = 0;
 
   fail += test_parse();
-  fail += test_world();
-  fail += test_image_maps();
+  if (0 == fail)
+    {
+      fail += test_world();
+      fail += test_image_maps();
+    }
 
+  fprintf(stdout, "test_parser: ");
   if (0 == fail)
     {
       fprintf(stdout, "SUCCESS\n");
