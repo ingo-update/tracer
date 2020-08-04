@@ -15,10 +15,11 @@ plane plane_create(vector norm, vector point, surface surf)
     }
 
   new = (plane) malloc(sizeof(struct plane_t));
-  if (NULL == new) {
-    fprintf(stderr,"plane_create(): Could not allocate plane\n");
-    exit(EXIT_FAILURE);
-  }
+  if (NULL == new)
+    {
+      fprintf(stderr,"plane_create(): Could not allocate plane\n");
+      exit(EXIT_FAILURE);
+    }
 
   new->type = Plane;
   new->normal = vector_norm(norm);
@@ -61,7 +62,6 @@ hitdata plane_hitdata(plane o, ray r, tracing_mode m)
   // Hit point normal.
   rn = (0 < vd) ? vector_sp(pn, -1) : pn;
 
-  // TODO: Do this with hitpoint_create instead?
   return hitdata_create(rn,
 			vector_sum(r0,vector_sp(rd, t)),
 			surface_get_color(o->surf),
