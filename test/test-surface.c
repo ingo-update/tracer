@@ -119,22 +119,21 @@ int test_datatype()
 
 int main()
 {
-  int fail = 0;
+  int fail;
 
   fprintf(stdout, "test_surface: ");
-  if (!fail)
-    {
-      fail += test_datatype();
-    }
+  fail = 0;
 
-    if (0 == fail)
+  fail += test_datatype();
+
+  if (0 == fail)
     {
       fprintf(stdout, "SUCCESS\n");
-      exit(EXIT_SUCCESS);
+      return EXIT_SUCCESS;
     }
   else
     {
       fprintf(stdout, "FAILURE; %d tests failed.\n", fail);
-      exit(EXIT_FAILURE);
+      return EXIT_FAILURE;
     }
 }

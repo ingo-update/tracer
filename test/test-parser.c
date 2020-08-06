@@ -145,24 +145,21 @@ int main()
 {
   int fail;
 
+  fprintf(stdout, "test_parser: ");
   fail = 0;
 
   fail += test_parse();
-  if (0 == fail)
-    {
-      fail += test_world();
-      fail += test_image_maps();
-    }
+  fail += test_world();
+  fail += test_image_maps();
 
-  fprintf(stdout, "test_parser: ");
   if (0 == fail)
     {
       fprintf(stdout, "SUCCESS\n");
-      exit(EXIT_SUCCESS);
+      return EXIT_SUCCESS;
     }
   else
     {
       fprintf(stdout, "FAILURE; %d tests failed.\n", fail);
-      exit(EXIT_FAILURE);
+      return EXIT_FAILURE;
     }
 }

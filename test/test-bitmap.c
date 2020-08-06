@@ -135,27 +135,20 @@ int main()
   int fail;
   create_files();
 
+  fprintf(stdout, "test_bitmap: ");
   fail = 0;
 
-  if (0 == fail)
-    {
-      fail += test_errors();
-    }
+  fail += test_errors();
+  fail += compare_files();
 
-  if (0 == fail)
-    {
-      fail += compare_files();
-    }
-
-  fprintf(stdout, "test_bitmap: ");
   if (0 == fail)
     {
       fprintf(stdout, "SUCCESS\n");
-      exit(EXIT_SUCCESS);
+      return EXIT_SUCCESS;
     }
   else
     {
       fprintf(stdout, "FAILURE; %d tests failed.\n", fail);
-      exit(EXIT_FAILURE);
+      return EXIT_FAILURE;
     }
 }

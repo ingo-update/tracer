@@ -125,27 +125,20 @@ int main()
 {
   int fail;
 
+  fprintf(stdout, "test_vector: ");
   fail = 0;
 
-  if (0 == fail)
-    {
-      fail += test_datatype();
-    }
-
-  fprintf(stdout, "test_vector: ");
-  if (0 == fail)
-    {
-      fail += test_arithmetic();
-    }
+  fail += test_datatype();
+  fail += test_arithmetic();
 
   if (0 == fail)
     {
       fprintf(stdout, "SUCCESS\n");
-      exit(EXIT_SUCCESS);
+      return EXIT_SUCCESS;
     }
   else
     {
       fprintf(stdout, "FAILURE; %d tests failed.\n", fail);
-      exit(EXIT_FAILURE);
+      return EXIT_FAILURE;
     }
 }
