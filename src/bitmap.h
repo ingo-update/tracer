@@ -6,10 +6,10 @@
 #define DEPTH 255 // only supported color depth
 
 typedef struct bitmap_t* bitmap;
-
-struct	bitmap_t {
-   int height, width;
-   color *pixels;
+struct bitmap_t
+{
+  int height, width;
+  color *pixels;
 };
 
 typedef enum {Binary=0, Ascii=1} ppmtype;

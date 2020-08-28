@@ -12,25 +12,16 @@ static unsigned int _get_ascii_value(FILE *infile)
   unsigned int a;
   char c;
 
+  /* Find first digit */
   found = 0;
   while (!found)
     {
       c = fgetc(infile);
-
-      if ('#' == c)
-	{
-	  while ('\n' != c)
-	    {
-	      c = fgetc(infile);
-	    }
-	}
-
-      if (c >= '0' && c <= '9')
-	{
-	  found = 1;
-	}
+      if ('#' == c) while ('\n' != c) c = fgetc(infile);
+      if (c >= '0' && c <= '9') found = 1;
     }
 
+  /* Read digits */
   a = 0;
   while ('0' <= c && '9' >= c)
     {
@@ -38,7 +29,7 @@ static unsigned int _get_ascii_value(FILE *infile)
       c = fgetc(infile);
     }
 
-  ungetc(c,infile);
+  ungetc(c, infile);
 
   return a;
 }
@@ -121,17 +112,16 @@ color bitmap_get_pixel(bitmap bmp, unsigned int x, unsigned int y)
 
 void bitmap_put_pixel(bitmap bmp, unsigned int x, unsigned int y, color c)
 {
-  if (INSIDE(bmp, x, y))
-    {
-      bmp->pixels[(y * bmp->width) + x] = c;
-    }
-  else
+  if (!INSIDE(bmp, x, y))
     {
       fprintf(stderr, "bitmap_put_pixel(): Pixel (%dx%d) outside bitmap (%dx%d).\n",
 	      x, y, bmp->width, bmp->height);
       exit(EXIT_FAILURE);
     }
+
+  bmp->pixels[(y * bmp->width) + x] = c;
 }
+
 
 int bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment)
 {
@@ -140,11 +130,8 @@ int bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment)
   unsigned int x,y;
   color p;
 
-  if (NULL == filename)
-    {
-      outfile = stdout;
-    }
-  else
+  outfile = stdout;
+  if (NULL != filename)
     {
       outfile = fopen(filename,"w");
       if (NULL == outfile)
@@ -154,21 +141,23 @@ int bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment)
 	}
     }
 
-  if (Ascii == ptype)
+  switch (ptype)
     {
+    case Ascii:
       cookie = "P3";
       format = "%d %d %d\n";
-    }
-  else
-    {
+      break;
+    case Binary:
       cookie = "P6";
       format = "%c%c%c";
+      break;
+    default:
+      fprintf(stderr,"bitmap_write_ppm(): Illegal ppm type %d\n", ptype);
+      return -1;
     }
 
   // Header
-  fprintf(outfile, "%s\n", cookie);
-  fprintf(outfile, "#%s\n", comment);
-  fprintf(outfile, "%d %d %d\n",bmp->width, bmp->height, DEPTH);
+  fprintf(outfile,"%s\n#%s\n%d %d %d\n", cookie, comment, bmp->width, bmp->height, DEPTH);
 
   // Pixel data
   for (y = 0 ; y < bmp->height ; y++)
