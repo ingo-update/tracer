@@ -34,7 +34,7 @@ world world_create()
 
   w->bg_color = DEF_BG_COLOR;
   w->objects = NULL;
-  w->bg_map_name= NULL;
+  w->lights = NULL;
 
   return w;
 }
@@ -57,11 +57,6 @@ color world_get_background(world w)
 void world_put_background(world w, color col)
 {
   w->bg_color = col;
-}
-
-void world_put_background_map_name(world w, char *map_name)
-{
-   w->bg_map_name = map_name;
 }
 
 static color _illumination(world w, hitdata hit)

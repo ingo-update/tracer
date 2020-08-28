@@ -2,7 +2,6 @@
 #include "surface.h"
 #include "hitdata.h"
 #include "ray.h"
-#include "object_type.h"
 
 #ifndef _PLANE_H_
 #define _PLANE_H_

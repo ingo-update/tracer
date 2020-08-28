@@ -1,4 +1,4 @@
-#include "real.h"
+#include "types.h"
 
 #ifndef _COLOR_H_
 #define _COLOR_H_
@@ -12,7 +12,6 @@ struct color
 
 color color_create_rgb(int r, int g, int b);
 color color_add(color c1, color c2);
-// color color_invert(color col);
 color color_scale(color col, real s);
 color color_multiply(color a, color b);
 

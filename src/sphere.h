@@ -1,9 +1,8 @@
-#include "real.h"
+#include "types.h"
 #include "vector.h"
 #include "surface.h"
 #include "ray.h"
 #include "hitdata.h"
-#include "object_type.h"
 
 #ifndef _SPHERE_H_
 #define _SPHERE_H_

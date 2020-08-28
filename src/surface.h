@@ -1,6 +1,6 @@
 #include "color.h"
 #include "bitmap.h"
-#include "real.h"
+#include "types.h"
 #include "defaults.h"
 
 #ifndef _SURFACE_H_

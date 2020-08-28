@@ -1,4 +1,4 @@
-#include "real.h"
+#include "types.h"
 #include "bitmap.h"
 
 #ifndef _OPTIONS_H_

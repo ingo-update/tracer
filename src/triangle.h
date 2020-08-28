@@ -2,7 +2,6 @@
 #include "surface.h"
 #include "ray.h"
 #include "hitdata.h"
-#include "object_type.h"
 
 #ifndef _TRIANGLE_H_
 #define _TRIANGLE_H_

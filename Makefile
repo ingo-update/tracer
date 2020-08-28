@@ -43,20 +43,20 @@ $(addprefix $(BUILDDIR)/,$(TARGET)): $(OBJFILES)
 
 $(OBJDIR)/bitmap.o: $(SRC)/bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
 $(OBJDIR)/camera.o: $(SRC)/camera.c $(SRC)/camera.h $(SRC)/vector.h
-$(OBJDIR)/color.o: $(SRC)/color.c $(SRC)/color.h $(SRC)/real.h
-$(OBJDIR)/hitdata.o: $(SRC)/hitdata.c $(SRC)/hitdata.h $(SRC)/color.h $(SRC)/vector.h $(SRC)/real.h
+$(OBJDIR)/color.o: $(SRC)/color.c $(SRC)/color.h $(SRC)/types.h
+$(OBJDIR)/hitdata.o: $(SRC)/hitdata.c $(SRC)/hitdata.h $(SRC)/color.h $(SRC)/vector.h $(SRC)/types.h
 $(OBJDIR)/light.o: $(SRC)/light.c $(SRC)/light.h $(SRC)/color.h $(SRC)/vector.h
 $(OBJDIR)/main.o: $(SRC)/main.c $(SRC)/options.h $(SRC)/world.h $(SRC)/camera.h
-$(OBJDIR)/object.o: $(SRC)/object.c $(SRC)/object.h $(SRC)/real.h $(SRC)/sphere.h $(SRC)/plane.h $(SRC)/triangle.h
-$(OBJDIR)/options.o: $(SRC)/options.c $(SRC)/options.h $(SRC)/real.h $(SRC)/defaults.h
-$(OBJDIR)/plane.o: $(SRC)/plane.c $(SRC)/plane.h $(SRC)/world.h $(SRC)/real.h $(SRC)/color.h $(SRC)/surface.h $(SRC)/hitdata.h
-$(OBJDIR)/ray.o: $(SRC)/ray.c $(SRC)/ray.h $(SRC)/real.h $(SRC)/vector.h
-$(OBJDIR)/sphere.o: $(SRC)/sphere.c $(SRC)/sphere.h $(SRC)/real.h $(SRC)/vector.h $(SRC)/surface.h $(SRC)/ray.h $(SRC)/hitdata.h
-$(OBJDIR)/surface.o: $(SRC)/surface.c $(SRC)/surface.h $(SRC)/color.h $(SRC)/bitmap.h $(SRC)/real.h
-$(OBJDIR)/trace.o: $(SRC)/trace.c $(SRC)/trace.h $(SRC)/bitmap.h $(SRC)/real.h $(SRC)/world.h $(SRC)/ray.h $(SRC)/hitdata.h $(SRC)/camera.h $(SRC)/options.h
-$(OBJDIR)/triangle.o: $(SRC)/triangle.c $(SRC)/triangle.h $(SRC)/world.h $(SRC)/real.h $(SRC)/ray.h $(SRC)/hitdata.h $(SRC)/surface.h
-$(OBJDIR)/vector.o: $(SRC)/vector.c $(SRC)/vector.h $(SRC)/real.h
-$(OBJDIR)/world.o: $(SRC)/world.c $(SRC)/world.h $(SRC)/hitdata.h $(SRC)/color.h $(SRC)/ray.h $(SRC)/object.h $(SRC)/light.h $(SRC)/options.h $(SRC)/real.h $(SRC)/defaults.h
+$(OBJDIR)/object.o: $(SRC)/object.c $(SRC)/object.h $(SRC)/types.h $(SRC)/sphere.h $(SRC)/plane.h $(SRC)/triangle.h
+$(OBJDIR)/options.o: $(SRC)/options.c $(SRC)/options.h $(SRC)/types.h $(SRC)/defaults.h
+$(OBJDIR)/plane.o: $(SRC)/plane.c $(SRC)/plane.h $(SRC)/world.h $(SRC)/types.h $(SRC)/color.h $(SRC)/surface.h $(SRC)/hitdata.h
+$(OBJDIR)/ray.o: $(SRC)/ray.c $(SRC)/ray.h $(SRC)/types.h $(SRC)/vector.h
+$(OBJDIR)/sphere.o: $(SRC)/sphere.c $(SRC)/sphere.h $(SRC)/types.h $(SRC)/vector.h $(SRC)/surface.h $(SRC)/ray.h $(SRC)/hitdata.h
+$(OBJDIR)/surface.o: $(SRC)/surface.c $(SRC)/surface.h $(SRC)/color.h $(SRC)/bitmap.h $(SRC)/types.h
+$(OBJDIR)/trace.o: $(SRC)/trace.c $(SRC)/trace.h $(SRC)/bitmap.h $(SRC)/types.h $(SRC)/world.h $(SRC)/ray.h $(SRC)/hitdata.h $(SRC)/camera.h $(SRC)/options.h
+$(OBJDIR)/triangle.o: $(SRC)/triangle.c $(SRC)/triangle.h $(SRC)/world.h $(SRC)/types.h $(SRC)/ray.h $(SRC)/hitdata.h $(SRC)/surface.h
+$(OBJDIR)/vector.o: $(SRC)/vector.c $(SRC)/vector.h $(SRC)/types.h
+$(OBJDIR)/world.o: $(SRC)/world.c $(SRC)/world.h $(SRC)/hitdata.h $(SRC)/color.h $(SRC)/ray.h $(SRC)/object.h $(SRC)/light.h $(SRC)/options.h $(SRC)/types.h $(SRC)/defaults.h
 
 $(OBJDIR)/lexer.o: $(GENSRC)/lexer.c $(GENSRC)/parser.h
 $(OBJDIR)/parser.o: $(GENSRC)/parser.c

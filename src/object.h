@@ -1,4 +1,4 @@
-#include "real.h"
+#include "types.h"
 
 #include "sphere.h"
 #include "plane.h"
@@ -6,7 +6,6 @@
 
 #include "ray.h"
 #include "hitdata.h"
-#include "object_type.h"
 
 #ifndef _OBJECT_H_
 #define _OBJECT_H_

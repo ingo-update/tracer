@@ -59,7 +59,6 @@
 %type <plane> plane
 %type <triangle> triangle
 %type <color> background
-%type <string> background_map
 %type <camera> camera
 %type <finish> opt_finish
 %type <finish> finish
@@ -83,7 +82,6 @@ item:	sphere { world_add_object(the_world, (object) $1);}
 |       triangle { world_add_object(the_world, (object) $1);}
 |       plane { world_add_object(the_world, (object) $1);}
 |       background {world_put_background(the_world, $1);}
-|       background_map {world_put_background_map_name(the_world, $1);}
 |       camera { the_camera = $1;}
 |       light { world_add_light(the_world, $1);}
 ;
@@ -211,11 +209,6 @@ RBRACE
 
 background:
 KEY_BACKGROUND LBRACE color RBRACE
-{ $$ = $3; }
-;
-
-background_map:
-KEY_BACKGROUND LBRACE STRING RBRACE
 { $$ = $3; }
 ;
 
