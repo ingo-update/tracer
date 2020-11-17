@@ -59,7 +59,7 @@ $(OBJDIR)/vector.o: $(SRC)/vector.c $(SRC)/vector.h $(SRC)/types.h
 $(OBJDIR)/world.o: $(SRC)/world.c $(SRC)/world.h $(SRC)/hitdata.h $(SRC)/color.h $(SRC)/ray.h $(SRC)/object.h $(SRC)/light.h $(SRC)/options.h $(SRC)/types.h $(SRC)/defaults.h
 
 $(OBJDIR)/lexer.o: $(GENSRC)/lexer.c $(GENSRC)/parser.h
-$(OBJDIR)/parser.o: $(GENSRC)/parser.c
+$(OBJDIR)/parser.o: $(GENSRC)/parser.c $(SRC)/vector.h $(SRC)/types.h $(SRC)/color.h $(SRC)/world.h $(SRC)/camera.h
 
 $(GENSRC)/lexer.c: $(SRC)/lexer.l
 $(GENSRC)/parser.c $(GENSRC)/parser.h: $(SRC)/parser.y

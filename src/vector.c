@@ -3,74 +3,33 @@
 
 #include "vector.h"
 
-vector vector_create(real x, real y, real z)
-{
-  vector new;
-
-  (new.x) = x;
-  (new.y) = y;
-  (new.z) = z;
-
-  return new;
-}
-
-real vector_get_x (vector vec)
-{
-  return vec.x;
-}
-
-real vector_get_y (vector vec)
-{
-  return vec.y;
-}
-
-real vector_get_z (vector vec)
-{
-  return vec.z;
-}
-
 vector vector_xp(vector vec, vector tor)
 {
-  vector cross;
-
-  cross.x = vec.y * tor.z - vec.z * tor.y;
-  cross.y = vec.z * tor.x - vec.x * tor.z;
-  cross.z = vec.x * tor.y - vec.y * tor.x;
-
-  return cross ;
+  return vector_create(vector_get_y(vec) * vector_get_z(tor) - vector_get_y(tor) * vector_get_z(vec),
+		       vector_get_z(vec) * vector_get_x(tor) - vector_get_z(tor) * vector_get_x(vec),
+		       vector_get_x(vec) * vector_get_y(tor) - vector_get_x(tor) * vector_get_y(vec)
+		       );
 }
 
 vector vector_sum(vector vec, vector tor)
 {
-  vector sum;
-
-  sum.x = vec.x + tor.x;
-  sum.y = vec.y + tor.y;
-  sum.z = vec.z + tor.z;
-
-  return sum;
+  return vector_create(vector_get_x(vec) + vector_get_x(tor),
+		       vector_get_y(vec) + vector_get_y(tor),
+		       vector_get_z(vec) + vector_get_z(tor)
+		       );
 }
 
 vector vector_diff(vector vec, vector tor)
 {
-  vector diff;
-
-  diff.x = vec.x - tor.x;
-  diff.y = vec.y - tor.y;
-  diff.z = vec.z - tor.z;
-
-  return diff;
+  return vector_create(vector_get_x(vec) - vector_get_x(tor),
+		       vector_get_y(vec) - vector_get_y(tor),
+		       vector_get_z(vec) - vector_get_z(tor)
+		       );
 }
 
 vector vector_sp(vector vec, real scalar)
 {
-  vector product;
-
-  product.x = vec.x * scalar;
-  product.y = vec.y * scalar;
-  product.z = vec.z * scalar;
-
-  return product;
+  return vector_create(vector_get_x(vec) * scalar, vector_get_y(vec) * scalar, vector_get_z(vec) * scalar);
 }
 
 vector vector_norm(vector vec)
@@ -80,7 +39,7 @@ vector vector_norm(vector vec)
 
 real vector_dp(vector vec, vector tor)
 {
-  return vec.x * tor.x + vec.y * tor.y + vec.z * tor.z;
+  return vector_get_x(vec) * vector_get_x(tor) + vector_get_y(vec) * vector_get_y(tor) + vector_get_z(vec) * vector_get_z(tor);
 }
 
 real vector_length(vector vec)
@@ -90,10 +49,10 @@ real vector_length(vector vec)
 
 int vector_compare(vector vec, vector tor)
 {
-  return (vec.x == tor.x) && (vec.y == tor.y) && (vec.z == tor.z);
+  return (vector_get_x(vec) == vector_get_x(tor)) && (vector_get_y(vec) == vector_get_y(tor)) && (vector_get_z(vec) == vector_get_z(tor));
 }
 
 void vector_print(FILE *os, vector vec)
 {
-  fprintf(os, "(%f, %f, %f)", vec.x, vec.y, vec.z);
+  fprintf(os, "(%f, %f, %f)", vector_get_x(vec), vector_get_y(vec), vector_get_z(vec));
 }
