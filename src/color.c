@@ -28,7 +28,9 @@ color color_add(color c1, color c2)
 
 color color_scale(color col, real s)
 {
-  return color_create_rgb(color_get_red(col) * s, color_get_green(col) * s, color_get_blue(col) * s);
+  return color_create_rgb(color_get_red(col) * s,
+			  color_get_green(col) * s,
+			  color_get_blue(col) * s);
 }
 
 color color_multiply(color a, color b)
@@ -38,21 +40,6 @@ color color_multiply(color a, color b)
 			  (color_get_blue(a) * color_get_blue(b)) / 255);
 }
 
-int color_get_red (color col)
-{
-  return col.r;
-}
-
-int color_get_green (color col)
-{
-  return col.g;
-}
-
-int color_get_blue (color col)
-{
-  return col.b;
-}
-
 
 int color_compare(color a, color b)
 {
@@ -60,7 +47,6 @@ int color_compare(color a, color b)
 	  color_get_green(a) == color_get_green(b) &&
 	  color_get_blue(a) == color_get_blue(b));
 }
-
 
 void color_print(FILE *os, color col)
 {
