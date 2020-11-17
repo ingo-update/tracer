@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "defaults.h"
 #include "color.h"
 
 color color_create_rgb(int r, int g, int b)
@@ -8,12 +9,12 @@ color color_create_rgb(int r, int g, int b)
 
   if (r == (r & 0xff) && g == (g & 0xff) && b == (b & 0xff))
     {
-      c.r = r; c.g = g; c.b = b;
+      c = r << 16 | g << 8 | b;
     }
   else
     {
       fprintf(stderr, "color_create_rgb(): Illegal RGB values: r = (0x%x), g = (0x%x), b = (0x%x)\n", r, g, b);
-      c.r = 0xff; c.g = 0x0; c.b = 0xff;
+      c = DEF_ERROR_COLOR;
     }
 
   return c;
