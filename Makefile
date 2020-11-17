@@ -64,6 +64,8 @@ $(OBJDIR)/parser.o: $(GENSRC)/parser.c
 $(GENSRC)/lexer.c: $(SRC)/lexer.l
 $(GENSRC)/parser.c $(GENSRC)/parser.h: $(SRC)/parser.y
 
+## Test objects
+
 $(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
 $(TESTDIR)/test-parser.o: $(TOPDIR)/test/test-parser.c $(GENSRC)/parser.h
 $(TESTDIR)/test-vector.o: $(TOPDIR)/test/test-vector.c

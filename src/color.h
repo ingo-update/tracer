@@ -3,6 +3,8 @@
 #ifndef _COLOR_H_
 #define _COLOR_H_
 
+#define add_max_255(a, b) (a + b > 255 ? 255 : a + b)
+
 typedef struct color color;
 
 struct color

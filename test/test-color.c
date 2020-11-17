@@ -41,6 +41,42 @@ int test_datatype()
   return fail;
 }
 
+int test_arithmetic()
+{
+  int fail;
+  color c1, c2, c3;
+
+  fail = 0;
+
+  c1 = color_create_rgb(0x12, 0x12, 0xef);
+  c2 = color_create_rgb(0x76, 0x54, 0x32);
+
+  c3 = color_add(c1, c2);
+  if (!color_compare(c3, color_create_rgb(0x88, 0x66, 0xff)))
+    {
+      fprintf(stderr, "FAIL: color_add() returned ");
+      color_print(stderr, c3);
+      fprintf(stderr, " should be ");
+      color_print(stderr, color_create_rgb(0x88, 0x66, 0xff));
+      fprintf(stderr, "\n");
+      ++fail;
+    }
+
+  c3 = color_multiply(c1, c2);
+  if (!color_compare(c3, color_create_rgb(0x08, 0x05, 0x2e)))
+    {
+      fprintf(stderr, "FAIL: color_multiply() returned ");
+      color_print(stderr, c3);
+      fprintf(stderr, " should be ");
+      color_print(stderr, color_create_rgb(0x08, 0x05, 0x2e));
+      fprintf(stderr, "\n");
+      ++fail;
+    }
+
+  return fail;
+}
+
+
 int main()
 {
   int fail;
@@ -49,6 +85,7 @@ int main()
   fail = 0;
 
   fail += test_datatype();
+  fail += test_arithmetic();
 
   if (0 == fail)
     {
