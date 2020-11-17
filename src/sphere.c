@@ -100,17 +100,17 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
       v = fi / M_PI; // 35
 
       /* Find longitude, 0.0 = E, 1.0 = W */
-      if (0.0 == v || 1.0 == v)  u = 0.0;
+      if (0.0 == v || 1.0 == v)  u = 0.0; /* On a pole, longitude is not defined so take any */
       else
 	{
 	  theta = (acos(vector_dp(se, rn) / sin(fi)) / (2.0 * M_PI));
 	  u = (0.0 < vector_dp(vector_xp(se, sp), rn)) ? theta : 1.0 - theta;
-
-	  // - 1 because of zeroindexed bitmaps
-	  x_in_map = (bitmap_width(bmp) - 1) * u;
-	  y_in_map = (bitmap_height(bmp) - 1) * v;
-	  col = bitmap_get_pixel(bmp, x_in_map, y_in_map);
 	}
+
+      // - 1 because of zeroindexed bitmaps
+      x_in_map = (bitmap_width(bmp) - 1) * u;
+      y_in_map = (bitmap_height(bmp) - 1) * v;
+      col = bitmap_get_pixel(bmp, x_in_map, y_in_map);
     }
 
   return hitdata_create(rn,
