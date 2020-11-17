@@ -55,7 +55,6 @@
 %type <color> color
 %type <surface> object_mods
 %type <sphere> sphere
-%type <pgram> pgram
 %type <plane> plane
 %type <triangle> triangle
 %type <color> background
