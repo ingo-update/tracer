@@ -8,6 +8,6 @@ typedef double real;
 #define OFFSET 0.00001 /* Compensation for inaccurate arithmetics. */
 
 typedef enum {Distance, Full} tracing_mode;
-typedef enum {Sphere, Plane, Triangle} object_type;
+typedef enum {Sphere, Plane, Triangle, Parallelogram} object_type;
 
 #endif /* _TYPES_H_ */

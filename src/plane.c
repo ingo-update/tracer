@@ -4,11 +4,40 @@
 
 #include "plane.h"
 
-plane plane_create(vector norm, vector point, surface surf)
+/* Create triangle or parallelogram */
+static plane _plane_create3(vector c0, vector a, vector b, surface surf, object_type t)
 {
   plane new;
 
-  if (NULL == surf) // TODO: Can this really happen?
+  if (NULL == surf)
+    {
+      fprintf(stderr, "_plane_create3(): Illegal surface modifier\n");
+      exit(EXIT_FAILURE);
+    }
+
+  new = (plane) malloc(sizeof(struct plane_t));
+  if (NULL == new)
+    {
+      fprintf(stderr,"_plane_create3(): Could not allocate plane\n");
+      exit(EXIT_FAILURE);
+    }
+
+  new->type = t;
+  new->corner0 = c0;
+  new->a_leg = a;
+  new->another_leg = b;
+  new->normal = vector_norm(vector_xp(a, b)); // 29
+  new->surf = surf;
+
+  return new;
+}
+
+/* Create infinite plane */
+plane plane_create(vector norm, vector point, surface surf)
+{
+ plane new;
+
+  if (NULL == surf)
     {
       fprintf(stderr, "plane_create(): Illegal surface modifier\n");
       exit(EXIT_FAILURE);
@@ -23,10 +52,40 @@ plane plane_create(vector norm, vector point, surface surf)
 
   new->type = Plane;
   new->normal = vector_norm(norm);
-  new->point = point;
+  new->corner0 = point;
   new->surf = surf;
 
   return new;
+
+}
+plane triangle_create(vector c0, vector a, vector b, surface surf)
+{
+  return _plane_create3(c0, a, b, surf, Triangle);
+}
+
+plane pgram_create(vector c0, vector a, vector b, surface surf)
+{
+  return _plane_create3(c0, a, b, surf, Parallelogram);
+}
+
+vector plane_get_corner0(plane obj)
+{
+  return obj->corner0;
+}
+
+vector plane_get_a_leg(plane obj)
+{
+  return obj->a_leg;
+}
+
+vector plane_get_another_leg(plane obj)
+{
+  return obj->another_leg;
+}
+
+vector plane_get_normal(plane obj)
+{
+  return obj->normal;
 }
 
 surface plane_get_surface(plane obj)
@@ -36,35 +95,68 @@ surface plane_get_surface(plane obj)
 
 hitdata plane_hitdata(plane o, ray r, tracing_mode m)
 {
-  vector c0, rd, r0, pn, rn;
-  real d, vd, v0, t;
+  vector a, b, c0, q, rd, r0, pn, rn, ri;
+  real 	d, u, v, vd, v0, t;
+  real 	a2, b2, ab, qa, qb;
+
+  bitmap bmp;
+  unsigned int x_in_map, y_in_map;
+  color col;
 
   rd = ray_get_direction(r);
   r0 = ray_get_origin(r);
 
-  c0 = o->point;
-  pn = o->normal;
+  a = plane_get_a_leg(o);
+  b = plane_get_another_leg(o);
+  c0 = plane_get_corner0(o);
+  pn = plane_get_normal(o);
 
-  vd = vector_dp(pn, rd); // 24
+  vd = vector_dp(pn, rd);
 
-  // Is ray parallel to plane?
+  // Is ray paralell to plane?
   if (0 == vd) return HITDATA_MISS;
 
-  d = vector_dp(c0, pn); // 23
-  v0 = d - vector_dp(pn, r0); // 25
-  t = v0 / vd; // 26
+  d = vector_dp(c0, pn); // 30
+  v0 = d - vector_dp(pn, r0);
+  t = v0 / vd;
 
-  // Is ray away from plane
+  // Is ray away from plane?
   if (0 > t) return HITDATA_MISS;
+
+  ri = vector_sum(r0, vector_sp(rd, t));
+  rn = (0 > vd) ? pn : vector_sp(pn, -1);
+
+  // Outside triangle / parallelogram?
+  if (o->type != Plane)
+    {
+      q = vector_diff(ri, c0); // 31
+      b2 = vector_dp(b, b);
+      qa = vector_dp(q, a);
+      ab = vector_dp(a, b);
+      qb = vector_dp(q, b);
+      a2 = vector_dp(a, a);
+
+      u = (b2 * qa - ab * qb) / (a2 * b2 - ab * ab); // 32
+      if (0 >= u || 1 <= u) return HITDATA_MISS;
+      v = (qb - u * ab) / b2; // 33
+      if (0 >= v || 1 <= v || ((o->type != Parallelogram) && (1 < (u+v)))) return HITDATA_MISS;
+    }
+  else u = v = 0; // To keep the compiler happy...
 
   if (Distance == m) return hitdata_distance(t);
 
-  // Hit point normal.
-  rn = (0 < vd) ? vector_sp(pn, -1) : pn;
+  if (Color == surface_get_mode(o->surf)) col = surface_get_color(o->surf);
+  else
+    {
+      bmp = surface_get_texture_map(o->surf);
+      x_in_map = (bitmap_width(bmp) - 1) * u;
+      y_in_map = (bitmap_height(bmp) - 1) * v;
+      col = bitmap_get_pixel(bmp, x_in_map, y_in_map);
+    }
 
   return hitdata_create(rn,
-			vector_sum(r0,vector_sp(rd, t)),
-			surface_get_color(o->surf),
+			vector_sum(r0,vector_sp(rd,t)),
+			col,
 			t,
 			surface_get_reflection(o->surf),
 			surface_get_diffuse(o->surf),

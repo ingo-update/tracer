@@ -47,14 +47,13 @@ $(OBJDIR)/color.o: $(SRC)/color.c $(SRC)/color.h $(SRC)/types.h
 $(OBJDIR)/hitdata.o: $(SRC)/hitdata.c $(SRC)/hitdata.h $(SRC)/color.h $(SRC)/vector.h $(SRC)/types.h
 $(OBJDIR)/light.o: $(SRC)/light.c $(SRC)/light.h $(SRC)/color.h $(SRC)/vector.h
 $(OBJDIR)/main.o: $(SRC)/main.c $(SRC)/options.h $(SRC)/world.h $(SRC)/camera.h
-$(OBJDIR)/object.o: $(SRC)/object.c $(SRC)/object.h $(SRC)/types.h $(SRC)/sphere.h $(SRC)/plane.h $(SRC)/triangle.h
+$(OBJDIR)/object.o: $(SRC)/object.c $(SRC)/object.h $(SRC)/types.h $(SRC)/sphere.h $(SRC)/plane.h
 $(OBJDIR)/options.o: $(SRC)/options.c $(SRC)/options.h $(SRC)/types.h $(SRC)/defaults.h
 $(OBJDIR)/plane.o: $(SRC)/plane.c $(SRC)/plane.h $(SRC)/world.h $(SRC)/types.h $(SRC)/color.h $(SRC)/surface.h $(SRC)/hitdata.h
 $(OBJDIR)/ray.o: $(SRC)/ray.c $(SRC)/ray.h $(SRC)/types.h $(SRC)/vector.h
 $(OBJDIR)/sphere.o: $(SRC)/sphere.c $(SRC)/sphere.h $(SRC)/types.h $(SRC)/vector.h $(SRC)/surface.h $(SRC)/ray.h $(SRC)/hitdata.h
 $(OBJDIR)/surface.o: $(SRC)/surface.c $(SRC)/surface.h $(SRC)/color.h $(SRC)/bitmap.h $(SRC)/types.h
 $(OBJDIR)/trace.o: $(SRC)/trace.c $(SRC)/trace.h $(SRC)/bitmap.h $(SRC)/types.h $(SRC)/world.h $(SRC)/ray.h $(SRC)/hitdata.h $(SRC)/camera.h $(SRC)/options.h
-$(OBJDIR)/triangle.o: $(SRC)/triangle.c $(SRC)/triangle.h $(SRC)/world.h $(SRC)/types.h $(SRC)/ray.h $(SRC)/hitdata.h $(SRC)/surface.h
 $(OBJDIR)/vector.o: $(SRC)/vector.c $(SRC)/vector.h $(SRC)/types.h
 $(OBJDIR)/world.o: $(SRC)/world.c $(SRC)/world.h $(SRC)/hitdata.h $(SRC)/color.h $(SRC)/ray.h $(SRC)/object.h $(SRC)/light.h $(SRC)/options.h $(SRC)/types.h $(SRC)/defaults.h
 
@@ -67,7 +66,7 @@ $(GENSRC)/parser.c $(GENSRC)/parser.h: $(SRC)/parser.y
 ## Test objects
 
 $(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
-$(TESTDIR)/test-parser.o: $(TOPDIR)/test/test-parser.c $(GENSRC)/parser.h $(SRC)/triangle.h $(SRC)/plane.h $(SRC)/sphere.h
+$(TESTDIR)/test-parser.o: $(TOPDIR)/test/test-parser.c $(GENSRC)/parser.h $(SRC)/plane.h $(SRC)/sphere.h
 $(TESTDIR)/test-vector.o: $(TOPDIR)/test/test-vector.c
 $(TESTDIR)/test-color.o: $(TOPDIR)/test/test-color.c $(SRC)/color.h
 $(TESTDIR)/test-surface.o: $(TOPDIR)/test/test-surface.c $(SRC)/surface.h $(SRC)/defaults.h

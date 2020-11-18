@@ -18,9 +18,9 @@ real object_hit_distance(object o, ray r)
     case Sphere:
       return (sphere_hitdata((sphere) o, r, Distance)).distance;
     case Plane:
-      return (plane_hitdata((plane) o, r, Distance)).distance;
     case Triangle:
-      return (triangle_hitdata((triangle) o, r, Distance)).distance;
+    case Parallelogram:
+      return (plane_hitdata((plane) o, r, Distance)).distance;
     default:
       fprintf(stderr,"object_hit_distance(): Unknown object type %d.\n", t);
       exit(EXIT_FAILURE);
@@ -37,9 +37,9 @@ hitdata object_hitdata(object o, ray r)
     case Sphere:
       return sphere_hitdata((sphere) o, r, Full);
     case Plane:
-      return plane_hitdata((plane) o, r, Full);
     case Triangle:
-      return triangle_hitdata((triangle) o, r, Full);
+    case Parallelogram:
+      return plane_hitdata((plane) o, r, Full);
     default:
       fprintf(stderr,"object_hitdata(): Unknown object type %d.\n", t);
       exit(EXIT_FAILURE);

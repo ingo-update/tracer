@@ -6,7 +6,6 @@
 #include "vector.h"
 #include "color.h"
 #include "sphere.h"
-#include "triangle.h"
 #include "plane.h"
 #include "camera.h"
 

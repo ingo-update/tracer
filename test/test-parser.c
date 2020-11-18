@@ -124,7 +124,7 @@ int test_image_maps()
 
   /* Find the image for the triangle */
   for (lst = the_world->objects ; (((object) lst->car)->type != Triangle) ; lst = lst->cdr);
-  surf = triangle_get_surface((triangle) lst->car);
+  surf = plane_get_surface((plane) lst->car);
 
   if (TextureMap != surface_get_mode(surf))
     {

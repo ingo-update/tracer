@@ -24,7 +24,6 @@
   color          color;
   surface        surface;
   sphere         sphere;
-  triangle       triangle;
   plane          plane;
   light          light;
   camera         camera;
@@ -78,7 +77,6 @@ scene:  item
 ;
 
 item:	sphere { world_add_object(the_world, (object) $1);}
-|       triangle { world_add_object(the_world, (object) $1);}
 |       plane { world_add_object(the_world, (object) $1);}
 |       background {world_put_background(the_world, $1);}
 |       camera { the_camera = $1;}
@@ -116,7 +114,7 @@ sphere_opt: /* Empty */
 { $$ = sph_opt_create($2, $4);}
 ;
 
-triangle:
+plane:
 KEY_TRIANGLE LBRACE vector COMMA vector COMMA vector object_mods RBRACE
 { $$ = triangle_create($3, vector_diff($5, $3), vector_diff($7, $3), $8); }
 ;
@@ -124,19 +122,19 @@ KEY_TRIANGLE LBRACE vector COMMA vector COMMA vector object_mods RBRACE
 /* Again, this is not POVray, but provides an alternative way of
    specifying a triangle. */
 
-triangle:
+plane:
 KEY_TRIANGLEPNT LBRACE vector COMMA vector COMMA vector object_mods RBRACE
 { $$ = triangle_create($3, $5, $7, $8);}
 ;
 
 /* New Feature! Parallellograms use same syntax as triangle */
 
-triangle:
+plane:
 KEY_PGRAM LBRACE vector COMMA vector COMMA vector object_mods RBRACE
 { $$ = pgram_create($3, vector_diff($5, $3), vector_diff($7, $3), $8); }
 ;
 
-triangle:
+plane:
 KEY_PGRAMPNT LBRACE vector COMMA vector COMMA vector object_mods
 RBRACE
 { $$ = pgram_create($3, $5, $7, $8);}

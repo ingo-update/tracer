@@ -2,7 +2,6 @@
 
 #include "sphere.h"
 #include "plane.h"
-#include "triangle.h"
 
 #include "ray.h"
 #include "hitdata.h"
