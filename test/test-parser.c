@@ -109,7 +109,7 @@ int test_image_maps()
     }
 
   /* Check that the plane is solid color */
-  surf = plane_get_surface((plane) the_world->objects->car);
+  surf = plane_get_surface(the_world->objects->car);
   if (Color != surface_get_mode(surf))
     {
       ++fail;

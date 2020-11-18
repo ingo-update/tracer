@@ -6,6 +6,12 @@
 #ifndef _PLANE_H_
 #define _PLANE_H_
 
+#define plane_get_corner0(p) ((plane) p)->corner0
+#define plane_get_a_leg(p) ((plane) p)->a_leg
+#define plane_get_another_leg(p) ((plane) p)->another_leg
+#define plane_get_normal(p) ((plane) p)->normal;
+#define plane_get_surface(p) ((plane) p)->surf;
+
 typedef struct plane_t* plane;
 struct plane_t
 {
@@ -20,12 +26,6 @@ struct plane_t
 plane plane_create(vector c0, vector normal, surface surf);
 plane triangle_create(vector c0, vector a, vector b, surface surf);
 plane pgram_create(vector c0, vector a, vector b, surface surf);
-
-vector plane_get_corner0(plane obj);
-vector plane_get_a_leg(plane obj);
-vector plane_get_another_leg(plane obj);
-vector plane_get_normal(plane obj);
-surface plane_get_surface(plane obj);
 
 hitdata plane_hitdata(plane o, ray r, tracing_mode m);
 

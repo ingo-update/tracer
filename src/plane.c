@@ -68,31 +68,6 @@ plane pgram_create(vector c0, vector a, vector b, surface surf)
   return _plane_create3(c0, a, b, surf, Parallelogram);
 }
 
-vector plane_get_corner0(plane obj)
-{
-  return obj->corner0;
-}
-
-vector plane_get_a_leg(plane obj)
-{
-  return obj->a_leg;
-}
-
-vector plane_get_another_leg(plane obj)
-{
-  return obj->another_leg;
-}
-
-vector plane_get_normal(plane obj)
-{
-  return obj->normal;
-}
-
-surface plane_get_surface(plane obj)
-{
-  return obj->surf;
-}
-
 hitdata plane_hitdata(plane o, ray r, tracing_mode m)
 {
   vector a, b, c0, q, rd, r0, pn, rn, ri;
@@ -113,7 +88,7 @@ hitdata plane_hitdata(plane o, ray r, tracing_mode m)
 
   vd = vector_dp(pn, rd);
 
-  // Is ray paralell to plane?
+  // Is ray parallel to plane?
   if (0 == vd) return HITDATA_MISS;
 
   d = vector_dp(c0, pn); // 30
