@@ -5,6 +5,12 @@
 
 #define DEPTH 255 // only supported color depth
 
+/* Supported PPM format */
+#define COOKIE_ASC '3'
+#define COOKIE_BIN '6'
+#define FORMAT_ASC "%d %d %d\n"
+#define FORMAT_BIN "%c%c%c"
+
 typedef struct bitmap_t* bitmap;
 struct bitmap_t
 {
@@ -12,7 +18,7 @@ struct bitmap_t
   color *pixels;
 };
 
-typedef enum {Binary=0, Ascii=1} ppmtype;
+typedef enum {Ascii=0, Binary=1} ppmtype;
 
 bitmap bitmap_create (unsigned int width, unsigned int height);
 bitmap bitmap_read_ppm(char *file_name);

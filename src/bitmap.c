@@ -12,7 +12,7 @@ static unsigned int _get_ascii_value(FILE *infile)
   unsigned int a;
   char c;
 
-  /* Find first digit */
+  /* Find first digit while skipping comments (# to EOL) */
   found = 0;
   while (!found)
     {
@@ -103,7 +103,7 @@ color bitmap_get_pixel(bitmap bmp, unsigned int x, unsigned int y)
 {
   if (!INSIDE(bmp, x, y))
     {
-      fprintf(stderr, "bitmap_get_pixel(): Pixel (%dx%d) outside bitmap (%dx%d).\n", x, y, bmp->width, bmp->height);
+      fprintf(stderr, "bitmap_get_pixel(): Pixel (%d,%d) outside bitmap (%dx%d).\n", x, y, bmp->width, bmp->height);
       exit(EXIT_FAILURE);
     }
   return (bmp->pixels)[(y * bmp->width) + x];
@@ -114,7 +114,7 @@ void bitmap_put_pixel(bitmap bmp, unsigned int x, unsigned int y, color c)
 {
   if (!INSIDE(bmp, x, y))
     {
-      fprintf(stderr, "bitmap_put_pixel(): Pixel (%dx%d) outside bitmap (%dx%d).\n",
+      fprintf(stderr, "bitmap_put_pixel(): Pixel (%d,%d) outside bitmap (%dx%d).\n",
 	      x, y, bmp->width, bmp->height);
       exit(EXIT_FAILURE);
     }
@@ -126,9 +126,10 @@ void bitmap_put_pixel(bitmap bmp, unsigned int x, unsigned int y, color c)
 int bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment)
 {
   FILE *outfile;
-  char *cookie, *format;
-  unsigned int x,y;
+  unsigned int x, y;
   color p;
+  char cookie[] = {COOKIE_ASC, COOKIE_BIN}; // Magic cookie for Ascii and Binary.
+  char *format[] = {FORMAT_ASC, FORMAT_BIN}; // Output format for pixels in Ascci and Binary.
 
   outfile = stdout;
   if (NULL != filename)
@@ -141,23 +142,14 @@ int bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment)
 	}
     }
 
-  switch (ptype)
+  if ((ptype != Ascii) && (ptype != Binary))
     {
-    case Ascii:
-      cookie = "P3";
-      format = "%d %d %d\n";
-      break;
-    case Binary:
-      cookie = "P6";
-      format = "%c%c%c";
-      break;
-    default:
       fprintf(stderr,"bitmap_write_ppm(): Illegal ppm type %d\n", ptype);
       return -1;
     }
 
   // Header
-  fprintf(outfile,"%s\n#%s\n%d %d %d\n", cookie, comment, bmp->width, bmp->height, DEPTH);
+  fprintf(outfile,"P%c\n#%s\n%d %d %d\n", cookie[ptype], comment, bmp->width, bmp->height, DEPTH);
 
   // Pixel data
   for (y = 0 ; y < bmp->height ; y++)
@@ -165,7 +157,7 @@ int bitmap_write_ppm(bitmap bmp, ppmtype ptype, char *filename, char *comment)
       for (x = 0 ; x < bmp->width ; x++)
 	{
 	  p = bitmap_get_pixel(bmp, x, y);
-	  fprintf(outfile, format, color_get_red(p), color_get_green(p), color_get_blue(p));
+	  fprintf(outfile, format[ptype], color_get_red(p), color_get_green(p), color_get_blue(p));
 	}
     }
   fclose(outfile);
@@ -179,14 +171,12 @@ bitmap bitmap_read_ppm(char *filename)
   bitmap bmp;
   ppmtype ptype;
   unsigned int width, height, depth;
-  unsigned int r,g,b,x,y;
-  unsigned char c,d;
+  unsigned int x, y;
+  unsigned char r, g, b;
+  unsigned char c, d;
 
-  if (NULL == filename)
-    {
-      infile = stdin;
-    }
-  else
+  infile = stdin;
+  if (NULL != filename)
     {
       infile = fopen(filename,"r");
       if (NULL == infile)
@@ -196,34 +186,35 @@ bitmap bitmap_read_ppm(char *filename)
 	}
     }
 
+  // Try to read the magic cookie:
   c = fgetc(infile);
   d = fgetc(infile);
 
   if (c == 'P')
-    {
-      if (d == '3')
-	{
-	  ptype = Ascii;
-	}
-      else if (d == '6')
-	{
-	  ptype = Binary;
-	}
-      else
-	{
-	  fprintf(stderr,"bitmap_read_ppm(): Unsupported ppm type 'P%c'\n", d);
-	  return NULL;
-	}
-    }
+    switch (d)
+      {
+      case COOKIE_ASC:
+	ptype = Ascii;
+	break;
+      case COOKIE_BIN:
+	ptype = Binary;
+	break;
+      default:
+	fprintf(stderr,"bitmap_read_ppm(): Unsupported ppm type 'P%c'\n", d);
+	return NULL;
+      }
   else
     {
       fprintf(stderr,"bitmap_read_ppm(): File '%s' is not PPM (%c%c)\n", filename, c, d);
       return NULL;
     }
 
+  // Read bitmap information
   width = _get_ascii_value(infile);
   height = _get_ascii_value(infile);
   depth = _get_ascii_value(infile);
+
+  c = fgetc(infile); // Remove one extra whitespace.
 
   if (DEPTH != depth)
     {
@@ -233,49 +224,21 @@ bitmap bitmap_read_ppm(char *filename)
 
   bmp = bitmap_create(width, height);
 
-  if (Ascii == ptype)
-    {
-      for (y = 0 ; y < height ; ++y)
-	{
-	  for (x = 0 ; x < width ; ++x)
-	    {
-	      r = _get_ascii_value(infile);
-	      g = _get_ascii_value(infile);
-	      b = _get_ascii_value(infile);
+  for (y = 0 ; y < height ; ++y)
+    for (x = 0 ; x < width ; ++x)
+      {
+	r = (Ascii == ptype) ? _get_ascii_value(infile) : fgetc(infile);
+	g = (Ascii == ptype) ? _get_ascii_value(infile) : fgetc(infile);
+	b = (Ascii == ptype) ? _get_ascii_value(infile) : fgetc(infile);
 
-	      if (feof(infile))
-		{
-		  fprintf(stderr,"bitmap_read_ppm: Unexpected EOF after %d pixels\n", (y * width + x));
-		  bitmap_destroy(bmp);
-		  return NULL;
-		}
-	      bmp->pixels[y * width + x] = color_create_rgb(r, g, b);
-	    }
-	}
-    }
-  else
-    {
-      // Remove single byte before starting
-      c = fgetc(infile);
-
-      for (y = 0 ; y < height ; ++y)
-	{
-	  for (x = 0 ; x < width ; ++x)
-	    {
-	      r = fgetc(infile);
-	      g = fgetc(infile);
-	      b = fgetc(infile);
-
-	      if (feof(infile))
-		{
-		  fprintf(stderr,"bitmap_read_ppm: Unexpected EOF after %d pixels\n", (y * width + x));
-		  bitmap_destroy(bmp);
-		  return NULL;
-		}
-	      bmp->pixels[y * width + x] = color_create_rgb(r, g, b);
-	    }
-	}
-    }
+	if (feof(infile))
+	  {
+	    fprintf(stderr,"bitmap_read_ppm: Unexpected EOF after %d pixels\n", (y * width + x));
+	    bitmap_destroy(bmp);
+	    return NULL;
+	  }
+	bmp->pixels[y * width + x] = color_create_rgb(r, g, b);
+      }
 
   return bmp;
 }
