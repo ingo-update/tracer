@@ -200,7 +200,7 @@ bitmap bitmap_read_ppm(char *filename)
 	ptype = Binary;
 	break;
       default:
-	fprintf(stderr,"bitmap_read_ppm(): Unsupported ppm type 'P%c'\n", d);
+	fprintf(stderr,"bitmap_read_ppm(): Unsupported ppm type of file '%s' (P%c)\n", filename, d);
 	return NULL;
       }
   else
