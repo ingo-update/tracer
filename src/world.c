@@ -135,15 +135,14 @@ color world_look(world w, ray r, unsigned int depth, shading_mode s)
   /* Diffuse */
   diffuse_color = color_multiply(color_scale(_illumination(w, hit),hitdata_get_diffuse(hit)), hitdata_get_color(hit));
 
-  /* Reflection (recursive) */
+  /* Done with reflection? */
   if (0 == depth || 0 == hitdata_get_reflection(hit)) return diffuse_color;
-  else
-    {
-      dir = ray_get_direction(r);
-      norm = hitdata_get_normal(hit);
-      ref_dir = vector_sum(dir, vector_sp(vector_sp(norm, vector_dp(norm, dir)), -2));
-      ref_loc = vector_sum(hitdata_get_hit_point(hit), vector_sp(norm, OFFSET));
-    }
+
+  /* Reflection (recursive) */
+  dir = ray_get_direction(r);
+  norm = hitdata_get_normal(hit);
+  ref_dir = vector_sum(dir, vector_sp(vector_sp(norm, vector_dp(norm, dir)), -2));
+  ref_loc = vector_sum(hitdata_get_hit_point(hit), vector_sp(norm, OFFSET));
 
   return color_add(diffuse_color, color_scale(world_look(w, ray_create(ref_loc, ref_dir), depth-1, s), hitdata_get_reflection(hit)));
 }
