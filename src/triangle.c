@@ -25,6 +25,7 @@ static triangle _tri_create(vector c0, vector a, vector b, surface surf, int pgr
   new->corner0 = c0;
   new->a_leg = a;
   new->another_leg = b;
+  new->normal = vector_norm(vector_xp(a, b)); // 29
   new->surf = surf;
   new->pgram = pgram;
 
@@ -43,17 +44,22 @@ triangle pgram_create(vector c0, vector a, vector b, surface surf)
 
 vector triangle_get_corner0(triangle obj)
 {
-   return obj->corner0;
+  return obj->corner0;
 }
 
 vector triangle_get_a_leg(triangle obj)
 {
-   return obj->a_leg;
+  return obj->a_leg;
 }
 
 vector triangle_get_another_leg(triangle obj)
 {
-   return obj->another_leg;
+  return obj->another_leg;
+}
+
+vector triangle_get_normal(triangle obj)
+{
+  return obj->normal;
 }
 
 surface triangle_get_surface(triangle obj)
@@ -77,16 +83,15 @@ hitdata triangle_hitdata(triangle o, ray r, tracing_mode m)
   a = triangle_get_a_leg(o);
   b = triangle_get_another_leg(o);
   c0 = triangle_get_corner0(o);
+  pn = triangle_get_normal(o);
 
-  pn = vector_norm(vector_xp(a, b)); // 29
-
-  d = vector_dp(c0, pn); // 30
   vd = vector_dp(pn, rd);
-  v0 = d - vector_dp(pn, r0);
 
   // Is ray paralell to triangle plane?
   if (0 == vd) return HITDATA_MISS;
 
+  d = vector_dp(c0, pn); // 30
+  v0 = d - vector_dp(pn, r0);
   t = v0 / vd;
 
   // Is ray away from triangle plane?

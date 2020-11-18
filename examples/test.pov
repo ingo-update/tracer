@@ -5,6 +5,7 @@ sphere {<0,0,0>, 30000 pigment {color rgb <0,0,0>}} // universe limits
 // White sphere
 sphere {<0,0,0>, 150 pigment {color rgb <1,1,1>} finish {reflection 0.2}}
 
+// Colored spheres
 sphere {<0,300,0>, 100 pigment {color rgb <1,0,0>} finish {reflection 0.2}}
 sphere {<-260,150,0>, 100 pigment {color rgb <1,1,0>} finish {reflection 0.2}}
 sphere {<-260,-150,0>, 100 pigment {color rgb <0,1,0>} finish {reflection 0.2}}

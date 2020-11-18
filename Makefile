@@ -67,7 +67,7 @@ $(GENSRC)/parser.c $(GENSRC)/parser.h: $(SRC)/parser.y
 ## Test objects
 
 $(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
-$(TESTDIR)/test-parser.o: $(TOPDIR)/test/test-parser.c $(GENSRC)/parser.h
+$(TESTDIR)/test-parser.o: $(TOPDIR)/test/test-parser.c $(GENSRC)/parser.h $(SRC)/triangle.h $(SRC)/plane.h $(SRC)/sphere.h
 $(TESTDIR)/test-vector.o: $(TOPDIR)/test/test-vector.c
 $(TESTDIR)/test-color.o: $(TOPDIR)/test/test-color.c $(SRC)/color.h
 $(TESTDIR)/test-surface.o: $(TOPDIR)/test/test-surface.c $(SRC)/surface.h $(SRC)/defaults.h
