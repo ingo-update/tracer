@@ -6,6 +6,7 @@
 #include "color.h"
 #include "world.h"
 #include "camera.h"
+#include "defaults.h"
 
   extern char *yytext;
   extern int linecount;
@@ -127,7 +128,7 @@ KEY_TRIANGLEPNT LBRACE vector COMMA vector COMMA vector object_mods RBRACE
 { $$ = triangle_create($3, $5, $7, $8);}
 ;
 
-/* New Feature! Parallellograms use same syntax as triangle */
+/* New Feature! Parallelograms use same syntax as triangle */
 
 plane:
 KEY_PGRAM LBRACE vector COMMA vector COMMA vector object_mods RBRACE
@@ -144,17 +145,17 @@ object_mods: opt_pigment opt_finish
 { $$ = surface_create($1,$2);}
 ;
 
-opt_pigment: /* Empty TODO: Move default to defaults.h */
-{ $$ = _pigment_create_color(color_create_rgb(127,127,127));}
+opt_pigment: /* Empty */
+{ $$ = pigment_create_color(DEF_OBJECT_COLOR);}
 |       pigment
 { $$ = $1;}
 ;
 
 pigment:
 KEY_PIGMENT LBRACE color RBRACE
-{ $$ = _pigment_create_color($3);}
+{ $$ = pigment_create_color($3);}
 |       KEY_PIGMENT LBRACE image RBRACE
-{ $$ = _pigment_create_texturemap($3);}
+{ $$ = pigment_create_texturemap($3);}
 ;
 
 image:	KEY_IMAGE LBRACE KEY_PPM STRING RBRACE
@@ -162,13 +163,13 @@ image:	KEY_IMAGE LBRACE KEY_PPM STRING RBRACE
 ;
 
 opt_finish: /* Empty */
-{ $$ = _finish_create(0,1);}
+{ $$ = finish_create(DEF_REFLECTION, DEF_DIFFUSE);}
 |       finish
 ;
 
 finish:
 KEY_FINISH LBRACE opt_diffuse opt_reflection RBRACE
-{ $$ = _finish_create($4, $3);}
+{ $$ = finish_create($4, $3);}
 ;
 
 opt_diffuse: /* Empty */

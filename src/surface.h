@@ -39,8 +39,8 @@ real surface_get_diffuse(surface s);
 
 /* Parser help functions */
 
-struct pigment _pigment_create_color(color c);
-struct pigment _pigment_create_texturemap(char *name);
-struct finish _finish_create(real ref, real dif);
+struct pigment pigment_create_color(color c);
+struct pigment pigment_create_texturemap(char *name);
+struct finish finish_create(real ref, real dif);
 
 #endif /* _SURFACE_H_ */

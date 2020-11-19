@@ -87,7 +87,7 @@ real surface_get_diffuse(surface s)
    return s->diffuse;
 }
 
-struct pigment _pigment_create_color(color c)
+struct pigment pigment_create_color(color c)
 {
   struct pigment p;
 
@@ -97,7 +97,7 @@ struct pigment _pigment_create_color(color c)
   return p;
 }
 
-struct pigment _pigment_create_texturemap(char *name)
+struct pigment pigment_create_texturemap(char *name)
 {
   struct pigment p;
 
@@ -107,7 +107,7 @@ struct pigment _pigment_create_texturemap(char *name)
   return p;
 }
 
-struct finish _finish_create(real ref, real dif)
+struct finish finish_create(real ref, real dif)
 {
   struct finish f;
 
