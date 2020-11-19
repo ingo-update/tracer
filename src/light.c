@@ -4,24 +4,20 @@
 
 light light_create(vector loc, color col) {
 
-  light new = (light) malloc(sizeof(struct light_t));
+  light new;
 
-  if (NULL==new) {
-    fprintf(stderr,"light_create(): Kunde inte allokera objekt\n");
-    exit(-1);
-  }
+  new = (light) malloc(sizeof(struct light_t));
+  if (NULL==new)
+    {
+      fprintf(stderr,"light_create(): Could not allocate light.\n");
+      exit(-1);
+    }
 
   new->location = loc;
   new->col = col;
 
   return(new);
 }
-
-/*
-vector light_get_location(light l) {
-  return(l->location);
-}
-*/
 
 color light_get_color(light l)
 {
@@ -30,5 +26,5 @@ color light_get_color(light l)
 
 vector light_direction(light l, vector point)
 {
-  return(vector_diff((l->location),point));
+  return(vector_diff((l->location), point));
 }
