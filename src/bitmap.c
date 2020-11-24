@@ -35,7 +35,7 @@ static unsigned int _get_ascii_value(FILE *infile)
 }
 
 
-bitmap bitmap_create(unsigned int w, unsigned int h)
+bitmap bitmap_create(int w, int h)
 {
   bitmap bmp;
 

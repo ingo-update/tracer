@@ -78,7 +78,7 @@ int test_errors()
       fprintf(stderr,"FAIL: Could create bitmap with negative size\n");
     }
 
-  bm = bitmap_create(100,-00);
+  bm = bitmap_create(100,100);
   if (NULL == bm)
     {
       fprintf(stderr,"ERROR: Test bitmap was not created.\n");
@@ -95,7 +95,7 @@ int test_errors()
 	}
     }
 
-  bitmap_destroy(bm); // Should not cause a crash!
+  bitmap_destroy(bm); // Should cause error message but no crash!
 
   return fail;
 }

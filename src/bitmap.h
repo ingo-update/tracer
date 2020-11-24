@@ -20,7 +20,7 @@ struct bitmap_t
 
 typedef enum {Ascii=0, Binary=1} ppmtype;
 
-bitmap bitmap_create (unsigned int width, unsigned int height);
+bitmap bitmap_create (int width, int height);
 bitmap bitmap_read_ppm(char *file_name);
 void bitmap_destroy (bitmap bmp);
 
