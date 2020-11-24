@@ -1,13 +1,13 @@
 #include "types.h"
-
 #include "sphere.h"
 #include "plane.h"
-
 #include "ray.h"
 #include "hitdata.h"
 
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
+
+#define object_get_type(o) o->type
 
 typedef struct object_t *object;
 

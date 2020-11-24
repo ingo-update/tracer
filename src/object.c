@@ -3,16 +3,11 @@
 
 #include "object.h"
 
-object_type object_get_type(object o)
-{
-  return o->type;
-}
-
 real object_hit_distance(object o, ray r)
 {
   object_type t;
 
-  t = o->type;
+  t = object_get_type(o);
   switch (t)
     {
     case Sphere:
@@ -31,7 +26,7 @@ hitdata object_hitdata(object o, ray r)
 {
   object_type t;
 
-  t = o->type;
+  t = object_get_type(o);
   switch (t)
     {
     case Sphere:

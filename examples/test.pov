@@ -1,22 +1,22 @@
 // Test file for tracer.
 
-sphere {<0,0,0>, 30000 pigment {color rgb <0,0,0>}} // universe limits
+sphere {<0,0,0>, 30000 pigment {color rgb <0,0,0>} finish {reflection 0}} // universe limits
 
 // White sphere
-sphere {<0,0,0>, 150 pigment {color rgb <1,1,1>} finish {reflection 0.2}}
+sphere {<0,0,0>, 150 pigment {color rgb <1,1,1>} finish {diffuse 1 reflection 0.2}}
 
 // Colored spheres
-sphere {<0,300,0>, 100 pigment {color rgb <1,0,0>} finish {reflection 0.2}}
-sphere {<-260,150,0>, 100 pigment {color rgb <1,1,0>} finish {reflection 0.2}}
-sphere {<-260,-150,0>, 100 pigment {color rgb <0,1,0>} finish {reflection 0.2}}
-sphere {<0,-300,0>, 100 pigment {color rgb <0,1,1>} finish {reflection 0.2}}
-sphere {<260,-150,0>, 100 pigment {color rgb <0,0,1>} finish {reflection 0.2}}
-sphere {<260,150,0>, 100 pigment {color rgb <1,0,1>} finish {reflection 0.2}}
+sphere {<0,300,0>, 100 pigment {color rgb <1,0,0>} finish {diffuse 1 reflection 0.2}}
+sphere {<-260,150,0>, 100 pigment {color rgb <1,1,0>} finish {diffuse 1 reflection 0.2}}
+sphere {<-260,-150,0>, 100 pigment {color rgb <0,1,0>} finish {diffuse 1 reflection 0.2}}
+sphere {<0,-300,0>, 100 pigment {color rgb <0,1,1>} finish {diffuse 1 reflection 0.2}}
+sphere {<260,-150,0>, 100 pigment {color rgb <0,0,1>} finish {diffuse 1 reflection 0.2}}
+sphere {<260,150,0>, 100 pigment {color rgb <1,0,1>} finish {diffuse 1 reflection 0.2}}
 
 // Texturemapped reflecting triangle
 triangle {<-500,-500,400>, <-500,500,0>, <500,-500,0>
           pigment {image_map {ppm "build/test/test_asc.ppm"}}
-          finish {reflection 0.5}
+          finish {diffuse 1 reflection 0.5}
           }
 
 // Texturemapped sphere
@@ -27,7 +27,7 @@ sphere {<0,0,700>, 500
 
 // Let's have a tilted background plane
 plane_point {<0,1,1>, <0,0,5000> pigment {color rgb <1,0.7,0.7>}
-	finish {reflection 0.5}}
+	finish {diffuse 1 reflection 0.5}}
 
 // Main Light
 light_source {<-1000,0,-1000> color rgb <0.7,0.7,0.7>}
