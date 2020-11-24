@@ -46,10 +46,11 @@ bitmap bitmap_create(unsigned int w, unsigned int h)
     }
 
   bmp = malloc(sizeof(struct bitmap_t));
-  if (NULL == bmp) {
-    fprintf(stderr, "bitmap_create(): Could not allocate bitmap struct.\n");
-    return NULL;
-  }
+  if (NULL == bmp)
+    {
+      fprintf(stderr, "bitmap_create(): Could not allocate bitmap struct.\n");
+      return NULL;
+    }
 
   bmp->pixels = malloc(w * h * sizeof(color));
   if (NULL == bmp->pixels)
@@ -70,10 +71,13 @@ void bitmap_destroy(bitmap bmp)
   if (NULL == bmp || NULL == bmp->pixels)
     {
       fprintf(stderr, "bitmap_destroy(): Bad bitmap.\n");
+      return;
     }
 
   free(bmp->pixels);
   free(bmp);
+
+  bmp->pixels = NULL;
 }
 
 

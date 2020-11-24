@@ -72,13 +72,30 @@ int test_errors()
       fprintf(stderr,"FAIL: Could read Makefile as ppm\n");
     }
 
-  bm = bitmap_create(100,100);
-  result = bitmap_write_ppm(bm, Binary, "/bad/path/to/file.ppm", "no comment");
-  if (0 == result)
+  if (NULL != bitmap_create(100,-100))
     {
       ++fail;
-      fprintf(stderr,"FAIL: Could write bitmap to illegal path (%d)\n", result);
+      fprintf(stderr,"FAIL: Could create bitmap with negative size\n");
     }
+
+  bm = bitmap_create(100,-00);
+  if (NULL == bm)
+    {
+      fprintf(stderr,"ERROR: Test bitmap was not created.\n");
+    }
+  else
+    {
+      result = bitmap_write_ppm(bm, Binary, "/bad/path/to/file.ppm", "no comment");
+
+      bitmap_destroy(bm);
+      if (NULL != bm->pixels)
+	{
+	  ++fail;
+	  fprintf(stderr,"FAIL: bitmap not destroyed properly.\n");
+	}
+    }
+
+  bitmap_destroy(bm); // Should not cause a crash!
 
   return fail;
 }
