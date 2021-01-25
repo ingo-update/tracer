@@ -6,20 +6,20 @@ sphere {<0,0,0>, 30000 pigment {color rgb <0,0,0>} finish {reflection 0}} // uni
 sphere {<0,0,0>, 150 pigment {color rgb <1,1,1>} finish {diffuse 1 reflection 0.2}}
 
 // Colored spheres
-sphere {<0,300,0>, 100 pigment {color rgb <1,0,0>} finish {diffuse 1 reflection 0.2}}
-sphere {<-260,150,0>, 100 pigment {color rgb <1,1,0>} finish {diffuse 1 reflection 0.2}}
+sphere {<0,300,0>,     100 pigment {color rgb <1,0,0>} finish {diffuse 1 reflection 0.2}}
+sphere {<-260,150,0>,  100 pigment {color rgb <1,1,0>} finish {diffuse 1 reflection 0.2}}
 sphere {<-260,-150,0>, 100 pigment {color rgb <0,1,0>} finish {diffuse 1 reflection 0.2}}
-sphere {<0,-300,0>, 100 pigment {color rgb <0,1,1>} finish {diffuse 1 reflection 0.2}}
-sphere {<260,-150,0>, 100 pigment {color rgb <0,0,1>} finish {diffuse 1 reflection 0.2}}
-sphere {<260,150,0>, 100 pigment {color rgb <1,0,1>} finish {diffuse 1 reflection 0.2}}
+sphere {<0,-300,0>,    100 pigment {color rgb <0,1,1>} finish {diffuse 1 reflection 0.2}}
+sphere {<260,-150,0>,  100 pigment {color rgb <0,0,1>} finish {diffuse 1 reflection 0.2}}
+sphere {<260,150,0>,   100 pigment {color rgb <1,0,1>} finish {diffuse 1 reflection 0.2}}
 
-// Texturemapped reflecting triangle
+// Texturemapped reflecting triangle (ascii ppm)
 triangle {<-500,-500,400>, <-500,500,0>, <500,-500,0>
           pigment {image_map {ppm "build/test/test_asc.ppm"}}
           finish {diffuse 1 reflection 0.5}
           }
 
-// Texturemapped sphere
+// Texturemapped sphere (binary ppm)
 sphere {<0,0,700>, 500
         pigment {image_map {ppm "build/test/checkers.ppm"}}
         finish {reflection 0.3}
