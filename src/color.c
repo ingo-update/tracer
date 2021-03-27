@@ -1,6 +1,3 @@
-#include <stdio.h>
-
-#include "defaults.h"
 #include "color.h"
 
 color color_create_rgb(int r, int g, int b)

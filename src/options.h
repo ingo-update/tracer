@@ -1,5 +1,10 @@
-#include "types.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "defaults.h"
 #include "bitmap.h"
+#include "types.h"
 
 #ifndef _OPTIONS_H_
 #define _OPTIONS_H_

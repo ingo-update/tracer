@@ -1,8 +1,3 @@
-#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-#include "defaults.h"
 #include "world.h"
 
 static struct list *_cons(void *car, struct list *cdr)

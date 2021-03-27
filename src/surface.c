@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "surface.h"
 
 surface surface_create(struct pigment pig, struct finish fin)

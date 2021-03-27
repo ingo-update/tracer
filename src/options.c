@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "defaults.h"
-#include "bitmap.h"
 #include "options.h"
 
 void _options_print_usage(char *exe)

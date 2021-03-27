@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "camera.h"
 
 camera camera_create(vector position, vector up, vector direction)

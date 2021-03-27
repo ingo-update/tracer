@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "vector.h"
 #include "color.h"
 

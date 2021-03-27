@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "vector.h"
 
 #ifndef _CAMERA_H_

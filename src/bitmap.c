@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "bitmap.h"
 
 #define INSIDE(bmp, x, y) (x < bmp->width && y < bmp->height)

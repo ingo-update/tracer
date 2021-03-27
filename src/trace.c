@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "trace.h"
 
 bitmap trace(world w, camera cam, options opt)

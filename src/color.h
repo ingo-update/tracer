@@ -1,3 +1,6 @@
+#include <stdio.h>
+
+#include "defaults.h"
 #include "types.h"
 
 #ifndef _COLOR_H_

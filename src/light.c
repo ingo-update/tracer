@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include "light.h"
 
 light light_create(vector loc, color col) {

@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-
 #include "sphere.h"
 
 sphere sphere_create(vector pole, vector equator, vector loc, real rad, surface surf)

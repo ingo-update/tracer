@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "bitmap.h"
 #include "world.h"
 #include "camera.h"

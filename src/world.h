@@ -1,3 +1,8 @@
+#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+#include "defaults.h"
 #include "color.h"
 #include "light.h"
 #include "object.h"

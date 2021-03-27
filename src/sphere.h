@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
 #include "types.h"
 #include "vector.h"
 #include "surface.h"

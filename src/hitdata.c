@@ -1,5 +1,3 @@
-#include <math.h>
-
 #include "hitdata.h"
 
 hitdata hitdata_distance(real distance)

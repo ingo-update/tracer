@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "color.h"
 #include "bitmap.h"
 #include "types.h"

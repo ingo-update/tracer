@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "object.h"
 
 real object_hit_distance(object o, ray r)
