@@ -114,10 +114,11 @@ hitdata plane_hitdata(plane o, ray r, tracing_mode m)
     }
   else u = v = 0; // To keep the compiler happy...
 
+  // Only tracing for distance?
   if (Distance == m) return hitdata_distance(t);
 
   if (Color == surface_get_mode(o->surf)) col = surface_get_color(o->surf);
-  else
+  else // Texture map
     {
       bmp = surface_get_texture_map(o->surf);
       x_in_map = (bitmap_width(bmp) - 1) * u;

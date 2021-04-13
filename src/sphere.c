@@ -79,6 +79,7 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
 
   t = inside ? t_ca + sqrt(t_2hc) : t_ca - sqrt(t_2hc); // 2
 
+  // Only tracing for distance?
   if (Distance == m) return hitdata_distance(t);
 
   ri = vector_sum(origin, vector_sp(ray_get_direction(r), t));
