@@ -63,7 +63,7 @@ int test_errors()
   if (NULL != bitmap_read_ppm("nonexisting.ppm"))
     {
       ++fail;
-      fprintf(stderr,"FAIL: Could read nonexisting bitmap\n");
+      fprintf(stderr,"FAIL: Could read nonexisting bitmap file\n");
     }
 
   if (NULL != bitmap_read_ppm("Makefile"))
@@ -81,17 +81,22 @@ int test_errors()
   bm = bitmap_create(100,100);
   if (NULL == bm)
     {
-      fprintf(stderr,"ERROR: Test bitmap was not created.\n");
+      fprintf(stderr,"ERROR: Test bitmap was not created\n");
     }
   else
     {
       result = bitmap_write_ppm(bm, Binary, "/bad/path/to/file.ppm", "no comment");
+      if (result == 0)
+	{
+	  ++fail;
+	  fprintf(stderr,"FAIL: No error when trying to save bitmap to illegal filename\n");
+	}
 
       bitmap_destroy(bm);
       if (NULL != bm->pixels)
 	{
 	  ++fail;
-	  fprintf(stderr,"FAIL: bitmap not destroyed properly.\n");
+	  fprintf(stderr,"FAIL: bitmap not destroyed properly\n");
 	}
     }
 
