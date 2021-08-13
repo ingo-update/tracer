@@ -77,17 +77,15 @@ scene:  item
 |       item scene
 ;
 
-item:	sphere { world_add_object(the_world, (object) $1);}
-|       plane { world_add_object(the_world, (object) $1);}
-|       background {world_put_background(the_world, $1);}
-|       camera { the_camera = $1;}
-|       light { world_add_light(the_world, $1);}
+item:	sphere { world_add_object(the_world, (object) $1); }
+|       plane { world_add_object(the_world, (object) $1); }
+|       background {world_put_background(the_world, $1); }
+|       camera { the_camera = $1; }
+|       light { world_add_light(the_world, $1); }
 ;
 
-light:	KEY_LIGHT LBRACE vector RBRACE
-{ $$ = light_create($3, color_create_rgb(255,255,255));}
-|	KEY_LIGHT LBRACE vector color RBRACE
-{ $$ = light_create($3, $4);}
+light:	KEY_LIGHT LBRACE vector RBRACE { $$ = light_create($3, DEF_LIGHT_COLOR); }
+|	KEY_LIGHT LBRACE vector color RBRACE { $$ = light_create($3, $4); }
 ;
 
 vector: LANGLE number COMMA number COMMA number RANGLE
