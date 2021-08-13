@@ -12,8 +12,8 @@
 #define vector_get_z(vec) vec.z
 
 typedef struct vector_t vector;
-
-struct vector_t {
+struct vector_t
+{
   real x, y, z;
 };
 

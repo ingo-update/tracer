@@ -13,7 +13,8 @@
 
 typedef struct sphere_t* sphere;
 
-struct sphere_t {
+struct sphere_t
+{
   object_type type;
   vector pole;
   vector equator;
@@ -24,7 +25,8 @@ struct sphere_t {
 
 /*  Sphere opt, help for the parser */
 
-struct sph_opt {
+struct sph_opt
+{
   vector pole;
   vector equator;
 };
