@@ -108,7 +108,7 @@ sphere:	KEY_SPHERE LBRACE vector COMMA number sphere_opt object_mods RBRACE
 ;
 
 sphere_opt: /* Empty */
-{ $$ = sph_opt_create(vector_create(0,1,0),vector_create(1,0,0));}
+{ $$ = sph_opt_create(DEF_POLE_VECTOR, DEF_EQUATOR_VECTOR);}
 |       KEY_POLE vector KEY_EQUATOR vector
 { $$ = sph_opt_create($2, $4);}
 ;
