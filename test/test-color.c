@@ -81,7 +81,7 @@ int main()
 {
   int fail;
 
-  fprintf(stdout, "test_color: ");
+  fprintf(stdout, "test-color: ");
   fail = 0;
 
   fail += test_datatype();

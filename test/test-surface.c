@@ -121,7 +121,7 @@ int main()
 {
   int fail;
 
-  fprintf(stdout, "test_surface: ");
+  fprintf(stdout, "test-surface: ");
   fail = 0;
 
   fail += test_datatype();

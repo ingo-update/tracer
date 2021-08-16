@@ -157,7 +157,7 @@ int main()
   int fail;
   create_files();
 
-  fprintf(stdout, "test_bitmap: ");
+  fprintf(stdout, "test-bitmap: ");
   fail = 0;
 
   fail += test_errors();

@@ -145,7 +145,7 @@ int main()
 {
   int fail;
 
-  fprintf(stdout, "test_parser: ");
+  fprintf(stdout, "test-parser: ");
   fail = 0;
 
   fail += test_parse();

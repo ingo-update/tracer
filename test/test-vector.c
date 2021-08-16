@@ -125,7 +125,7 @@ int main()
 {
   int fail;
 
-  fprintf(stdout, "test_vector: ");
+  fprintf(stdout, "test-vector: ");
   fail = 0;
 
   fail += test_datatype();
