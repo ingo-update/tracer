@@ -3,7 +3,8 @@
 #ifndef _RAY_H_
 #define _RAY_H_
 
-struct ray_t {
+struct ray_t
+{
   vector origin;
   vector direction;
 };

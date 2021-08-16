@@ -12,7 +12,8 @@
 typedef enum {Color, TextureMap} surface_mode;
 
 typedef struct surface_t* surface;
-struct surface_t {
+struct surface_t
+{
   surface_mode mode;
   color col;
   char *texture_name;
@@ -21,13 +22,15 @@ struct surface_t {
   real diffuse;
 };
 
-struct pigment {
+struct pigment
+{
   surface_mode type;
   color col;
   char *texture_name;
 };
 
-struct finish {
+struct finish
+{
   real reflection;
   real diffuse;
 };

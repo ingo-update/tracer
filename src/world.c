@@ -46,7 +46,7 @@ void world_add_light(world w, light l)
 
 color world_get_background(world w)
 {
-   return w->bg_color;
+  return w->bg_color;
 }
 
 void world_put_background(world w, color col)
