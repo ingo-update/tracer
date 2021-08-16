@@ -38,16 +38,13 @@ struct sph_opt sph_opt_create(vector pole, vector equator)
   return o;
 }
 
-surface sphere_get_surface(sphere o)
-{
-  return o->surf;
-}
-
 hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
 {
   int inside;
   vector oc, location, origin;
   real l_2oc, t_ca, t_2hc, radius, t;
+
+  surface surf;
 
   vector ri, rn;
   color col;
@@ -57,8 +54,8 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
   vector sp, se;
   bitmap bmp;
 
-  radius = o->radius;
-  location = o->location;
+  radius = sphere_get_radius(o);
+  location = sphere_get_location(o);
   origin = ray_get_origin(r);
 
   oc = vector_diff(location, origin); // 16
@@ -85,12 +82,14 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
   ri = vector_sum(origin, vector_sp(ray_get_direction(r), t));
   rn = vector_sp(vector_diff(ri, location), (inside ? -1 : 1) / radius);
 
-  if (Color == surface_get_mode(o->surf)) col = surface_get_color(o->surf);
+  surf = sphere_get_surface(o);
+
+  if (Color == surface_get_mode(surf)) col = surface_get_color(surf);
   else // Texture map
     {
-      sp = o->pole;
-      se = o->equator;
-      bmp = surface_get_texture_map(o->surf);
+      sp = sphere_get_pole(o);
+      se = sphere_get_equator(o);
+      bmp = surface_get_texture_map(surf);
 
       /* Find latitude, 0.0 = N, 1.0 = S */
       fi = acos(-vector_dp(rn, sp)); // 34
@@ -114,18 +113,8 @@ hitdata sphere_hitdata(sphere o, ray r, tracing_mode m)
 			vector_sum(origin, vector_sp(ray_get_direction(r), t)),
 			col,
 			t,
-			surface_get_reflection(o->surf),
-			surface_get_diffuse(o->surf),
+			surface_get_reflection(surf),
+			surface_get_diffuse(surf),
 			fabs(vector_dp(rn, ray_get_direction(r)))
 			);
-}
-
-vector sph_opt_get_pole(struct sph_opt o)
-{
-  return o.pole;
-}
-
-vector sph_opt_get_equator(struct sph_opt o)
-{
-  return o.equator;
 }

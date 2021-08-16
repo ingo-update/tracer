@@ -70,6 +70,7 @@ hitdata plane_hitdata(plane o, ray r, tracing_mode m)
   real 	d, u, v, vd, v0, t;
   real 	a2, b2, ab, qa, qb;
 
+  surface surf;
   bitmap bmp;
   unsigned int x_in_map, y_in_map;
   color col;
@@ -117,10 +118,12 @@ hitdata plane_hitdata(plane o, ray r, tracing_mode m)
   // Only tracing for distance?
   if (Distance == m) return hitdata_distance(t);
 
-  if (Color == surface_get_mode(o->surf)) col = surface_get_color(o->surf);
+  surf = plane_get_surface(o);
+
+  if (Color == surface_get_mode(surf)) col = surface_get_color(surf);
   else // Texture map
     {
-      bmp = surface_get_texture_map(o->surf);
+      bmp = surface_get_texture_map(surf);
       x_in_map = (bitmap_width(bmp) - 1) * u;
       y_in_map = (bitmap_height(bmp) - 1) * v;
       col = bitmap_get_pixel(bmp, x_in_map, y_in_map);
@@ -130,8 +133,8 @@ hitdata plane_hitdata(plane o, ray r, tracing_mode m)
 			vector_sum(r0,vector_sp(rd,t)),
 			col,
 			t,
-			surface_get_reflection(o->surf),
-			surface_get_diffuse(o->surf),
+			surface_get_reflection(surf),
+			surface_get_diffuse(surf),
 			fabs(vector_dp(rn, rd))
 			);
 }
