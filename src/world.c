@@ -128,7 +128,7 @@ color world_look(world w, ray r, unsigned int depth, shading_mode s)
   if (Shading != s) return color_scale(hitdata_get_color(hit), hitdata_get_angle(hit));
 
   /* Diffuse */
-  diffuse_color = color_multiply(color_scale(_illumination(w, hit),hitdata_get_diffuse(hit)), hitdata_get_color(hit));
+  diffuse_color = color_multiply(color_scale(_illumination(w, hit), hitdata_get_diffuse(hit)), hitdata_get_color(hit));
 
   /* Done with reflection? */
   if (0 == depth || 0 == hitdata_get_reflection(hit)) return diffuse_color;

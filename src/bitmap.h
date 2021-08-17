@@ -8,7 +8,7 @@
 
 #define DEPTH 255 // only supported color depth
 
-/* Supported PPM format */
+/* Supported PPM formats */
 #define COOKIE_ASC '3'
 #define COOKIE_BIN '6'
 #define FORMAT_ASC "%d %d %d\n"
