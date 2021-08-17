@@ -66,6 +66,7 @@ plane pgram_create(vector c0, vector a, vector b, surface surf)
 
 hitdata plane_hitdata(plane o, ray r, tracing_mode m)
 {
+  object_type type;
   vector a, b, c0, q, rd, r0, pn, rn, ri;
   real 	d, u, v, vd, v0, t;
   real 	a2, b2, ab, qa, qb;
@@ -78,8 +79,6 @@ hitdata plane_hitdata(plane o, ray r, tracing_mode m)
   rd = ray_get_direction(r);
   r0 = ray_get_origin(r);
 
-  a = plane_get_a_leg(o);
-  b = plane_get_another_leg(o);
   c0 = plane_get_corner0(o);
   pn = plane_get_normal(o);
 
@@ -99,8 +98,12 @@ hitdata plane_hitdata(plane o, ray r, tracing_mode m)
   rn = (0 > vd) ? pn : vector_sp(pn, -1);
 
   // Outside triangle / parallelogram?
-  if (o->type != Plane)
+  type = plane_get_type(o);
+  if (Plane != type)
     {
+      a = plane_get_a_leg(o);
+      b = plane_get_another_leg(o);
+
       q = vector_diff(ri, c0); // 31
       b2 = vector_dp(b, b);
       qa = vector_dp(q, a);
@@ -111,7 +114,7 @@ hitdata plane_hitdata(plane o, ray r, tracing_mode m)
       u = (b2 * qa - ab * qb) / (a2 * b2 - ab * ab); // 32
       if (0 >= u || 1 <= u) return HITDATA_MISS;
       v = (qb - u * ab) / b2; // 33
-      if (0 >= v || 1 <= v || ((o->type != Parallelogram) && (1 < (u+v)))) return HITDATA_MISS;
+      if (0 >= v || 1 <= v || ((Parallelogram != type) && (1 < (u+v)))) return HITDATA_MISS;
     }
   else u = v = 0; // To keep the compiler happy...
 

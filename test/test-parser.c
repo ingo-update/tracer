@@ -98,18 +98,23 @@ int test_image_maps()
   int fail;
   surface surf;
   struct list *lst;
+  object o;
+  plane p;
+  sphere s;
 
   fail = 0;
 
   /* Check that the first object in the list is a plane */
-  if (Plane != ((object) the_world->objects->car)->type)
+  o = the_world->objects->car;
+  if (Plane != object_get_type(o))
     {
       ++fail;
-      fprintf(stderr, "Failure: the first object is of type %d, should be %d\n", ((object) the_world->objects->car)->type, Plane);
+      fprintf(stderr, "Failure: the first object is of type %d, should be %d\n", object_get_type(o), Plane);
     }
 
   /* Check that the plane is solid color */
-  surf = plane_get_surface(the_world->objects->car);
+  p = the_world->objects->car;
+  surf = plane_get_surface(p);
   if (Color != surface_get_mode(surf))
     {
       ++fail;
@@ -123,9 +128,9 @@ int test_image_maps()
     }
 
   /* Find the image for the triangle */
-  for (lst = the_world->objects ; (((object) lst->car)->type != Triangle) ; lst = lst->cdr);
-  surf = plane_get_surface((plane) lst->car);
-
+  for (lst = the_world->objects ; object_get_type(((object) (lst->car))) != Triangle ; lst = lst->cdr);
+  p = lst->car;
+  surf = plane_get_surface(p);
   if (TextureMap != surface_get_mode(surf))
     {
       ++fail;
@@ -136,6 +141,20 @@ int test_image_maps()
     {
       ++fail;
       fprintf(stderr, "Failure: Triangle image map was not loaded.\n");
+    }
+
+  /* Find a sphere with an image map */
+  for (lst = the_world->objects ; lst ; lst = lst->cdr)
+    if (object_get_type(((object) (lst->car))) == Sphere)
+      {
+	s = lst->car;
+	if (TextureMap == surface_get_mode(sphere_get_surface(s))) break;
+      }
+
+  if (NULL == lst)
+    {
+      ++fail;
+      fprintf(stderr, "Failure: No texture mapped image was found.\n");
     }
 
   return fail;

@@ -10,11 +10,12 @@
 #ifndef _PLANE_H_
 #define _PLANE_H_
 
-#define plane_get_corner0(p) ((plane) p)->corner0
-#define plane_get_a_leg(p) ((plane) p)->a_leg
-#define plane_get_another_leg(p) ((plane) p)->another_leg
-#define plane_get_normal(p) ((plane) p)->normal;
-#define plane_get_surface(p) ((plane) p)->surf;
+#define plane_get_type(o) o->type
+#define plane_get_corner0(o) o->corner0
+#define plane_get_a_leg(o) o->a_leg
+#define plane_get_another_leg(o) o->another_leg
+#define plane_get_normal(o) o->normal;
+#define plane_get_surface(o) o->surf;
 
 typedef struct plane_t* plane;
 struct plane_t
