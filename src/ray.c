@@ -9,13 +9,3 @@ ray ray_create(vector o, vector d)
 
   return r;
 }
-
-vector ray_get_origin(ray r)
-{
-  return r.origin;
-}
-
-vector ray_get_direction(ray r)
-{
-  return r.direction;
-}

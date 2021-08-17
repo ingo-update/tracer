@@ -49,7 +49,7 @@ $(OBJDIR)/light.o: $(SRC)/light.c $(SRC)/light.h $(SRC)/color.h $(SRC)/vector.h
 $(OBJDIR)/main.o: $(SRC)/main.c $(SRC)/options.h $(SRC)/world.h $(SRC)/camera.h
 $(OBJDIR)/object.o: $(SRC)/object.c $(SRC)/object.h $(SRC)/types.h $(SRC)/sphere.h $(SRC)/plane.h
 $(OBJDIR)/options.o: $(SRC)/options.c $(SRC)/options.h $(SRC)/types.h $(SRC)/defaults.h
-$(OBJDIR)/plane.o: $(SRC)/plane.c $(SRC)/plane.h $(SRC)/world.h $(SRC)/types.h $(SRC)/color.h $(SRC)/surface.h $(SRC)/hitdata.h
+$(OBJDIR)/plane.o: $(SRC)/plane.c $(SRC)/plane.h $(SRC)/world.h $(SRC)/types.h $(SRC)/color.h $(SRC)/surface.h $(SRC)/hitdata.h $(SRC)/ray.h
 $(OBJDIR)/ray.o: $(SRC)/ray.c $(SRC)/ray.h $(SRC)/types.h $(SRC)/vector.h
 $(OBJDIR)/sphere.o: $(SRC)/sphere.c $(SRC)/sphere.h $(SRC)/types.h $(SRC)/vector.h $(SRC)/surface.h $(SRC)/ray.h $(SRC)/hitdata.h
 $(OBJDIR)/surface.o: $(SRC)/surface.c $(SRC)/surface.h $(SRC)/color.h $(SRC)/bitmap.h $(SRC)/types.h
@@ -58,10 +58,10 @@ $(OBJDIR)/vector.o: $(SRC)/vector.c $(SRC)/vector.h $(SRC)/types.h
 $(OBJDIR)/world.o: $(SRC)/world.c $(SRC)/world.h $(SRC)/hitdata.h $(SRC)/color.h $(SRC)/ray.h $(SRC)/object.h $(SRC)/light.h $(SRC)/options.h $(SRC)/types.h $(SRC)/defaults.h
 
 $(OBJDIR)/lexer.o: $(GENSRC)/lexer.c $(GENSRC)/parser.h
-$(OBJDIR)/parser.o: $(GENSRC)/parser.c $(SRC)/sphere.h $(SRC)/plane.h $(SRC)/vector.h $(SRC)/types.h $(SRC)/color.h $(SRC)/world.h $(SRC)/camera.h
+$(OBJDIR)/parser.o: $(GENSRC)/parser.c $(SRC)/sphere.h $(SRC)/plane.h $(SRC)/vector.h $(SRC)/types.h $(SRC)/color.h $(SRC)/world.h $(SRC)/camera.h $(SRC)/ray.h
 
 $(GENSRC)/lexer.c: $(SRC)/lexer.l
-$(GENSRC)/parser.c $(GENSRC)/parser.h: $(SRC)/parser.y
+$(GENSRC)/parser.c $(GENSRC)/parser.h: $(SRC)/parser.y $(SRC)/ray.h
 
 ## Test objects
 
