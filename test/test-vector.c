@@ -72,9 +72,9 @@ int test_arithmetic()
     }
 
   c = vector_norm(a);
-  if ((vector_get_x(c) - 0.926947 > OFFSET) ||
-      (vector_get_y(c) - 0 > OFFSET) ||
-      (vector_get_z(c) + 0.375193 > OFFSET)
+  if ((vector_get_x(c) - 0.926947 > REAL_OFFSET) ||
+      (vector_get_y(c) - 0 > REAL_OFFSET) ||
+      (vector_get_z(c) + 0.375193 > REAL_OFFSET)
       )
     {
       fprintf(stderr, "FAIL: Vector normalize calculated incorrectly: ");
@@ -91,7 +91,7 @@ int test_arithmetic()
     }
 
   d = vector_length(a);
-  if (d - 50 > OFFSET)
+  if (d - 50 > REAL_OFFSET)
     {
       fprintf(stderr, "FAIL: Vector length calculated incorrectly: %f should be %f\n", d, (real) 50);
       ++fail;
