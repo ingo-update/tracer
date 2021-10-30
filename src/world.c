@@ -63,7 +63,7 @@ static color _illumination(world w, hitdata hit)
   ray ray_to_c_light;
   real c_light_dist, c_light_angle, c_obj_dist;
 
-  point = vector_sum(hitdata_get_hit_point(hit), vector_sp(hitdata_get_normal(hit), OFFSET));
+  point = vector_sum(hitdata_get_hit_point(hit), vector_sp(hitdata_get_normal(hit), REAL_OFFSET));
 
   /* Accumulate light from all light sources */
   acc_light_color = color_create_rgb(0,0,0);
@@ -137,7 +137,7 @@ color world_look(world w, ray r, unsigned int depth, shading_mode s)
   dir = ray_get_direction(r);
   norm = hitdata_get_normal(hit);
   ref_dir = vector_sum(dir, vector_sp(vector_sp(norm, vector_dp(norm, dir)), -2));
-  ref_loc = vector_sum(hitdata_get_hit_point(hit), vector_sp(norm, OFFSET));
+  ref_loc = vector_sum(hitdata_get_hit_point(hit), vector_sp(norm, REAL_OFFSET));
 
   return color_add(diffuse_color, color_scale(world_look(w, ray_create(ref_loc, ref_dir), depth-1, s), hitdata_get_reflection(hit)));
 }
