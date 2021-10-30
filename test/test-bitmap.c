@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "types.h"
 #include "bitmap.h"
 
 #define ASC_FILENAME "build/test/test_asc.ppm"
@@ -8,6 +9,8 @@
 #define ASC2BIN_FILENAME "build/test/test_asc2bin.ppm"
 #define BIN2ASC_FILENAME "build/test/test_bin2asc.ppm"
 #define CHECKERS_FILENAME "build/test/checkers.ppm"
+
+#define COLOR_BLACK color_create_rgb(0, 0, 0)
 
 void create_files()
 {
@@ -152,6 +155,78 @@ int compare_files()
   return fail;
 }
 
+static color _make_color(int a, int m)
+{
+  real c;
+  int h, x;
+
+  c = ((real) a / (real) m);
+  h = (int) (c * 6);
+  x = ((c * 6) - h) * 255;
+
+  switch (h)
+    {
+    case 0:
+      return color_create_rgb(255, x, 0);
+    case 1:
+      return color_create_rgb(x, 255, 0);
+    case 2:
+      return color_create_rgb(0, 255, x);
+    case 3:
+      return color_create_rgb(0, x, 255);
+    case 4:
+      return color_create_rgb(x, 0, 255);
+    default:
+      return color_create_rgb(256, 0, x);
+    }
+}
+
+int test_mandelbrot()
+{
+  real ReCenter = -0.5;
+  real ImCenter = 0;
+  int xSize = 512;
+  int ySize = 512;
+  real ReSize = 2;
+  real ImSize = 2;
+  int m = 128;
+
+  bitmap bm;
+  int x, y, c;
+
+  real ReC, ImC, ReZ, ImZ, t;
+  real ReMin, ImMin, ReScale, ImScale;
+
+  ReMin = ReSize / -2.0 + ReCenter;
+  ImMin = ImSize / -2.0 + ImCenter;
+  ReScale = ReSize / (real) xSize;
+  ImScale = ImSize / (real) ySize;
+
+  bm = bitmap_create(xSize, ySize);
+
+  for (y = 0 ; y < ySize ; ++y)
+    {
+      ImC = y * ImScale + ImMin;
+      for (x = 0 ; x < xSize ; ++x)
+	{
+	  ReC = x * ReScale + ReMin;
+
+	  ReZ = ImZ = 0;
+	  for (c = 0 ; c < m && (ReZ * ReZ + ImZ * ImZ) < 4 ; ++c)
+	    {
+	      t = ReZ * ReZ - ImZ * ImZ + ReC;
+	      ImZ = 2 * ReZ * ImZ + ImC;
+	      ReZ = t;
+	    }
+
+	  bitmap_put_pixel(bm, x, y, (c == m ? COLOR_BLACK : _make_color(c, m)));
+	}
+    }
+
+  bitmap_write_ppm(bm, Binary, "build/test/mandelbrot.ppm", "Mandelbrot set");
+  return 0;
+}
+
 int main()
 {
   int fail;
@@ -162,6 +237,7 @@ int main()
 
   fail += test_errors();
   fail += compare_files();
+  fail += test_mandelbrot();
 
   if (0 == fail)
     {

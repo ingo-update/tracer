@@ -14,7 +14,7 @@ sphere {<260,-150,0>,  100 pigment {color rgb <0,0,1>} finish {diffuse 1 reflect
 sphere {<260,150,0>,   100 pigment {color rgb <1,0,1>} finish {diffuse 1 reflection 0.2}}
 
 // Texturemapped reflecting triangle (ascii ppm)
-triangle {<-500,-500,400>, <-500,500,0>, <500,-500,0>
+triangle {<-500,-500,400>, <500,-500,0>, <-500,500,0>
           pigment {image_map {ppm "build/test/test_asc.ppm"}}
           finish {diffuse 1 reflection 0.5}
           }
