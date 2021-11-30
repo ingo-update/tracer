@@ -189,7 +189,7 @@ int test_mandelbrot()
   int ySize = 512;
   real ReSize = 2;
   real ImSize = 2;
-  int m = 128;
+  int m = 1024;
 
   bitmap bm;
   int x, y, c;
@@ -219,7 +219,7 @@ int test_mandelbrot()
 	      ReZ = t;
 	    }
 
-	  bitmap_put_pixel(bm, x, y, (c == m ? COLOR_BLACK : _make_color(c, m)));
+	  bitmap_put_pixel(bm, x, y, (c == m ? COLOR_BLACK : _make_color(c % 128, 128)));
 	}
     }
 

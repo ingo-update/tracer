@@ -23,7 +23,7 @@ TESTTRACE = $(TESTDIR)/trace.ppm
 
 $(TESTTRACE): $(TARGET) examples/test.pov
 	@$(ECHO) Tracing $(notdir $(TESTTRACE))
-	@./$(TARGET) -x512 -y512 -w1 -r10 -o $(TESTTRACE) -i examples/test.pov
+	@./$(TARGET) -x512 -y512 -w1 -r16 -o $(TESTTRACE) -i examples/test.pov
 
 test: $(TESTTRACE)
 
