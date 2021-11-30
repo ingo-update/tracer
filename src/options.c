@@ -9,9 +9,9 @@ void _options_print_usage(char *exe)
   fputs("Where opts are some of:\n", stderr);
   fputs("  -x  INTEGER  Width of output image in pixels\n", stderr);
   fputs("  -y  INTEGER  Height of output image in pixels\n", stderr);
-  fputs("  -w  FLOAT    Width of output image in world coordinates\n", stderr);
-  fputs("  -h  FLOAT    Height of output image in world coordinates\n", stderr);
-  fputs("  -z  INTEGER  Zoom-value for camera (default = 1)\n", stderr);
+  fputs("  -w  REAL     Width of output image in world coordinates\n", stderr);
+  fputs("  -h  REAL     Height of output image in world coordinates\n", stderr);
+  fputs("  -z  REAL     Zoom-value for camera (default = 1)\n", stderr);
   fputs("  -d  INTEGER  Reflection depth (default = 5)\n", stderr);
   fputs("  -i  STRING   Name of input file, default is to read from stdin\n", stderr);
   fputs("  -o  STRING   Name of output image file, default is to send data to stdout\n", stderr);
@@ -74,7 +74,7 @@ options options_get_options(int argc, char **argv)
 	      opt->pict_real_height = ('\0' != argv[i][2]) ? atof(&argv[i][2]) : atof(argv[++i]);
 	      break;
 	    case 'z':
-	      opt->zoom = ('\0' != argv[i][2]) ? atoi(&argv[i][2]) : atoi(argv[++i]);
+	      opt->zoom = ('\0' != argv[i][2]) ? atof(&argv[i][2]) : atof(argv[++i]);
 	      break;
 	    case 'r':
 	      opt->reflection_depth = ('\0' != argv[i][2]) ? atoi(&argv[i][2]) : atoi(argv[++i]);
