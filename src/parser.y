@@ -56,7 +56,6 @@
 %type <surface> object_mods
 %type <sphere> sphere
 %type <plane> plane
-%type <triangle> triangle
 %type <color> background
 %type <camera> camera
 %type <finish> opt_finish
@@ -134,8 +133,7 @@ KEY_PGRAM LBRACE vector COMMA vector COMMA vector object_mods RBRACE
 ;
 
 plane:
-KEY_PGRAMPNT LBRACE vector COMMA vector COMMA vector object_mods
-RBRACE
+KEY_PGRAMPNT LBRACE vector COMMA vector COMMA vector object_mods RBRACE
 { $$ = pgram_create($3, $5, $7, $8);}
 ;
 
@@ -198,8 +196,7 @@ color:  KEY_COLOR KEY_RED number KEY_GREEN number KEY_BLUE number
 		       255*vector_get_z($3));}
 ;
 
-camera:	KEY_CAMERA LBRACE KEY_LOCATION vector KEY_SKY vector KEY_LOOK vector
-RBRACE
+camera:	KEY_CAMERA LBRACE KEY_LOCATION vector KEY_SKY vector KEY_LOOK vector RBRACE
 { $$ = camera_create($4, $6, $8); }
 ;
 
