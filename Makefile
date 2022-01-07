@@ -1,6 +1,8 @@
 ### Makefile for tracer ###
 
+PROJECT = tracer
 TARGET = tracer
+
 LEXER = $(GENSRC)/lexer.c
 PARSER = $(GENSRC)/parser.c
 EXTRA_OBJS = $(OBJDIR)/lexer.o $(OBJDIR)/parser.o
