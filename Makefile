@@ -11,13 +11,10 @@ ifndef MAKEDIR
   MAKEDIR = ../make
 endif
 
-SPEC = $(MAKEDIR)/spec.gmk
-
-include $(MAKEDIR)/build.gmk
-include $(MAKEDIR)/test.gmk
+include $(MAKEDIR)/main.gmk
 
 CFLAGS_lexer.o = -Wno-unused-function
-LDLIBS = -lm -lfl
+LDLIBS_tracer = -lm -lfl
 LDLIBS_test-parser = -lm -lfl
 LDLIBS_test-vector = -lm
 
