@@ -20,7 +20,7 @@ LDLIBS_test-vector = -lm
 
 TESTTRACE = $(TESTDIR)/trace.ppm
 
-$(TESTTRACE): $(TARGET) examples/test.pov
+$(TESTTRACE): $(TARGET) examples/test.pov $(TESTDIR)/test-bitmap.testresult
 	@$(ECHO) Tracing $(notdir $(TESTTRACE))
 	@./$(TARGET) -x512 -y512 -w1 -r16 -o $(TESTTRACE) -i examples/test.pov
 
@@ -77,3 +77,6 @@ $(TESTDIR)/test-parser: $(filter-out %/main.o %/trace.o,$(OBJFILES)) $(TESTDIR)/
 $(TESTDIR)/test-vector: $(OBJDIR)/vector.o $(TESTDIR)/test-vector.o
 $(TESTDIR)/test-color: $(OBJDIR)/color.o $(TESTDIR)/test-color.o
 $(TESTDIR)/test-surface: $(OBJDIR)/surface.o $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-surface.o
+
+$(TESTDIR)/test-surface.testresult: $(TESTDIR)/test-bitmap.testresult
+$(TESTDIR)/test-parser.testresult: $(TESTDIR)/test-bitmap.testresult
