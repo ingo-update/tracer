@@ -72,11 +72,13 @@ $(TESTDIR)/test-surface.o: $(TOPDIR)/test/test-surface.c $(SRC)/surface.h $(SRC)
 
 ## Test executables
 
-$(TESTDIR)/test-bitmap: $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-bitmap.o
-$(TESTDIR)/test-parser: $(filter-out %/main.o %/trace.o,$(OBJFILES)) $(TESTDIR)/test-parser.o
-$(TESTDIR)/test-vector: $(OBJDIR)/vector.o $(TESTDIR)/test-vector.o
-$(TESTDIR)/test-color: $(OBJDIR)/color.o $(TESTDIR)/test-color.o
-$(TESTDIR)/test-surface: $(OBJDIR)/surface.o $(OBJDIR)/bitmap.o $(OBJDIR)/color.o $(TESTDIR)/test-surface.o
+$(TESTDIR)/test-bitmap: $(TESTDIR)/test-bitmap.o $(OBJDIR)/bitmap.o $(OBJDIR)/color.o
+$(TESTDIR)/test-parser: $(TESTDIR)/test-parser.o $(filter-out %/main.o %/trace.o,$(OBJFILES))
+$(TESTDIR)/test-vector: $(TESTDIR)/test-vector.o $(OBJDIR)/vector.o
+$(TESTDIR)/test-color: $(TESTDIR)/test-color.o $(OBJDIR)/color.o
+$(TESTDIR)/test-surface:  $(TESTDIR)/test-surface.o $(OBJDIR)/surface.o $(OBJDIR)/bitmap.o $(OBJDIR)/color.o
+
+## Tests that use artifacts from other tests
 
 $(TESTDIR)/test-surface.testresult: $(TESTDIR)/test-bitmap.testresult
 $(TESTDIR)/test-parser.testresult: $(TESTDIR)/test-bitmap.testresult
