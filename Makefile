@@ -41,11 +41,11 @@ $(addprefix $(BUILDDIR)/,$(TARGET)): $(OBJFILES)
 ## The first dependency for object files must be their source file
 
 $(OBJDIR)/bitmap.o: $(SRC)/bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
-$(OBJDIR)/camera.o: $(SRC)/camera.c $(SRC)/camera.h $(SRC)/vector.h
+$(OBJDIR)/camera.o: $(SRC)/camera.c $(SRC)/camera.h $(SRC)/vector.h $(SRC)/types.h
 $(OBJDIR)/color.o: $(SRC)/color.c $(SRC)/color.h $(SRC)/types.h
 $(OBJDIR)/hitdata.o: $(SRC)/hitdata.c $(SRC)/hitdata.h $(SRC)/color.h $(SRC)/vector.h $(SRC)/types.h
-$(OBJDIR)/light.o: $(SRC)/light.c $(SRC)/light.h $(SRC)/color.h $(SRC)/vector.h
-$(OBJDIR)/main.o: $(SRC)/main.c $(SRC)/options.h $(SRC)/world.h $(SRC)/camera.h
+$(OBJDIR)/light.o: $(SRC)/light.c $(SRC)/light.h $(SRC)/color.h $(SRC)/vector.h $(SRC)/types.h
+$(OBJDIR)/main.o: $(SRC)/main.c $(SRC)/options.h $(SRC)/world.h $(SRC)/camera.h $(SRC)/types.h
 $(OBJDIR)/object.o: $(SRC)/object.c $(SRC)/object.h $(SRC)/types.h $(SRC)/sphere.h $(SRC)/plane.h
 $(OBJDIR)/options.o: $(SRC)/options.c $(SRC)/options.h $(SRC)/types.h $(SRC)/defaults.h
 $(OBJDIR)/plane.o: $(SRC)/plane.c $(SRC)/plane.h $(SRC)/world.h $(SRC)/types.h $(SRC)/color.h $(SRC)/surface.h $(SRC)/hitdata.h $(SRC)/ray.h
@@ -60,15 +60,15 @@ $(OBJDIR)/lexer.o: $(GENSRC)/lexer.c $(GENSRC)/parser.h
 $(OBJDIR)/parser.o: $(GENSRC)/parser.c $(SRC)/sphere.h $(SRC)/plane.h $(SRC)/vector.h $(SRC)/types.h $(SRC)/color.h $(SRC)/world.h $(SRC)/camera.h $(SRC)/ray.h
 
 $(GENSRC)/lexer.c: $(SRC)/lexer.l
-$(GENSRC)/parser.c $(GENSRC)/parser.h: $(SRC)/parser.y $(SRC)/ray.h
+$(GENSRC)/parser.c $(GENSRC)/parser.h: $(SRC)/parser.y $(SRC)/vector.h $(SRC)/color.h $(SRC)/world.h $(SRC)/camera.h $(SRC)/types.h $(SRC)/defaults.h
 
 ## Test objects
 
 $(TESTDIR)/test-bitmap.o: $(TOPDIR)/test/test-bitmap.c $(SRC)/bitmap.h $(SRC)/color.h
 $(TESTDIR)/test-parser.o: $(TOPDIR)/test/test-parser.c $(GENSRC)/parser.h $(SRC)/plane.h $(SRC)/sphere.h
-$(TESTDIR)/test-vector.o: $(TOPDIR)/test/test-vector.c
+$(TESTDIR)/test-vector.o: $(TOPDIR)/test/test-vector.c $(SRC)/types.h
 $(TESTDIR)/test-color.o: $(TOPDIR)/test/test-color.c $(SRC)/color.h
-$(TESTDIR)/test-surface.o: $(TOPDIR)/test/test-surface.c $(SRC)/surface.h $(SRC)/defaults.h
+$(TESTDIR)/test-surface.o: $(TOPDIR)/test/test-surface.c $(SRC)/surface.h $(SRC)/defaults.h $(SRC)/types.h
 
 ## Test executables
 
